@@ -1,5 +1,4 @@
-import 'package:doctor_app/user_screens/profile.dart';
-import 'package:doctor_app/user_screens/signIn/signIn.dart';
+import 'package:doctor_app/screens/user/signIn/sign_in.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,11 +15,12 @@ class MyApp extends StatelessWidget {
     //   SystemUiOverlayStyle(statusBarColor: Colors.transparent)
     // );
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Task App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const ProfileWidget(),
+      home: const SignInWidget(),
     );
   }
 }

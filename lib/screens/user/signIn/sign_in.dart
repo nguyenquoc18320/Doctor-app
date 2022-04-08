@@ -1,7 +1,12 @@
-import 'dart:ffi';
+import 'dart:convert';
 
+import 'package:doctor_app/screens/user/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'package:doctor_app/globals.dart' as globals;
+import 'package:doctor_app/api/api_helper.dart' as api_helper;
+import 'package:doctor_app/models/user.dart';
 
 class SignInWidget extends StatefulWidget {
   const SignInWidget({Key? key}) : super(key: key);
@@ -142,12 +147,50 @@ class _SignInWidgetState extends State<SignInWidget> {
     );
   }
 
-  void _SignIn(String email, String password) {
+  /*
+  SignIn function
+  */
+  void _SignIn(String email, String password) async {
     //check empty field
     emailError = (email.isEmpty == true);
     passwordError = (password.isEmpty == true);
+
+    if (!emailError && !passwordError) {
+      //send request
+      var response = await http.post(
+        Uri.parse(globals.url + "/auth/login"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body:
+            jsonEncode(<String, String>{'email': email, 'password': password}),
+      );
+
+      //response
+      if (response.statusCode == 200) {
+        Map<String, dynamic> res = jsonDecode(response.body);
+
+        //set token
+        globals.token = res['data']['access_token'];
+
+        // get user
+        response = await api_helper.get('/users/me');
+        if (response.statusCode == 200) {
+          globals.user = User.fromJson(jsonDecode(response.body)['data']);
+
+          //login successfully
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ProfileWidget()),
+          );
+        }
+      } else {
+        print(response.body);
+      }
+    }
   }
 
+  //show error for email and password
   Widget _ErrorWidget(BuildContext context, String text) {
     return Column(
       children: [
