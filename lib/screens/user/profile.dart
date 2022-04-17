@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:doctor_app/models/user.dart';
+import 'package:doctor_app/widgets/user/bottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:doctor_app/globals.dart' as globals;
 import 'package:doctor_app/api/api_helper.dart' as api_helper;
+import 'package:image_picker/image_picker.dart';
 
 class ProfileWidget extends StatefulWidget {
   const ProfileWidget({Key? key}) : super(key: key);
@@ -35,12 +38,9 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   var addressTextController =
       TextEditingController(text: globals.user!.location);
 
-  //load info user
-  // nameTextController.text =
-  // emailTextController.text = globals.user!.email;
-  // addressTextController.text = globals.user!.location;
-  // gender = globals.user!.gender.toLowerCase();
-  // birthdate = globals.user!.birthdate;
+  //image picker
+  ImagePicker imagePicker = ImagePicker();
+  String _avata_path = '';
 
   void _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -93,9 +93,28 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                         fontWeight: FontWeight.bold),
                   )
                 ]),
-                Image.asset(
-                  'assets/logo/logo.jpg',
-                  height: 100,
+                GestureDetector(
+                  child: _avata_path.isEmpty != true
+                      ? Image.file(
+                          File(_avata_path),
+                          height: 100,
+                        )
+                      : Image.network(
+                          globals.url + "/assets/" + globals.user!.avataId!,
+                          headers: {"authorization": "Bearer " + globals.token},
+                          height: 100,
+                        ),
+                  onTap: () async {
+                    var source = ImageSource.gallery;
+                    XFile? image = await imagePicker.pickImage(
+                        source: source,
+                        imageQuality: 50,
+                        preferredCameraDevice: CameraDevice.front);
+
+                    _avata_path = image!.path;
+
+                    setState(() {});
+                  },
                 ),
                 SizedBox(
                   height: 10,
@@ -129,6 +148,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   height: partDistance,
                 ),
                 TextField(
+                  readOnly: true,
+                  enabled: false,
                   controller: emailTextController,
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
@@ -252,10 +273,17 @@ class _ProfileWidgetState extends State<ProfileWidget> {
               ],
             )),
       ),
+      bottomNavigationBar: BottomNavigationBarCustom(currentIndex: 4),
     );
   }
 
   void confirm() async {
+    String imageId = globals.user!.avataId ?? '';
+    //upload image
+    if (_avata_path.isNotEmpty) {
+      imageId = await api_helper.uploadFile(_avata_path);
+    }
+
     var myFormat = DateFormat('yyyy-MM-dd');
 
     Map<String, String> json = {
@@ -263,7 +291,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
       'last_name': lastNameTextController.text,
       'gender': gender,
       'location': addressTextController.text,
-      'birthdate': myFormat.format(birthdate!)
+      'birthdate': myFormat.format(birthdate!),
+      'avatar': imageId
     };
 
     var response = await api_helper.patch("/users/me", json);
