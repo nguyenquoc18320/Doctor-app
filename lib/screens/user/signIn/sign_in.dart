@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:doctor_app/screens/user/home.dart';
 import 'package:doctor_app/screens/user/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,10 +16,14 @@ class SignInWidget extends StatefulWidget {
   State<SignInWidget> createState() => _SignInWidgetState();
 }
 
+enum Role { doctor, user }
+
 class _SignInWidgetState extends State<SignInWidget> {
   //text controller
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
+
+  Role? roleController = Role.doctor;
 
   //vars are used to check showing error
   bool emailError = false;
@@ -74,7 +79,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                 ),
                 style: TextStyle(fontSize: 16),
               ),
-              if (emailError) _ErrorWidget(context, 'Invalid email'),
+              if (emailError) _ErrorWidget(context, 'Incorrect email'),
               const SizedBox(
                 height: 15,
               ),
@@ -103,7 +108,44 @@ class _SignInWidgetState extends State<SignInWidget> {
                 ),
                 style: TextStyle(fontSize: 16),
               ),
-              if (passwordError) _ErrorWidget(context, 'Invalid password'),
+              if (passwordError) _ErrorWidget(context, 'Incorrect password'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: ListTile(
+                        contentPadding: EdgeInsets.all(0),
+                        dense: true,
+                        title: Text(
+                          'Doctor',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        leading: Radio<Role>(
+                            value: Role.doctor,
+                            groupValue: roleController,
+                            onChanged: (Role? value) => {
+                                  setState(
+                                    () => {roleController = value},
+                                  )
+                                })),
+                  ),
+                  Expanded(
+                    child: ListTile(
+                        contentPadding: EdgeInsets.all(0),
+                        title: Text(
+                          'Patient',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        dense: true,
+                        leading: Radio<Role>(
+                            value: Role.user,
+                            groupValue: roleController,
+                            onChanged: (Role? value) => {
+                                  setState(() => {roleController = value})
+                                })),
+                  ),
+                ],
+              ),
               const SizedBox(height: 20),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -176,18 +218,60 @@ class _SignInWidgetState extends State<SignInWidget> {
         // get user
         response = await api_helper.get('/users/me');
         if (response.statusCode == 200) {
-          globals.user = User.fromJson(jsonDecode(response.body)['data']);
+          var userJson = jsonDecode(response.body)['data'];
 
-          //login successfully
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const ProfileWidget()),
-          );
+          //get role
+          response = await api_helper.get("/roles/" + userJson['role']);
+
+          if (response.statusCode == 200) {
+            var roleJson = jsonDecode(response.body)['data'];
+            String roleName = roleJson['name'];
+
+            //check role
+            if (roleController.toString().split('.').last.toLowerCase() ==
+                    'doctor' &&
+                roleName.toLowerCase() ==
+                    roleController.toString().split('.').last.toLowerCase()) {
+              //as doctor
+              globals.user = User.fromJson(userJson);
+
+              print("doctor");
+            } else if (roleController
+                        .toString()
+                        .split('.')
+                        .last
+                        .toLowerCase() ==
+                    'user' &&
+                roleName.toLowerCase() ==
+                    roleController.toString().split('.').last.toLowerCase()) {
+              //as patient
+              globals.user = User.fromJson(userJson);
+
+              globals.user!.role = 'user';
+
+              //login successfully
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const HomeWidget()),
+              );
+            } else {
+              //incorrect
+              globals.token = '';
+              emailError = true;
+              passwordError = true;
+            }
+          } else {
+            globals.token = '';
+            emailError = true;
+            passwordError = true;
+          }
         }
       } else {
-        print(response.body);
+        emailError = true;
+        passwordError = true;
       }
     }
+    setState(() {});
   }
 
   //show error for email and password
