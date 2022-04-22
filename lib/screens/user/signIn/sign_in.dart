@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:doctor_app/screens/forgot_password.dart';
+import 'package:doctor_app/screens/sign_up.dart';
 import 'package:doctor_app/screens/user/home.dart';
 import 'package:doctor_app/screens/user/profile.dart';
 import 'package:flutter/material.dart';
@@ -170,7 +172,12 @@ class _SignInWidgetState extends State<SignInWidget> {
                     ),
                   )),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () => ({
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ForgotPassword()))
+                      }),
                   child: const Text(
                     'Forgot the password?',
                     style: TextStyle(fontSize: 16),
@@ -179,7 +186,14 @@ class _SignInWidgetState extends State<SignInWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text("Don't have an account?"),
-                  TextButton(onPressed: () {}, child: Text('Sign up'))
+                  TextButton(
+                      onPressed: () => ({
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignUp()))
+                          }),
+                      child: Text('Sign up'))
                 ],
               )
             ],
