@@ -40,8 +40,11 @@ class _SignInWidgetState extends State<SignInWidget> {
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: Column(
             children: [
+              SizedBox(
+                height: 10,
+              ),
               Image.asset(
-                'assets/logo/logo.jpg',
+                'assets/images/logo.png',
                 height: 150,
               ),
               const SizedBox(
@@ -228,6 +231,7 @@ class _SignInWidgetState extends State<SignInWidget> {
 
         //set token
         globals.token = res['data']['access_token'];
+        globals.refresh_token = res['data']['refresh_token'];
 
         // get user
         response = await api_helper.get('/users/me');
@@ -270,11 +274,13 @@ class _SignInWidgetState extends State<SignInWidget> {
               );
             } else {
               //incorrect
+              globals.refresh_token = '';
               globals.token = '';
               emailError = true;
               passwordError = true;
             }
           } else {
+            globals.refresh_token = '';
             globals.token = '';
             emailError = true;
             passwordError = true;

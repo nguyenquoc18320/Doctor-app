@@ -1,4 +1,5 @@
 import 'package:doctor_app/models/specialist.dart';
+import 'package:doctor_app/screens/user/doctor_info.dart';
 import 'package:flutter/material.dart';
 import 'package:doctor_app/api/doctor.dart' as Doctor_API;
 import 'package:flutter/rendering.dart';
@@ -64,11 +65,11 @@ class _DoctorListWidgetState extends State<DoctorListWidget> {
                     // borderSide: const BorderSide(color: Colors.white, width: 2.0),
                     borderRadius: BorderRadius.circular(25.0),
                   ),
-                  hintText: 'Search',
+                  hintText: 'Search by first name or last name',
                   suffixIcon: IconButton(
                     onPressed: () {
                       searchText = searchTextController.text;
-                      doctorList = getDoctorList(widget.specialist);
+                      doctorList = getDoctorList(widget.specialist, searchText);
                       setState(() {});
                     },
                     icon: Icon(Icons.search),
@@ -169,102 +170,118 @@ class _DoctorListWidgetState extends State<DoctorListWidget> {
 
 //doctor list
   Widget _doctorListWidget(BuildContext context) {
-    return FutureBuilder<List<User>>(
-        future: doctorList,
-        builder: (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
-          } else if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasData) {
-              print('Length: ' + snapshot.data!.length.toString());
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return _doctorItemWidget(context, snapshot.data![index]);
-                    }),
-              );
+    return Expanded(
+      child: FutureBuilder<List<User>>(
+          future: doctorList,
+          builder: (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData) {
+                print('Length: ' + snapshot.data!.length.toString());
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return _doctorItemWidget(
+                            context, snapshot.data![index]);
+                      }),
+                );
+              } else {
+                return Container();
+              }
             } else {
               return Container();
             }
-          } else {
-            return Container();
-          }
-        });
+          }),
+    );
   }
 
   //widget for each doctor
   Widget _doctorItemWidget(BuildContext context, User user) {
-    return Column(
-      children: [
-        Container(
-          height: 100,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.grey)),
-          child: Row(children: [
-            ClipRRect(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                bottomLeft: Radius.circular(20),
-              ),
-              child: user.avataId!.isNotEmpty
-                  ? Image.network(
-                      globals.url + "/assets/" + user.avataId!,
-                      headers: {"authorization": "Bearer " + globals.token},
-                      height: 100,
-                    )
-                  : Image.asset('assets/logo/small_logo.png'),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  user.firstName + ' ' + user.lastName,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  user.title ?? '',
-                  style: TextStyle(fontSize: 16),
-                ),
-                Text(
-                  user.location,
-                  style: TextStyle(fontSize: 16),
-                )
-              ],
-            )
-          ]),
-        ),
-        SizedBox(
-          height: 10,
+    return GestureDetector(
+      onTap: () => {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => DoctorInfoScreen(user.id ?? '')),
         )
-      ],
+      },
+      child: Column(
+        children: [
+          Container(
+            height: 100,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.grey)),
+            child: Row(children: [
+              ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  bottomLeft: Radius.circular(20),
+                ),
+                child: user.avataId!.isNotEmpty
+                    ? Image.network(
+                        globals.url + "/assets/" + user.avataId!,
+                        headers: {"authorization": "Bearer " + globals.token},
+                        height: 100,
+                      )
+                    : Image.asset('assets/logo/small_logo.png'),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    user.firstName + ' ' + user.lastName,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    user.title ?? '',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    user.location,
+                    style: TextStyle(fontSize: 16),
+                  )
+                ],
+              )
+            ]),
+          ),
+          SizedBox(
+            height: 10,
+          )
+        ],
+      ),
     );
   }
 
   /* 
 get doctor list 
 */
-  Future<List<User>> getDoctorList(Specialist? specialist) async {
+  Future<List<User>> getDoctorList(Specialist? specialist,
+      [String name = '']) async {
     if (specialist != null) {
-      if (searchTextController.text.isEmpty)
+      if (name.isEmpty)
         return await Doctor_API.getDoctorsBySpecialist(specialist);
       else {
-        return await Doctor_API.getDoctorsBySpecialist(
-            specialist, searchTextController.text);
+        return await Doctor_API.getDoctorsBySpecialist(specialist, name);
       }
     } else {
-      return await Doctor_API.getDoctorList(10);
+      if (name.isEmpty)
+        return await Doctor_API.getDoctorList(10);
+      else {
+        return await Doctor_API.getDoctorList(100, name);
+      }
     }
   }
 }

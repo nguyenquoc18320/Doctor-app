@@ -1,4 +1,5 @@
 import 'package:doctor_app/models/specialist.dart';
+import 'package:doctor_app/screens/user/doctor_info.dart';
 // import 'package:doctor_app/screens/doctor_list_custom.dart';
 import 'package:doctor_app/screens/user/doctor_list.dart';
 import 'package:flutter/material.dart';
@@ -261,7 +262,12 @@ class _DoctorListWigetState extends State<_DoctorListWiget> {
 
   Widget _doctorItem(BuildContext context, User user) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DoctorInfoScreen(user.id ?? '')));
+      },
       child: Padding(
         padding: const EdgeInsets.only(right: 10),
         child: Container(

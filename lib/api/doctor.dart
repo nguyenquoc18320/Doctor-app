@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:doctor_app/models/specialist.dart';
 import 'package:http/http.dart' as http;
@@ -28,11 +29,22 @@ Future<String> getDoctorRoleId() async {
 }
 
 //get doctors randomly
-Future<List<User>> getDoctorList(int limit) async {
+Future<List<User>> getDoctorList(int limit, [String doctorName = '']) async {
   //get doctor role id
   String id = await getDoctorRoleId();
 
   String url = '/users?filter[role]=' + id + '&limit=' + limit.toString();
+
+  if (doctorName.isNotEmpty) {
+    url = '/users?limit=100&filter={"role": "' +
+        id +
+        '", "_or":[{"first_name":{"_contains": "' +
+        doctorName +
+        '"}}, {"last_name":{"_contains":"' +
+        doctorName +
+        '"}}]}';
+  }
+  print('URL: ' + url);
 
   http.Response response = await api_helper.get(url);
 
@@ -41,6 +53,7 @@ Future<List<User>> getDoctorList(int limit) async {
 
     List<User> doctors = List<User>.from(
         json['data'].map((data) => User.fromJson(data)).toList());
+
     return doctors;
   } else {
     return [];
@@ -57,7 +70,15 @@ Future<List<User>> getDoctorsBySpecialist(Specialist specialist,
       '/users?filter[role]=' + id + '&filter[title]=' + specialist.name;
 
   if (doctorName.isNotEmpty) {
-    url += '&filter[first_name]=' + doctorName;
+    url = '/users?limit=100&filter={"role": "' +
+        id +
+        '", "title" : "' +
+        specialist.name +
+        '", "_or":[{"first_name":{"_contains": "' +
+        doctorName +
+        '"}}, {"last_name":{"_contains":"' +
+        doctorName +
+        '"}}]}';
   }
 
   http.Response response = await api_helper.get(url);
@@ -72,3 +93,35 @@ Future<List<User>> getDoctorsBySpecialist(Specialist specialist,
     return [];
   }
 }
+
+/*
+get doctor by id
+*/
+Future<User> getUserById(String id) async {
+  String url = "/users/" + id;
+
+  http.Response response = await api_helper.get(url);
+  if (response.statusCode == 200) {
+    Map<String, dynamic> json = jsonDecode(response.body);
+    User user = User.fromJson(json['data']);
+
+    return user;
+  } else {
+    return User(
+        id: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        gender: '',
+        location: '',
+        birthdate: null,
+        avataId: '',
+        description: '');
+  }
+}
+
+
+/*
+get doctor's working time
+*/
+// Future

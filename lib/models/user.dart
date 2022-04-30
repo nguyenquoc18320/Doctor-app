@@ -11,6 +11,7 @@ class User {
   String? avataId;
   String? role; //user or doctor
   String? title; //if being doctor, title is doctor's specilist
+  String? description;
 
   User(
       {required this.id,
@@ -23,13 +24,14 @@ class User {
       required this.birthdate,
       this.avataId,
       this.role,
-      this.title});
+      this.title,
+      this.description});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
         id: json['id'],
-        firstName: json['first_name'],
-        lastName: json['last_name'],
+        firstName: json['first_name'] ?? '',
+        lastName: json['last_name'] ?? '',
         email: json['email'],
         password: json['password'],
         avataId: json['avatar'] ?? '',
@@ -38,7 +40,8 @@ class User {
             ? null
             : DateTime.parse(json['birthdate'].toString()),
         gender: json['gender'] ?? '',
-        title: json['title'] ?? '');
+        title: json['title'] ?? '',
+        description: json['description'] ?? '');
   }
 
   List<String> specialist = [
