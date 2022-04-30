@@ -39,10 +39,10 @@ class DoctorInfoController extends GetxController {
   ];
 
   start() {
-    workingTime.value = [];
+    timesForAppointment.value = [];
   }
 
-  getDoctor(String id) async {
+  getDoctor(String id, DateTime? selectedAppointment) async {
     //get doctor info
     User user = await DoctorAPI.getUserById(id);
 

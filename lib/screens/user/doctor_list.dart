@@ -65,11 +65,11 @@ class _DoctorListWidgetState extends State<DoctorListWidget> {
                     // borderSide: const BorderSide(color: Colors.white, width: 2.0),
                     borderRadius: BorderRadius.circular(25.0),
                   ),
-                  hintText: 'Search',
+                  hintText: 'Search by first name or last name',
                   suffixIcon: IconButton(
                     onPressed: () {
                       searchText = searchTextController.text;
-                      doctorList = getDoctorList(widget.specialist);
+                      doctorList = getDoctorList(widget.specialist, searchText);
                       setState(() {});
                     },
                     icon: Icon(Icons.search),
@@ -268,16 +268,20 @@ class _DoctorListWidgetState extends State<DoctorListWidget> {
   /* 
 get doctor list 
 */
-  Future<List<User>> getDoctorList(Specialist? specialist) async {
+  Future<List<User>> getDoctorList(Specialist? specialist,
+      [String name = '']) async {
     if (specialist != null) {
-      if (searchTextController.text.isEmpty)
+      if (name.isEmpty)
         return await Doctor_API.getDoctorsBySpecialist(specialist);
       else {
-        return await Doctor_API.getDoctorsBySpecialist(
-            specialist, searchTextController.text);
+        return await Doctor_API.getDoctorsBySpecialist(specialist, name);
       }
     } else {
-      return await Doctor_API.getDoctorList(10);
+      if (name.isEmpty)
+        return await Doctor_API.getDoctorList(10);
+      else {
+        return await Doctor_API.getDoctorList(100, name);
+      }
     }
   }
 }

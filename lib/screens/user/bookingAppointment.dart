@@ -323,8 +323,8 @@ class _BookingAppointmentScreenState extends State<BookingAppointmentScreen> {
                         color: Color(0xFFD6D6D6),
                       )),
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  keyboardType: TextInputType.multiline,
                   maxLines: null,
-                  minLines: 3,
                   onChanged: (String val) {
                     checkFulfillInfo();
                   },

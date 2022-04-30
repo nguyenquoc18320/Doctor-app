@@ -40,8 +40,11 @@ class _SignInWidgetState extends State<SignInWidget> {
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: Column(
             children: [
+              SizedBox(
+                height: 10,
+              ),
               Image.asset(
-                'assets/logo/logo.jpg',
+                'assets/images/logo.png',
                 height: 150,
               ),
               const SizedBox(

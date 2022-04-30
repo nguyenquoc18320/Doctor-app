@@ -9,7 +9,7 @@ import 'package:doctor_app/api/doctor.dart' as doctor_API;
 import 'package:intl/intl.dart' show DateFormat, toBeginningOfSentenceCase;
 
 class myAppointmentScreen extends StatelessWidget {
-  var controller = MyAppointmentController();
+  var controller = Get.put(MyAppointmentController());
 
   @override
   Widget build(BuildContext context) {

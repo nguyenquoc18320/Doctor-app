@@ -29,11 +29,22 @@ Future<String> getDoctorRoleId() async {
 }
 
 //get doctors randomly
-Future<List<User>> getDoctorList(int limit) async {
+Future<List<User>> getDoctorList(int limit, [String doctorName = '']) async {
   //get doctor role id
   String id = await getDoctorRoleId();
 
   String url = '/users?filter[role]=' + id + '&limit=' + limit.toString();
+
+  if (doctorName.isNotEmpty) {
+    url = '/users?limit=100&filter={"role": "' +
+        id +
+        '", "_or":[{"first_name":{"_contains": "' +
+        doctorName +
+        '"}}, {"last_name":{"_contains":"' +
+        doctorName +
+        '"}}]}';
+  }
+  print('URL: ' + url);
 
   http.Response response = await api_helper.get(url);
 
@@ -42,6 +53,7 @@ Future<List<User>> getDoctorList(int limit) async {
 
     List<User> doctors = List<User>.from(
         json['data'].map((data) => User.fromJson(data)).toList());
+
     return doctors;
   } else {
     return [];
@@ -58,7 +70,15 @@ Future<List<User>> getDoctorsBySpecialist(Specialist specialist,
       '/users?filter[role]=' + id + '&filter[title]=' + specialist.name;
 
   if (doctorName.isNotEmpty) {
-    url += '&filter[first_name]=' + doctorName;
+    url = '/users?limit=100&filter={"role": "' +
+        id +
+        '", "title" : "' +
+        specialist.name +
+        '", "_or":[{"first_name":{"_contains": "' +
+        doctorName +
+        '"}}, {"last_name":{"_contains":"' +
+        doctorName +
+        '"}}]}';
   }
 
   http.Response response = await api_helper.get(url);

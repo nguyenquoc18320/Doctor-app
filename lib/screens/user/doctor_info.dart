@@ -17,7 +17,7 @@ class DoctorInfoScreen extends StatefulWidget {
 }
 
 class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
-  var controller = DoctorInfoController();
+  var controller = Get.put(DoctorInfoController());
 
   DateTime? selectedAppointment; //day for appointment
 
@@ -31,7 +31,7 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    controller.getDoctor(widget.doctorId);
+    controller.getDoctor(widget.doctorId, selectedAppointment);
     return GetX<DoctorInfoController>(
       builder: (_) => Scaffold(
         appBar: AppBar(
