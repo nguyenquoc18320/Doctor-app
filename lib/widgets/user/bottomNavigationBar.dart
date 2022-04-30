@@ -1,4 +1,5 @@
 import 'package:doctor_app/screens/user/home.dart';
+import 'package:doctor_app/screens/user/myAppointment.dart';
 import 'package:doctor_app/screens/user/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -39,6 +40,9 @@ class BottomNavigationBarCustom extends StatelessWidget {
         if (index == 0) {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => HomeWidget()));
+        } else if (index == 2) {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => myAppointmentScreen()));
         } else if (index == 4) {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => ProfileWidget()));

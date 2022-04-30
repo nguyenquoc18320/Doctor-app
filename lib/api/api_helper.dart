@@ -15,11 +15,22 @@ Future<http.Response> get(String url) async {
     },
   );
 
+  if (response.statusCode == 403) {
+    refreshToken();
+    response = await http.get(
+      Uri.parse(globals.url + url),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ' + globals.token,
+      },
+    );
+  }
+
   return response;
 }
 
 Future<http.Response> patch(String url, Map<String, String> json) async {
-  return await http.patch(
+  var response = await http.patch(
     Uri.parse(globals.url + url),
     body: jsonEncode(json),
     headers: {
@@ -27,6 +38,45 @@ Future<http.Response> patch(String url, Map<String, String> json) async {
       'Authorization': 'Bearer ' + globals.token,
     },
   );
+
+  print(jsonEncode(json));
+
+  if (response.statusCode == 403) {
+    refreshToken();
+    response = await http.patch(
+      Uri.parse(globals.url + url),
+      body: jsonEncode(json),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ' + globals.token,
+      },
+    );
+  }
+  return response;
+}
+
+Future<http.Response> post(String url, Map<String, dynamic> json) async {
+  var response = await http.post(
+    Uri.parse(globals.url + url),
+    body: jsonEncode(json),
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer ' + globals.token,
+    },
+  );
+
+  if (response.statusCode == 403) {
+    refreshToken();
+    response = await http.post(
+      Uri.parse(globals.url + url),
+      body: jsonEncode(json),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ' + globals.token,
+      },
+    );
+  }
+  return response;
 }
 
 Future<String> uploadFile(String path) async {
@@ -63,4 +113,23 @@ Future<String> uploadFile(String path) async {
     return json['data']['id'];
   } else
     return '';
+}
+
+/*
+refresh 
+ */
+refreshToken() async {
+  var response = await http.post(
+    Uri.parse(globals.url + '/auth/refresh'),
+    body: jsonEncode({"refresh_token": "${globals.refresh_token}"}),
+    headers: {'Content-Type': 'application/json; charset=UTF-8'},
+  );
+
+  if (response.statusCode == 200) {
+    Map<String, dynamic> res = jsonDecode(response.body);
+
+    //set token
+    globals.token = res['data']['access_token'];
+    globals.refresh_token = res['data']['refresh_token'];
+  }
 }

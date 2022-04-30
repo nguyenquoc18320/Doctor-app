@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:doctor_app/models/specialist.dart';
 import 'package:http/http.dart' as http;
@@ -72,3 +73,35 @@ Future<List<User>> getDoctorsBySpecialist(Specialist specialist,
     return [];
   }
 }
+
+/*
+get doctor by id
+*/
+Future<User> getUserById(String id) async {
+  String url = "/users/" + id;
+
+  http.Response response = await api_helper.get(url);
+  if (response.statusCode == 200) {
+    Map<String, dynamic> json = jsonDecode(response.body);
+    User user = User.fromJson(json['data']);
+
+    return user;
+  } else {
+    return User(
+        id: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        gender: '',
+        location: '',
+        birthdate: null,
+        avataId: '',
+        description: '');
+  }
+}
+
+
+/*
+get doctor's working time
+*/
+// Future
