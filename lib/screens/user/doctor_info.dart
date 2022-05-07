@@ -316,6 +316,7 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
   when clicking appointment time
   */
   void selectAppointment(DateTime day) {
+    selectedTimeForAppointment = null;
     if (selectedAppointment == null) {
       selectedAppointment = day;
     } else if (selectedAppointment != day) {
