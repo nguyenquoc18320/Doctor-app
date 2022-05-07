@@ -1,5 +1,6 @@
 import 'package:doctor_app/models/appointment.dart';
 import 'package:doctor_app/models/user.dart';
+import 'package:doctor_app/screens/user/detailAppointment.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -370,11 +371,7 @@ class _BookingAppointmentScreenState extends State<BookingAppointmentScreen> {
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () {
-                                      // {Navigator.pop(context, 'OK')
-                                      int count = 0;
-                                      Navigator.popUntil(context, (route) {
-                                        return count++ == 2;
-                                      });
+                                      Navigator.pop(context, false);
                                     },
                                     child: const Text('OK'),
                                   ),
@@ -446,20 +443,37 @@ class _BookingAppointmentScreenState extends State<BookingAppointmentScreen> {
         status: 'pending',
         medicalCondition: problemTextController.text);
 
-    Appointment? createdAppointment =
-        await API_appointment.createAppointment(appointment);
+    //check appointment exists or not
+    List<Appointment> existedAppointment =
+        await API_appointment.getAppointmentOfDoctorByTime(
+            widget.doctor.id!, widget.time!);
 
-    if (createdAppointment == null) {
-      // show error alert dialog
-
+    if (existedAppointment.length > 0) {
       setState(() {
-        errorMessage = 'Unsuccessfully!';
+        errorMessage = 'The appointment was booked. Please select other time!';
       });
+      return errorMessage;
     } else {
-      setState(() {
-        errorMessage = 'Successfully!';
-      });
+      Appointment? createdAppointment =
+          await API_appointment.createAppointment(appointment);
+
+      if (createdAppointment == null) {
+        // show error alert dialog
+
+        setState(() {
+          errorMessage = 'Unsuccessfully!';
+        });
+      } else {
+        // setState(() {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DetailAppointmentScreen(
+                      appointmentId: createdAppointment.id,
+                    )));
+        // });
+      }
+      return errorMessage;
     }
-    return errorMessage;
   }
 }

@@ -11,6 +11,8 @@ class MyAppointmentController extends GetxController {
   var appointmentList = <Appointment>[].obs;
 
   var isUpcomming = true.obs;
+  var past = false.obs;
+  var canceled = false.obs;
 
   var selectedDay = DateTime.now().obs;
 
@@ -20,7 +22,6 @@ class MyAppointmentController extends GetxController {
 
   //get up comming appointments
   getUpcommingAppointments(String userid, int page) async {
-    isUpcomming.value = true;
     List<Appointment> tem_appointments =
         await appointment_API.getUpcommingAppointments(
             globals.user?.id ?? '', page, selectedDay.value);
@@ -40,14 +41,14 @@ class MyAppointmentController extends GetxController {
           doctorIds.add(id);
         }
       }
+      isUpcomming.value = true;
+      past.value = canceled.value = false;
     }
 
     appointmentList.value = tem_appointments;
   }
 
   gePastAppointments(String userid, int page) async {
-    isUpcomming.value = false;
-
     doctorIds = [];
     doctorList = <User>[].obs;
 
@@ -72,6 +73,39 @@ class MyAppointmentController extends GetxController {
     }
 
     appointmentList.value = tem_appointments;
+
+    past.value = true;
+    isUpcomming.value = canceled.value = false;
+  }
+
+  getCancleAppointments(String userid, int page) async {
+    doctorIds = [];
+    doctorList = <User>[].obs;
+
+    List<Appointment> tem_appointments = await appointment_API
+        .getCancelAppointments(globals.user?.id ?? '', page);
+
+    //get doctor
+    doctorIds = [];
+    doctorList = <User>[].obs;
+
+    for (int i = 0; i < tem_appointments.length; i++) {
+      String id = tem_appointments[i].doctorId;
+      //check whether doctor list contains item or not
+      if (doctorIds.contains(id) == false) {
+        User doctor = await doctor_API.getUserById(id);
+
+        if (doctor.id!.isNotEmpty) {
+          doctorList.value.add(doctor);
+          doctorIds.add(id);
+        }
+      }
+    }
+
+    appointmentList.value = tem_appointments;
+
+    canceled.value = true;
+    isUpcomming.value = past.value = false;
   }
 
   //change date for appointments

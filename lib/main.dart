@@ -12,8 +12,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.black,
+        systemNavigationBarDividerColor: Colors.black,
+        systemNavigationBarIconBrightness: Brightness.light));
     // import 'package:flutter/services.dart'
 
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);

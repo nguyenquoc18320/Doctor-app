@@ -1,5 +1,6 @@
 import 'package:doctor_app/models/appointment.dart';
 import 'package:doctor_app/models/user.dart';
+import 'package:doctor_app/screens/user/detailAppointment.dart';
 import 'package:doctor_app/widgets/user/bottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:doctor_app/globals.dart' as globals;
@@ -49,7 +50,7 @@ class myAppointmentScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: GetX<MyAppointmentController>(
           builder: (_) => Column(children: [
-            setButton(controller.isUpcomming.value),
+            setButton(),
             SizedBox(
               height: 10,
             ),
@@ -76,7 +77,7 @@ class myAppointmentScreen extends StatelessWidget {
   }
 
   //set buttons
-  Widget setButton(bool isUpcomming) {
+  Widget setButton() {
     var selected = ButtonStyle(
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
@@ -97,24 +98,26 @@ class myAppointmentScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
-          width: 180,
+          width: 120,
           child: ElevatedButton(
-              style: isUpcomming ? selected : notSelected,
+              style: controller.isUpcomming.value ? selected : notSelected,
               onPressed: () {
                 controller.getUpcommingAppointments(globals.user?.id ?? '', 1);
               },
               child: Text(
-                'Up comming',
+                'Upcomming',
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: isUpcomming ? Colors.white : Colors.blue),
+                    color: controller.isUpcomming.value
+                        ? Colors.white
+                        : Colors.blue),
               )),
         ),
         Container(
-          width: 180,
+          width: 120,
           child: ElevatedButton(
-              style: isUpcomming ? notSelected : selected,
+              style: controller.past.value ? selected : notSelected,
               onPressed: () {
                 controller.gePastAppointments(globals.user?.id ?? '', 1);
               },
@@ -123,7 +126,23 @@ class myAppointmentScreen extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: isUpcomming ? Colors.blue : Colors.white),
+                    color: controller.past.value ? Colors.white : Colors.blue),
+              )),
+        ),
+        Container(
+          width: 120,
+          child: ElevatedButton(
+              style: controller.canceled.value ? selected : notSelected,
+              onPressed: () {
+                controller.getCancleAppointments(globals.user?.id ?? '', 1);
+              },
+              child: Text(
+                'Canceled',
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color:
+                        controller.canceled.value ? Colors.white : Colors.blue),
               )),
         )
       ],
@@ -260,79 +279,89 @@ Day range in 7 days
       );
     }
 
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.grey.shade300)),
-      child: Row(children: [
-        ClipRRect(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), bottomLeft: Radius.circular(20)),
-          child: doctor.avataId!.isNotEmpty
-              ? Image.network(
-                  globals.url + "/assets/" + doctor.avataId!,
-                  headers: {"authorization": "Bearer " + globals.token},
-                  height: 100,
-                  fit: BoxFit.fitWidth,
-                )
-              : Image.asset(
-                  'assets/logo/small_logo.png',
-                  height: 100,
-                  fit: BoxFit.fitWidth,
-                ),
-        ),
-        SizedBox(
-          width: 10,
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              doctor.firstName + ' ' + doctor.lastName,
-              style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Text(
-              appointment.status[0].toUpperCase() +
-                  appointment.status.substring(1).toLowerCase(),
-              style: TextStyle(
-                  fontSize: 16,
-                  color: appointment.status == 'accepted' ||
-                          appointment.status == 'Done'
-                      ? Colors.green
-                      : Colors.red),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                Text(
-                  DateFormat('HH:mm ').format(appointment.time),
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.indigo.shade900),
-                ),
-                Text(
-                  dateString(appointment.time),
-                  style: TextStyle(
-                    fontSize: 16,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DetailAppointmentScreen(
+                      appointmentId: appointment.id,
+                    )));
+      },
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.grey.shade300)),
+        child: Row(children: [
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), bottomLeft: Radius.circular(20)),
+            child: doctor.avataId!.isNotEmpty
+                ? Image.network(
+                    globals.url + "/assets/" + doctor.avataId!,
+                    headers: {"authorization": "Bearer " + globals.token},
+                    height: 100,
+                    fit: BoxFit.fitWidth,
+                  )
+                : Image.asset(
+                    'assets/logo/small_logo.png',
+                    height: 100,
+                    fit: BoxFit.fitWidth,
                   ),
-                )
-              ],
-            )
-          ],
-        ),
-      ]),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                doctor.firstName + ' ' + doctor.lastName,
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                appointment.status[0].toUpperCase() +
+                    appointment.status.substring(1).toLowerCase(),
+                style: TextStyle(
+                    fontSize: 16,
+                    color: appointment.status == 'accepted' ||
+                            appointment.status == 'Done'
+                        ? Colors.green
+                        : Colors.red),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: [
+                  Text(
+                    DateFormat('HH:mm ').format(appointment.time),
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.indigo.shade900),
+                  ),
+                  Text(
+                    dateString(appointment.time),
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+        ]),
+      ),
     );
   }
 

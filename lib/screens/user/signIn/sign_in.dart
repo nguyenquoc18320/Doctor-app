@@ -228,6 +228,7 @@ class _SignInWidgetState extends State<SignInWidget> {
       //response
       if (response.statusCode == 200) {
         Map<String, dynamic> res = jsonDecode(response.body);
+        print('sign in');
 
         //set token
         globals.token = res['data']['access_token'];
