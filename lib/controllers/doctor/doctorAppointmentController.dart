@@ -3,11 +3,12 @@ import 'package:get/get.dart';
 import 'package:doctor_app/api/api_appointment.dart' as appointment_API;
 import 'package:doctor_app/globals.dart' as globals;
 import 'package:doctor_app/api/doctor.dart' as doctor_API;
+import 'package:doctor_app/api/userAPI.dart' as user_API;
 import 'package:intl/intl.dart';
 
 import '../../models/user.dart';
 
-class MyAppointmentController extends GetxController {
+class DoctorAppointmentController extends GetxController {
   var appointmentList = <Appointment>[].obs;
 
   var isUpcomming = true.obs;
@@ -16,64 +17,64 @@ class MyAppointmentController extends GetxController {
 
   var selectedDay = DateTime.now().obs;
 
-  var doctorList = <User>[].obs;
+  var userList = <User>[].obs;
 
-  var doneProcessStatus = false.obs;
+  List<String> userIds = []; //list doctor id getted
 
-  List<String> doctorIds = []; //list doctor id getted
+  var doneProcessStatus = false.obs; //for loading data
 
   //get up comming appointments
   getUpcommingAppointments(String userid, int page) async {
     doneProcessStatus.value = false;
+
     List<Appointment> tem_appointments =
-        await appointment_API.getUserUpcommingAppointments(
+        await appointment_API.getDoctorUpcommingAppointments(
             globals.user?.id ?? '', page, selectedDay.value);
 
     //get doctor
-    doctorIds = [];
-    doctorList = <User>[].obs;
+    userIds = [];
+    userList.value = [];
 
     for (int i = 0; i < tem_appointments.length; i++) {
-      String id = tem_appointments[i].doctorId;
+      String id = tem_appointments[i].userCreated;
       //check whether doctor list contains item or not
-      if (doctorIds.contains(id) == false) {
-        User doctor = await doctor_API.getUserById(id);
+      if (userIds.contains(id) == false) {
+        User user = await doctor_API.getUserById(id);
 
-        if (doctor.id!.isNotEmpty) {
-          doctorList.value.add(doctor);
-          doctorIds.add(id);
+        if (user.id!.isNotEmpty) {
+          userList.value.add(user);
+          userIds.add(id);
         }
       }
     }
 
     appointmentList.value = tem_appointments;
+
     isUpcomming.value = true;
     past.value = canceled.value = false;
 
     doneProcessStatus.value = true;
   }
 
-  gePastAppointments(String userid, int page) async {
+  getPastAppointments(String userid, int page) async {
     doneProcessStatus.value = false;
-    doctorIds = [];
-    doctorList = <User>[].obs;
 
     List<Appointment> tem_appointments = await appointment_API
-        .getUserPastAppointments(globals.user?.id ?? '', page);
+        .getDoctorPastAppointments(globals.user?.id ?? '', page);
 
     //get doctor
-    doctorIds = [];
-    doctorList = <User>[].obs;
+    userIds = [];
+    userList.value = [];
 
     for (int i = 0; i < tem_appointments.length; i++) {
-      String id = tem_appointments[i].doctorId;
+      String id = tem_appointments[i].userCreated;
       //check whether doctor list contains item or not
-      if (doctorIds.contains(id) == false) {
+      if (userIds.contains(id) == false) {
         User doctor = await doctor_API.getUserById(id);
 
         if (doctor.id!.isNotEmpty) {
-          doctorList.value.add(doctor);
-          doctorIds.add(id);
+          userList.value.add(doctor);
+          userIds.add(id);
         }
       }
     }
@@ -88,25 +89,23 @@ class MyAppointmentController extends GetxController {
 
   getCancleAppointments(String userid, int page) async {
     doneProcessStatus.value = false;
-    doctorIds = [];
-    doctorList = <User>[].obs;
 
     List<Appointment> tem_appointments = await appointment_API
-        .getUserCancelAppointments(globals.user?.id ?? '', page);
+        .getDoctorCancelAppointments(globals.user?.id ?? '', page);
 
     //get doctor
-    doctorIds = [];
-    doctorList = <User>[].obs;
+    userIds = [];
+    userList = <User>[].obs;
 
     for (int i = 0; i < tem_appointments.length; i++) {
-      String id = tem_appointments[i].doctorId;
+      String id = tem_appointments[i].userCreated;
       //check whether doctor list contains item or not
-      if (doctorIds.contains(id) == false) {
+      if (userIds.contains(id) == false) {
         User doctor = await doctor_API.getUserById(id);
 
         if (doctor.id!.isNotEmpty) {
-          doctorList.value.add(doctor);
-          doctorIds.add(id);
+          userList.value.add(doctor);
+          userIds.add(id);
         }
       }
     }
@@ -125,7 +124,7 @@ class MyAppointmentController extends GetxController {
     if (isUpcomming.value) {
       getUpcommingAppointments(userid, page);
     } else {
-      // gePastAppointments(userid, page);
+      getPastAppointments(userid, page);
     }
   }
 }

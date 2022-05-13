@@ -79,6 +79,29 @@ Future<http.Response> post(String url, Map<String, dynamic> json) async {
   return response;
 }
 
+Future<http.Response> delete(String url) async {
+  var response = await http.delete(
+    Uri.parse(globals.url + url),
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer ' + globals.token,
+    },
+  );
+
+  if (response.statusCode == 403) {
+    refreshToken();
+    response = await http.post(
+      Uri.parse(globals.url + url),
+      body: jsonEncode(json),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ' + globals.token,
+      },
+    );
+  }
+  return response;
+}
+
 Future<String> uploadFile(String path) async {
   var postUri = Uri.parse(globals.url + '/files');
 

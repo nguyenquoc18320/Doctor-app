@@ -1,17 +1,16 @@
 import 'package:doctor_app/models/appointment.dart';
 import 'package:doctor_app/models/user.dart';
-import 'package:doctor_app/screens/user/detailAppointment.dart';
-import 'package:doctor_app/widgets/user/bottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:doctor_app/globals.dart' as globals;
-import 'package:doctor_app/controllers/user/myAppointmentController.dart';
+import 'package:doctor_app/controllers/doctor/doctorAppointmentController.dart';
 import 'package:get/get.dart';
 import 'package:doctor_app/api/doctor.dart' as doctor_API;
-import 'package:intl/intl.dart' show DateFormat, toBeginningOfSentenceCase;
+import 'package:intl/intl.dart' show DateFormat;
 
-class myAppointmentScreen extends StatelessWidget {
-  var controller = Get.put(MyAppointmentController());
+import '../../widgets/doctor/bottomNavigationBar.dart';
 
+class DoctorAppointmentScreen extends StatelessWidget {
+  var controller = Get.put(DoctorAppointmentController());
   bool openLoading = false;
 
   @override
@@ -50,14 +49,13 @@ class myAppointmentScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: GetX<MyAppointmentController>(
+        child: GetX<DoctorAppointmentController>(
           builder: (_) {
             Future.delayed(Duration.zero, () async {
               if (controller.doneProcessStatus.value && openLoading) {
                 Navigator.pop(context);
                 openLoading = false;
               }
-              ;
             });
             return Column(children: [
               setButton(context),
@@ -152,7 +150,7 @@ class myAppointmentScreen extends StatelessWidget {
               onPressed: () {
                 openLoading = true;
                 loading(context);
-                controller.gePastAppointments(globals.user?.id ?? '', 1);
+                controller.getPastAppointments(globals.user?.id ?? '', 1);
               },
               child: Text(
                 'Past',
@@ -188,7 +186,7 @@ class myAppointmentScreen extends StatelessWidget {
 Day range in 7 days
 */
   Widget dayRange() {
-    if (controller.isUpcomming == false) {
+    if (controller.isUpcomming.value == false) {
       return SizedBox();
     }
     List<DateTime> sevenDays = [];
@@ -297,20 +295,21 @@ Day range in 7 days
   Widget eachAppointment(BuildContext context, var controller, int index) {
     Appointment appointment = controller.appointmentList.value[index];
 
-    List<User> doctorList = controller.doctorList.value;
+    List<User> userList = controller.userList.value;
 
     //get doctor info
-    User? doctor;
+    User? user;
 
-    //get doctor
-    for (int i = 0; i < doctorList.length; i++) {
-      if (doctorList[i].id == appointment.doctorId) {
-        doctor = doctorList[i];
+    //get user
+    for (int i = 0; i < userList.length; i++) {
+      if (userList[i].id == appointment.userCreated) {
+        user = userList[i];
         break;
       }
     }
 
-    if (doctor == null) {
+    if (user == null) {
+      print('No');
       return SizedBox(
         height: 0,
       );
@@ -318,12 +317,12 @@ Day range in 7 days
 
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => DetailAppointmentScreen(
-                      appointmentId: appointment.id,
-                    )));
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context) => DetailAppointmentScreen(
+        //               appointmentId: appointment.id,
+        //             )));
       },
       child: Container(
         width: double.infinity,
@@ -334,9 +333,9 @@ Day range in 7 days
           ClipRRect(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20), bottomLeft: Radius.circular(20)),
-            child: doctor.avataId!.isNotEmpty
+            child: user.avataId!.isNotEmpty
                 ? Image.network(
-                    globals.url + "/assets/" + doctor.avataId!,
+                    globals.url + "/assets/" + user.avataId!,
                     headers: {"authorization": "Bearer " + globals.token},
                     height: 100,
                     fit: BoxFit.fitWidth,
@@ -356,7 +355,7 @@ Day range in 7 days
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                doctor.firstName + ' ' + doctor.lastName,
+                user.firstName + ' ' + user.lastName,
                 style: TextStyle(
                     fontSize: 20,
                     color: Colors.black,
