@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:doctor_app/screens/doctor/appointments.dart';
 import 'package:doctor_app/screens/forgot_password.dart';
 import 'package:doctor_app/screens/sign_up.dart';
 import 'package:doctor_app/screens/user/home.dart';
@@ -254,7 +255,14 @@ class _SignInWidgetState extends State<SignInWidget> {
               //as doctor
               globals.user = User.fromJson(userJson);
 
-              print("doctor");
+              globals.user!.role = 'user';
+
+              //login successfully
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DoctorAppointmentScreen()),
+              );
             } else if (roleController
                         .toString()
                         .split('.')

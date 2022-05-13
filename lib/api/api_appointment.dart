@@ -52,7 +52,7 @@ Future<Appointment?> getAppointmentById(int id) async {
 /*
 get upcomming appointments with time sorted ascending
 */
-Future<List<Appointment>> getUpcommingAppointments(
+Future<List<Appointment>> getUserUpcommingAppointments(
     String userid, int pageNumber, DateTime day) async {
   DateFormat formatter = DateFormat('yyyy-MM-dd');
 
@@ -82,7 +82,7 @@ Future<List<Appointment>> getUpcommingAppointments(
 /*
 get past appointments with time sorted ascending
 */
-Future<List<Appointment>> getPastAppointments(
+Future<List<Appointment>> getUserPastAppointments(
     String userid, int pageNumber) async {
   String url = '/items/Appointments?filter={"user_created" : { "_eq" : "' +
       userid +
@@ -108,7 +108,7 @@ Future<List<Appointment>> getPastAppointments(
 /*
 get past appointments with time sorted ascending
 */
-Future<List<Appointment>> getCancelAppointments(
+Future<List<Appointment>> getUserCancelAppointments(
     String userid, int pageNumber) async {
   String url = '/items/Appointments?filter={"user_created" : { "_eq" : "' +
       userid +
@@ -211,3 +211,113 @@ Future<bool> cancelAppointment(int appointmentid) async {
     return false;
   }
 }
+
+////////////////////for doctor//////////////////////////
+/*
+get upcomming appointments of doctor with time sorted ascending
+*/
+Future<List<Appointment>> getDoctorUpcommingAppointments(
+    String doctorid, int pageNumber, DateTime day) async {
+  DateFormat formatter = DateFormat('yyyy-MM-dd');
+
+  String url = '/items/Appointments?filter={"doctor" : { "_eq" : "' +
+      doctorid +
+      '"}, "status": { "_in" : [ "pending", "accepted", "done"]}, "time" : {"_between": ["' +
+      formatter.format(day) +
+      '", "' +
+      formatter.format(day.add(Duration(days: 1))) +
+      '"]}}&sort=time&page=' +
+      pageNumber.toString();
+
+  http.Response response = await API_helper.get(url);
+
+  if (response.statusCode == 200) {
+    Map<String, dynamic> json = jsonDecode(response.body);
+
+    //convert into list
+    List<Appointment> appointments = List<Appointment>.from(
+        json['data'].map((data) => Appointment.fromJson(data)).toList());
+    return appointments;
+  } else {
+    return [];
+  }
+}
+
+Future<List<Appointment>> getDoctorPastAppointments(
+    String doctorid, int pageNumber) async {
+  String url = '/items/Appointments?filter={"doctor" : { "_eq" : "' +
+      doctorid +
+      '"}, "status": { "_nin" : [ "cancel"]}, "time" : {"_lt": "' +
+      r'$NOW"}}&sort=-time&page=' +
+      pageNumber.toString();
+
+  http.Response response = await API_helper.get(url);
+
+  if (response.statusCode == 200) {
+    Map<String, dynamic> json = jsonDecode(response.body);
+
+    //convert into list
+    List<Appointment> appointments = List<Appointment>.from(
+        json['data'].map((data) => Appointment.fromJson(data)).toList());
+
+    return appointments;
+  } else {
+    return [];
+  }
+}
+
+Future<List<Appointment>> getDoctorCancelAppointments(
+    String doctorid, int pageNumber) async {
+  String url = '/items/Appointments?filter={"doctor" : { "_eq" : "' +
+      doctorid +
+      '"}, "status": { "_eq" : "cancel"}}&sort=-time&page=' +
+      pageNumber.toString();
+
+  http.Response response = await API_helper.get(url);
+
+  if (response.statusCode == 200) {
+    Map<String, dynamic> json = jsonDecode(response.body);
+
+    //convert into list
+    List<Appointment> appointments = List<Appointment>.from(
+        json['data'].map((data) => Appointment.fromJson(data)).toList());
+
+    return appointments;
+  } else {
+    return [];
+  }
+}
+
+/*
+get appointments of doctor in period 
+*/
+Future<List<Appointment>> getAppointmentsByDoctorInPeriodAndPendingOrAccepted(
+    String doctorid, DateTime start, DateTime end) async {
+  String url = '/items/Appointments?filter={"doctor" : { "_eq" : "' +
+      doctorid +
+      '"}, "status": { "_in" : ["pending", "accepted"]}, "time" : {"_between": [" ' +
+      DateFormat('yyyy-MM-dd HH:mm:ss').format(start) +
+      '", "' +
+      DateFormat('yyyy-MM-dd HH:mm:ss').format(end) +
+      '"]}}&sort=time';
+
+  http.Response response = await API_helper.get(url);
+
+  if (response.statusCode == 200) {
+    Map<String, dynamic> json = jsonDecode(response.body);
+
+    //convert into list
+    List<Appointment> appointments = List<Appointment>.from(
+        json['data'].map((data) => Appointment.fromJson(data)).toList());
+
+    return appointments;
+  } else {
+    return [];
+  }
+}
+
+
+// /*
+// get appointments in 2 period (for check editting working time)
+// */
+// Future<List<Appointment>> getAppointmentsIn2Period

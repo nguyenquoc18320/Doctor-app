@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:doctor_app/models/user.dart';
+import 'package:doctor_app/screens/user/settings.dart';
 import 'package:doctor_app/widgets/user/bottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -298,5 +299,14 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     var response = await api_helper.patch("/users/me", json);
 
     print(response.body);
+
+    if (response.statusCode == 200) {
+      globals.user = User.fromJson(jsonDecode(response.body)['data']);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SettingScreen()),
+      );
+    }
   }
 }
