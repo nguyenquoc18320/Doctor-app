@@ -1,3 +1,4 @@
+import 'package:doctor_app/screens/user/chat_room.dart';
 import 'package:doctor_app/screens/user/home.dart';
 import 'package:doctor_app/screens/user/myAppointment.dart';
 import 'package:doctor_app/screens/user/profile.dart';
@@ -44,6 +45,9 @@ class BottomNavigationBarCustom extends StatelessWidget {
         } else if (index == 2) {
           Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => myAppointmentScreen()));
+        } else if (index == 3) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => ChatRoom()));
         } else if (index == 4) {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => SettingScreen()));

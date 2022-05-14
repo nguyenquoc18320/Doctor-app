@@ -236,7 +236,9 @@ class _DoctorListWigetState extends State<_DoctorListWiget> {
                       AsyncSnapshot<List<User>> snapshot,
                     ) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return Container(
+                            padding: EdgeInsets.symmetric(vertical: 32),
+                            child: Center(child: CircularProgressIndicator()));
                       } else if (snapshot.connectionState ==
                           ConnectionState.done) {
                         if (snapshot.hasData) {

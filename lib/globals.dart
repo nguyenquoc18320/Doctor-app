@@ -7,4 +7,7 @@ String token = '';
 String refresh_token = '';
 User? user;
 
+String avatar_placeholder_id = '9c38b55b-70a9-43f5-aad6-0bd1862143ad';
+String avatar_placeholder_url = '$url/assets/$avatar_placeholder_id';
+
 int minutes_for_appointment = 30;
