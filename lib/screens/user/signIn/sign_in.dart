@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:doctor_app/screens/doctor/appointments.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_app/screens/forgot_password.dart';
 import 'package:doctor_app/screens/sign_up.dart';
 import 'package:doctor_app/screens/user/home.dart';
@@ -11,6 +12,10 @@ import 'package:http/http.dart' as http;
 import 'package:doctor_app/globals.dart' as globals;
 import 'package:doctor_app/api/api_helper.dart' as api_helper;
 import 'package:doctor_app/models/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../services/auth.dart';
+import '../../../services/database.dart';
 
 class SignInWidget extends StatefulWidget {
   const SignInWidget({Key? key}) : super(key: key);
@@ -34,11 +39,11 @@ class _SignInWidgetState extends State<SignInWidget> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.only(left: 20, right: 20),
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 80),
           child: Column(
             children: [
               SizedBox(
@@ -177,7 +182,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                   )),
               TextButton(
                   onPressed: () => ({
-                        Navigator.pushReplacement(
+                        Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ForgotPassword()))
@@ -192,7 +197,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                   const Text("Don't have an account?"),
                   TextButton(
                       onPressed: () => ({
-                            Navigator.pushReplacement(
+                            Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => SignUp()))
@@ -276,11 +281,33 @@ class _SignInWidgetState extends State<SignInWidget> {
 
               globals.user!.role = 'user';
 
-              //login successfully
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const HomeWidget()),
-              );
+              /* 
+                TODO - login firebase 
+              */
+              AuthMethod authMethod = new AuthMethod();
+              DatabaseMethod dbMethod = new DatabaseMethod();
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setString("email", email);
+
+              QuerySnapshot userByEmail = await dbMethod.getUserByEmail(email);
+
+              print('${userByEmail.docs[0]['name']}');
+              prefs.setString("id", userByEmail.docs[0].id);
+              prefs.setString("name", userByEmail.docs[0]['name']);
+
+              authMethod
+                  .signInWithEmailAndPassword(email, password)
+                  .then((value) {
+                if (value != null) {
+                  prefs.setBool("isLoggedIn", true);
+
+                  //login successfully
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomeWidget()),
+                  );
+                }
+              });
             } else {
               //incorrect
               globals.refresh_token = '';
