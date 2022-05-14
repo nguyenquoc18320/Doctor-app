@@ -7,6 +7,7 @@ import '../models/role.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:doctor_app/globals.dart' as globals;
+import 'package:doctor_app/api/api_helper.dart' as api_helper;
 
 const headers = {
   'Content-Type': 'application/json; charset=UTF-8',
@@ -84,5 +85,22 @@ Future getRole() async {
     return roles;
   } else {
     return [];
+  }
+}
+
+/*
+get user by id
+*/
+Future<User?> getUserById(String id) async {
+  String url = "/users/" + id;
+
+  http.Response response = await api_helper.get(url);
+  if (response.statusCode == 200) {
+    Map<String, dynamic> json = jsonDecode(response.body);
+    User user = User.fromJson(json['data']);
+
+    return user;
+  } else {
+    return null;
   }
 }

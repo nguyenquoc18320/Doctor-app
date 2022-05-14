@@ -29,7 +29,7 @@ Future<http.Response> get(String url) async {
   return response;
 }
 
-Future<http.Response> patch(String url, Map<String, String> json) async {
+Future<http.Response> patch(String url, Map<String, dynamic> json) async {
   var response = await http.patch(
     Uri.parse(globals.url + url),
     body: jsonEncode(json),

@@ -164,6 +164,7 @@ class EditWorkingTimeController extends GetxController {
     }
 
     if (errDays.isNotEmpty) {
+      print('err');
       String errday = '';
       for (DateTime d in errDays) {
         errday += DateFormat('dd-MMMM').format(d) + ', ';

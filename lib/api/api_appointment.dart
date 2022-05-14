@@ -183,7 +183,7 @@ Future<List<Appointment>> getAppointmentOfDoctorByTime(
 }
 
 /*Cancel appointment*/
-Future<bool> cancelAppointment(int appointmentid) async {
+Future<bool> cancelAppointmentByUserRole(int appointmentid) async {
   //get appointment to check time
   Appointment? appointment = await getAppointmentById(appointmentid);
 
@@ -208,6 +208,109 @@ Future<bool> cancelAppointment(int appointmentid) async {
   if (response.statusCode == 200) {
     return true;
   } else {
+    return false;
+  }
+}
+
+Future<bool> cancelAppointmentByDoctorRole(int appointmentid) async {
+  //get appointment to check time
+  Appointment? appointment = await getAppointmentById(appointmentid);
+
+  if (appointment == null) {
+    return false;
+  }
+
+  // //check time
+  if (DateTime.now().compareTo(appointment.time) > 0) {
+    //not over 24h
+    return false;
+  }
+
+  //cancel
+  String url = '/items/Appointments/' + appointmentid.toString();
+
+  Map<String, String> jsonBody = {"status": "cancel"};
+
+  http.Response response = await API_helper.patch(url, jsonBody);
+
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+Future<bool> acceptedAppointmentByDoctorRole(int appointmentid) async {
+  //get appointment to check time
+  Appointment? appointment = await getAppointmentById(appointmentid);
+
+  if (appointment == null) {
+    return false;
+  }
+
+  // //check time
+  if (DateTime.now().compareTo(appointment.time) > 0 &&
+      appointment.status != 'pending') {
+    return false;
+  }
+
+  //cancel
+  String url = '/items/Appointments/' + appointmentid.toString();
+
+  Map<String, String> jsonBody = {"status": "accepted"};
+
+  http.Response response = await API_helper.patch(url, jsonBody);
+
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+Future<bool> donedAppointmentByDoctorRole(
+    int appointmentid, String result) async {
+  //get appointment to check time
+  Appointment? appointment = await getAppointmentById(appointmentid);
+
+  if (appointment == null) {
+    return false;
+  }
+
+  //cancel
+  String url = '/items/Appointments/' + appointmentid.toString();
+
+  Map<String, String> jsonBody = {"status": "done", "result": result};
+
+  http.Response response = await API_helper.patch(url, jsonBody);
+
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+Future<bool> rating(int appointmentid, int num_star, String comment) async {
+  //get appointment to check time
+  Appointment? appointment = await getAppointmentById(appointmentid);
+
+  if (appointment == null) {
+    return false;
+  }
+
+  //cancel
+  String url = '/items/Appointments/' + appointmentid.toString();
+
+  Map<String, dynamic> jsonBody = {"rating": num_star, "user_comment": comment};
+
+  http.Response response = await API_helper.patch(url, jsonBody);
+
+  if (response.statusCode == 200) {
+    print('done');
+    return true;
+  } else {
+    print('err');
     return false;
   }
 }
