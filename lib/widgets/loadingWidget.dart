@@ -5,15 +5,24 @@ Future<Widget?> loading(BuildContext context) {
     context: context,
     barrierDismissible: false,
     builder: (BuildContext context) {
-      return Dialog(
-        child: new Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            new CircularProgressIndicator(),
-            new Text("Loading"),
-          ],
-        ),
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircularProgressIndicator(),
+          SizedBox(
+            width: 10,
+          ),
+          DefaultTextStyle(
+            style: TextStyle(
+              fontSize: 16,
+            ),
+            child: Text(
+              "Loading...",
+            ),
+          ),
+        ],
       );
+      // );
     },
   );
 }

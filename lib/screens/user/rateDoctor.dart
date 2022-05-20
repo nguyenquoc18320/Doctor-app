@@ -20,20 +20,32 @@ class _RatingScreenState extends State<RatingScreen> {
   TextEditingController commentTextController = TextEditingController();
 
   bool openLoading = false;
+  bool openMessage = false;
 
   int stars = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    controller.start(widget.appoitmentid ?? -1);
+  }
+
   @override
   Widget build(BuildContext context) {
-    controller.start(widget.appoitmentid ?? -1);
     return GetX<RatingController>(builder: (_) {
-      if (controller.errorMessage.value.isNotEmpty) {
+      if (controller.appointment.value != null && stars == 0) {
+        if (controller.appointment.value!.status == 'done') {
+          stars = controller.appointment.value!.rating!;
+          commentTextController.text =
+              controller.appointment.value!.userComment!;
+        }
+      }
+
+      if (controller.errorMessage.value.isNotEmpty &&
+          controller.doneProcessStatus.value == true &&
+          openMessage == false) {
         Future.delayed(Duration.zero, () async {
-          if (controller.doneProcessStatus.value && openLoading) {
-            Navigator.pop(context);
-            openLoading = false;
-          }
-        });
-        Future.delayed(Duration.zero, () async {
+          openMessage = true;
           showDialog(
               context: context,
               builder: (BuildContext context) => AlertDialog(
@@ -43,6 +55,7 @@ class _RatingScreenState extends State<RatingScreen> {
                       TextButton(
                         onPressed: () {
                           controller.errorMessage.value = '';
+                          openMessage = false;
                           Navigator.pop(context);
                         },
                         child: const Text(
@@ -53,6 +66,11 @@ class _RatingScreenState extends State<RatingScreen> {
                     ],
                   ));
         });
+      }
+
+      if (controller.doneProcessStatus.value && openLoading) {
+        Navigator.pop(context);
+        openLoading = false;
       }
 
       return (controller.appointment.value == null ||
@@ -67,7 +85,7 @@ class _RatingScreenState extends State<RatingScreen> {
                     icon: Icon(Icons.arrow_back, color: Colors.blue),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
-                  title: Text('Appointment Details',
+                  title: Text('Rating',
                       style: TextStyle(
                           color: Colors.indigo.shade900,
                           fontSize: 23,
@@ -237,13 +255,27 @@ class _RatingScreenState extends State<RatingScreen> {
                             )
                           ],
                         ),
+                        SizedBox(
+                          height: 20,
+                        ),
                         Text(
                           "Comment",
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.indigo.shade900),
                         ),
+                        SizedBox(height: 10),
                         TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
                           controller: commentTextController,
-                        )
+                          minLines: 3,
+                          maxLines: null,
+                        ),
                       ])),
               bottomNavigationBar: bottomButton(context),
             );

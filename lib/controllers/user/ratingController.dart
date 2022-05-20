@@ -27,27 +27,23 @@ class RatingController extends GetxController {
   getDoctor(String id) async {
     //get doctor info
     User user = await DoctorAPI.getUserById(id);
-
     doctor.value = user;
   }
 
   rating(int num_stars, String comment) async {
     errorMessage.value = '';
-
     doneProcessStatus.value = false;
+
     if (appointment != null) {
       bool result = await appointment_API.rating(
           appointment.value!.id!, num_stars, comment);
 
-      start(appointment.value!.id!);
+      await start(appointment.value!.id!);
       errorMessage.value = 'Sucessfully';
-      doneProcessStatus.value = true;
-      print('success');
-      return result;
+    } else {
+      errorMessage.value = 'Error! Please try again';
     }
 
-    errorMessage.value = 'Error! Please try again';
     doneProcessStatus.value = true;
-    return false;
   }
 }

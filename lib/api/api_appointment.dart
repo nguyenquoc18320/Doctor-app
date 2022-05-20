@@ -419,8 +419,26 @@ Future<List<Appointment>> getAppointmentsByDoctorInPeriodAndPendingOrAccepted(
   }
 }
 
-
 // /*
 // get appointments in 2 period (for check editting working time)
 // */
-// Future<List<Appointment>> getAppointmentsIn2Period
+Future<List<Appointment>> thousandDoneAppointmentByDoctor(
+    String doctorid) async {
+  String url = '/items/Appointments?filter={"doctor" : { "_eq" : "' +
+      doctorid +
+      '"}, "status": {"_eq": "done"}}&sort=-time&limit=1000';
+
+  http.Response response = await API_helper.get(url);
+
+  if (response.statusCode == 200) {
+    Map<String, dynamic> json = jsonDecode(response.body);
+
+    //convert into list
+    List<Appointment> appointments = List<Appointment>.from(
+        json['data'].map((data) => Appointment.fromJson(data)).toList());
+
+    return appointments;
+  } else {
+    return [];
+  }
+}

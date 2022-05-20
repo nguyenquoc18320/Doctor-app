@@ -21,8 +21,8 @@ class AppointmentDetailScreen extends StatelessWidget {
     controller.getAppointment(appointmentID);
 
     return GetX<AppointmentDetailController>(builder: (_) {
-      Future.delayed(Duration.zero, () {
-        if (controller.message.value.isNotEmpty) {
+      if (controller.message.value.isNotEmpty) {
+        Future.delayed(Duration.zero, () {
           openLoading = true;
           showDialog(
               context: context,
@@ -39,8 +39,8 @@ class AppointmentDetailScreen extends StatelessWidget {
                       ),
                     ],
                   ));
-        }
-      });
+        });
+      }
 
       if (controller.doneProcess.value && openLoading) {
         Navigator.pop(context);
