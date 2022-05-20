@@ -28,6 +28,14 @@ class DoctorInfoController extends GetxController {
 
   var timesForAppointment = <DateTime>[].obs;
 
+  var numPatients = '--'.obs;
+
+  var star = '--'.obs;
+
+  var numReviews = '--'.obs;
+
+  List<Appointment> thousandAppoitmentOfDoctor = [];
+
   List<String> listFormatDate = [
     'mon',
     'tue',
@@ -56,7 +64,52 @@ class DoctorInfoController extends GetxController {
       workingTime.value = workingTimes;
 
       getDaysForAppointments();
+
+      //get thousand appoitnemnt for statistic
+      thousandAppoitmentOfDoctor = await appointmentAPI
+          .thousandDoneAppointmentByDoctor(doctor.value.id ?? '');
+      getStatistic();
     }
+  }
+
+  //get numpatients
+  getStatistic() {
+    int total = thousandAppoitmentOfDoctor.length;
+
+    numPatients.value = showNumToString(total);
+
+    //get star
+    int numstar = 0;
+    int countNumStar = 0;
+
+    int reviews = 0;
+    int countNumReviews = 0;
+    for (Appointment a in thousandAppoitmentOfDoctor) {
+      if (a.rating != null && a.rating != 0) {
+        numstar += a.rating!;
+        countNumStar++;
+      }
+      if (a.userComment!.isNotEmpty) countNumReviews++;
+    }
+
+    star.value = (numstar / countNumStar).toStringAsFixed(1);
+    numReviews.value = showNumToString(countNumReviews);
+  }
+
+  String showNumToString(int num) {
+    if (num > 1000) {
+      return '1000+';
+    }
+    if (num > 500) {
+      return '1000+';
+    }
+    if (num > 500) {
+      return '1000+';
+    }
+    if (num > 100) {
+      return '1000+';
+    }
+    return num.toString();
   }
 
   /*

@@ -1,4 +1,5 @@
 import 'package:doctor_app/controllers/user/appointmentDetailsController.dart';
+import 'package:doctor_app/screens/user/rateDoctor.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:doctor_app/globals.dart' as globals;
@@ -157,7 +158,7 @@ class DetailAppointmentScreen extends StatelessWidget {
                       SizedBox(
                         height: 20,
                       ),
-                      resultWidget()
+                      resultWidget(),
                     ],
                   )),
               bottomNavigationBar: cancelAppointmentButton(context),
@@ -331,6 +332,37 @@ class DetailAppointmentScreen extends StatelessWidget {
   }
 
   Widget cancelAppointmentButton(BuildContext context) {
+    if (controller.appointment.value!.status == 'done') {
+      return BottomAppBar(
+        elevation: 0,
+        child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          RatingScreen(controller.appointment.value!.id ?? -1),
+                    ));
+              },
+              style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ))),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                child: Text('Rating Appointment',
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold)),
+              ),
+            )),
+      );
+    }
+
     bool allowedCancel = false;
 
     if (controller.appointment.value != null &&
