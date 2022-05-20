@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:doctor_app/controllers/user/doctorInfoController.dart';
 import 'package:doctor_app/screens/user/bookingAppointment.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:doctor_app/globals.dart' as globals;
 import 'package:intl/intl.dart';
@@ -35,18 +36,28 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
     return GetX<DoctorInfoController>(
       builder: (_) => Scaffold(
         appBar: AppBar(
-            centerTitle: true,
-            backgroundColor: Colors.white,
-            elevation: 0,
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.blue),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            title: Text('Details Doctor',
-                style: TextStyle(
-                    color: Colors.blue.shade900,
-                    fontSize: 23,
-                    fontWeight: FontWeight.bold))),
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.blue),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          title: Text('Details Doctor',
+              style: TextStyle(
+                  color: Colors.blue.shade900,
+                  fontSize: 23,
+                  fontWeight: FontWeight.bold)),
+          actions: [
+            IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.message,
+                  color: Colors.blue.shade900,
+                  size: 30,
+                ))
+          ],
+        ),
         body: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child:
@@ -116,6 +127,10 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
             SizedBox(
               height: 25,
             ),
+            statistic(),
+            SizedBox(
+              height: 25,
+            ),
             AppointmentList(context),
             SizedBox(
               height: 25,
@@ -176,6 +191,85 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
         )
       ]),
     );
+  }
+
+  Widget statistic() {
+    return Container(
+        child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Column(
+          children: [
+            Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    color: Colors.grey.shade300),
+                child: Center(
+                  child: Icon(
+                    // FontAwesomeIcons.userGroup,
+                    Icons.group,
+                    size: 25,
+                    color: Colors.blue,
+                  ),
+                )),
+            Text(controller.numPatients.value,
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.blue,
+                    fontWeight: FontWeight.bold)),
+            Text('Patients',
+                style: TextStyle(fontSize: 16, color: Colors.black))
+          ],
+        ),
+        Column(
+          children: [
+            Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    color: Colors.grey.shade300),
+                child: Center(
+                  child: Icon(
+                    // FontAwesomeIcons.userGroup,
+                    Icons.star_rate_rounded,
+                    size: 25,
+                    color: Colors.blue,
+                  ),
+                )),
+            Text(controller.star.value,
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.blue,
+                    fontWeight: FontWeight.bold)),
+            Text('Rating', style: TextStyle(fontSize: 16, color: Colors.black))
+          ],
+        ),
+        Column(
+          children: [
+            Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    color: Colors.grey.shade300),
+                child: Center(
+                  child: Icon(
+                    // FontAwesomeIcons.userGroup,
+                    Icons.edit_note,
+                    size: 25,
+                    color: Colors.blue,
+                  ),
+                )),
+            Text(controller.numReviews.value,
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.blue,
+                    fontWeight: FontWeight.bold)),
+            Text('Reviews', style: TextStyle(fontSize: 16, color: Colors.black))
+          ],
+        ),
+      ],
+    ));
   }
 
   //Working-time item

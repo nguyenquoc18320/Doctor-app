@@ -371,7 +371,7 @@ Day range in 7 days
                 style: TextStyle(
                     fontSize: 16,
                     color: appointment.status == 'accepted' ||
-                            appointment.status == 'Done'
+                            appointment.status == 'done'
                         ? Colors.green
                         : Colors.red),
               ),

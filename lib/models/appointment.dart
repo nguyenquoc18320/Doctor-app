@@ -13,6 +13,8 @@ class Appointment {
   String status;
   String medicalCondition;
   String? result;
+  int? rating;
+  String? userComment;
 
   Appointment(
       {required this.id,
@@ -25,7 +27,9 @@ class Appointment {
       required this.time,
       required this.status,
       required this.medicalCondition,
-      this.result});
+      this.result,
+      this.rating,
+      this.userComment});
 
   factory Appointment.fromJson(Map<String, dynamic> json) {
     return Appointment(
@@ -39,7 +43,9 @@ class Appointment {
         time: DateTime.parse(json['time']),
         status: json['status'],
         medicalCondition: json['medical_condition'],
-        result: json['result']);
+        result: json['result'],
+        rating: json['rating'] ?? 0,
+        userComment: json['user_comment'] ?? '');
   }
 
   Map<String, dynamic> toJson() => {
@@ -53,7 +59,9 @@ class Appointment {
         'time': time,
         'status': status,
         'medical_condition': medicalCondition,
-        'result': result
+        'result': result,
+        'rating': rating,
+        'user_comment': userComment
       };
 
   List<String> allStatus() {

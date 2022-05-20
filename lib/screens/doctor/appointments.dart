@@ -1,5 +1,6 @@
 import 'package:doctor_app/models/appointment.dart';
 import 'package:doctor_app/models/user.dart';
+import 'package:doctor_app/screens/doctor/detailAppointment.dart';
 import 'package:flutter/material.dart';
 import 'package:doctor_app/globals.dart' as globals;
 import 'package:doctor_app/controllers/doctor/doctorAppointmentController.dart';
@@ -317,12 +318,11 @@ Day range in 7 days
 
     return GestureDetector(
       onTap: () {
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (context) => DetailAppointmentScreen(
-        //               appointmentId: appointment.id,
-        //             )));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    AppointmentDetailScreen(appointment.id!)));
       },
       child: Container(
         width: double.infinity,
@@ -370,7 +370,7 @@ Day range in 7 days
                 style: TextStyle(
                     fontSize: 16,
                     color: appointment.status == 'accepted' ||
-                            appointment.status == 'Done'
+                            appointment.status == 'done'
                         ? Colors.green
                         : Colors.red),
               ),
