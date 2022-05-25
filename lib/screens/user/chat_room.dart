@@ -234,7 +234,7 @@ class _ChatRoomState extends State<ChatRoom> {
         )
       ]),
       bottomNavigationBar: currentUser.role == 'User'
-          ? BottomNavigationBarCustom(currentIndex: 3)
+          ? BottomNavigationBarCustom(currentIndex: 2)
           : DoctorBottomBar.BottomNavigationBarCustom(currentIndex: 3),
     );
   }

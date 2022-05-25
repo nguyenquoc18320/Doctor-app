@@ -6,8 +6,10 @@ import 'package:doctor_app/screens/forgot_password.dart';
 import 'package:doctor_app/screens/sign_up.dart';
 import 'package:doctor_app/screens/user/home.dart';
 import 'package:doctor_app/screens/user/profile.dart';
+import 'package:doctor_app/widgets/loadingWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:doctor_app/globals.dart' as globals;
 import 'package:doctor_app/api/api_helper.dart' as api_helper;
@@ -37,87 +39,98 @@ class _SignInWidgetState extends State<SignInWidget> {
   bool emailError = false;
   bool passwordError = false;
 
+  bool openLoading = false;
+
   @override
   Widget build(BuildContext context) {
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
+    if (emailError == true && openLoading == true) {
+      Future.delayed(Duration.zero, () async {
+        Navigator.pop(context);
+        openLoading = false;
+      });
+    }
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.only(left: 20, right: 20, top: 80),
+          // decoration: BoxDecoration(color: Colors.white),
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
           child: Column(
             children: [
-              SizedBox(
-                height: 10,
-              ),
               Image.asset(
-                'assets/images/logo.png',
+                'assets/logo/new_logo.png',
                 height: 150,
               ),
               const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                'Sign in to your account',
-                style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
-              ),
-              const SizedBox(
-                height: 20,
+                height: 24,
               ),
               Row(
-                children: const <Widget>[
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                   Text(
-                    'Email',
-                    style: TextStyle(fontSize: 16),
+                    'Welcom to ',
+                    style: TextStyle(fontSize: 24, color: Colors.black),
                   ),
                   Text(
-                    '*',
-                    style: TextStyle(color: Colors.red),
-                  )
+                    'DoctorCare',
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
                 ],
               ),
-              SizedBox(
-                height: 10,
+              SizedBox(height: 8),
+              Text(
+                'Meet doctors with a simple touch',
+                style: TextStyle(fontSize: 14, color: Colors.grey),
+              ),
+              const SizedBox(
+                height: 36,
               ),
               TextField(
                 controller: emailTextController,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
-                  hintText: 'Email',
-                ),
+                    fillColor: Color(0xFFEAEAEA),
+                    enabledBorder: new OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(40.0),
+                      borderSide: BorderSide(color: Colors.transparent),
+                    ),
+                    filled: true,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(40))),
+                    hintText: 'Email',
+                    hintStyle: TextStyle(
+                      fontSize: 14,
+                      color: Color.fromRGBO(0, 0, 0, 0.5),
+                    )),
                 style: TextStyle(fontSize: 16),
               ),
               if (emailError) _ErrorWidget(context, 'Incorrect email'),
               const SizedBox(
-                height: 15,
-              ),
-              Row(
-                children: const <Widget>[
-                  Text(
-                    'Password',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  Text(
-                    '*',
-                    style: TextStyle(color: Colors.red),
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 10,
+                height: 16,
               ),
               TextField(
                 controller: passwordTextController,
                 obscureText: true,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
-                  hintText: 'Password',
-                ),
+                    fillColor: Color(0xFFEAEAEA),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.0),
+                      borderSide: BorderSide(color: Colors.transparent),
+                    ),
+                    filled: true,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(40))),
+                    hintText: 'Password',
+                    hintStyle: TextStyle(
+                      fontSize: 14,
+                      color: Color.fromRGBO(0, 0, 0, 0.5),
+                    )),
                 style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(
+                height: 16,
               ),
               if (passwordError) _ErrorWidget(context, 'Incorrect password'),
               Row(
@@ -126,10 +139,27 @@ class _SignInWidgetState extends State<SignInWidget> {
                   Expanded(
                     child: ListTile(
                         contentPadding: EdgeInsets.all(0),
+                        title: Text(
+                          'Patient',
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.bold),
+                        ),
+                        dense: true,
+                        leading: Radio<Role>(
+                            value: Role.user,
+                            groupValue: roleController,
+                            onChanged: (Role? value) => {
+                                  setState(() => {roleController = value})
+                                })),
+                  ),
+                  Expanded(
+                    child: ListTile(
+                        contentPadding: EdgeInsets.all(0),
                         dense: true,
                         title: Text(
                           'Doctor',
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.bold),
                         ),
                         leading: Radio<Role>(
                             value: Role.doctor,
@@ -140,46 +170,33 @@ class _SignInWidgetState extends State<SignInWidget> {
                                   )
                                 })),
                   ),
-                  Expanded(
-                    child: ListTile(
-                        contentPadding: EdgeInsets.all(0),
-                        title: Text(
-                          'Patient',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        dense: true,
-                        leading: Radio<Role>(
-                            value: Role.user,
-                            groupValue: roleController,
-                            onChanged: (Role? value) => {
-                                  setState(() => {roleController = value})
-                                })),
-                  ),
                 ],
               ),
               const SizedBox(height: 20),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.lightBlue,
+                    primary: Color(0xFF212121),
                     minimumSize: Size.fromHeight(50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
                   ),
                   onPressed: () {
                     setState(() {
+                      openLoading = true;
+                      loading(context);
                       _SignIn(emailTextController.text,
                           passwordTextController.text);
                     });
                   },
                   child: const Text(
-                    'Sign in',
+                    'Log In',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   )),
+              SizedBox(
+                height: 24,
+              ),
               TextButton(
                   onPressed: () => ({
                         Navigator.push(
@@ -189,12 +206,31 @@ class _SignInWidgetState extends State<SignInWidget> {
                       }),
                   child: const Text(
                     'Forgot the password?',
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w900,
+                        color: Color(0xFF000000)),
                   )),
+              SizedBox(
+                height: 16,
+              ),
+              Container(
+                width: 200,
+                decoration: BoxDecoration(
+                    border: Border(
+                        top: BorderSide(
+                            color: Color.fromRGBO(33, 33, 33, 0.2)))),
+              ),
+              SizedBox(
+                height: 16,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Don't have an account?"),
+                  const Text(
+                    "Don't have an account?",
+                    style: TextStyle(fontSize: 14),
+                  ),
                   TextButton(
                       onPressed: () => ({
                             Navigator.push(
@@ -202,9 +238,15 @@ class _SignInWidgetState extends State<SignInWidget> {
                                 MaterialPageRoute(
                                     builder: (context) => SignUp()))
                           }),
-                      child: Text('Sign up'))
+                      child: Text(
+                        'Sign up now',
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w900,
+                            color: Color(0xFF000000)),
+                      ))
                 ],
-              )
+              ),
             ],
           ),
         ),
@@ -251,6 +293,11 @@ class _SignInWidgetState extends State<SignInWidget> {
           if (response.statusCode == 200) {
             var roleJson = jsonDecode(response.body)['data'];
             String roleName = roleJson['name'];
+
+            if (openLoading == true) {
+              Navigator.pop(context);
+              openLoading = false;
+            }
 
             //check role
             if (roleController.toString().split('.').last.toLowerCase() ==

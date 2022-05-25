@@ -274,7 +274,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
               ],
             )),
       ),
-      bottomNavigationBar: BottomNavigationBarCustom(currentIndex: 4),
+      bottomNavigationBar: BottomNavigationBarCustom(currentIndex: 3),
     );
   }
 

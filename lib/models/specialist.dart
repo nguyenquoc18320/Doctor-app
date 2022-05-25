@@ -12,23 +12,23 @@ class Specialist {
     return [
       Specialist(
           name: 'Dental Specialist',
-          color: Colors.blue,
+          color: Color(0xFF0082FF),
           icon: FontAwesomeIcons.tooth),
       Specialist(
           name: 'Eye Specialist',
-          color: Colors.yellowAccent.shade700,
+          color: Color(0xFFFFC700),
           icon: FontAwesomeIcons.eye),
       Specialist(
           name: 'Cardio Specialist',
-          color: Colors.pink.shade400,
+          color: Color(0xFFFF003D),
           icon: FontAwesomeIcons.heartPulse),
       Specialist(
           name: 'Paeditric Specialist',
-          color: Colors.lightGreen,
+          color: Color(0xFF1FD8D8),
           icon: FontAwesomeIcons.child),
       Specialist(
           name: 'Brain Specialist',
-          color: Colors.yellow.shade700,
+          color: Color(0xFF7B61FF),
           icon: FontAwesomeIcons.brain)
     ];
   }

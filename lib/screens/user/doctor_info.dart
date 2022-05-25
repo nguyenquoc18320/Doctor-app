@@ -36,17 +36,17 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
     return GetX<DoctorInfoController>(
       builder: (_) => Scaffold(
         appBar: AppBar(
-          centerTitle: true,
+          // centerTitle: true,
           backgroundColor: Colors.white,
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.blue),
+            icon: Icon(Icons.arrow_back_ios, color: Colors.black),
             onPressed: () => Navigator.of(context).pop(),
           ),
           title: Text('Details Doctor',
               style: TextStyle(
-                  color: Colors.blue.shade900,
-                  fontSize: 23,
+                  color: Colors.black,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold)),
           actions: [
             IconButton(
@@ -59,105 +59,120 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
           ],
         ),
         body: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.grey.shade300)),
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        bottomLeft: Radius.circular(20)),
-                    child: controller.doctor.value.avataId!.isNotEmpty
-                        ? Image.network(
-                            globals.url +
-                                "/assets/" +
-                                controller.doctor.value.avataId!,
-                            headers: {
-                              "authorization": "Bearer " + globals.token
-                            },
-                            height: 100,
-                            fit: BoxFit.fitWidth,
-                          )
-                        : Image.asset(
-                            'assets/logo/small_logo.png',
-                            height: 100,
-                            fit: BoxFit.fitWidth,
-                          ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 26),
+          child: Container(
+            color: Colors.white,
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              LayoutBuilder(builder: (context, BoxConstraints constraints) {
+                return Container(
+                  width: constraints.maxWidth,
+                  color: Colors.white,
+                  child: Row(
                     children: [
-                      Text(
-                        controller.doctor.value.firstName +
-                            ' ' +
-                            controller.doctor.value.lastName,
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold),
+                      ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(100)),
+                        child: controller.doctor.value.avataId!.isNotEmpty
+                            ? Image.network(
+                                globals.url +
+                                    "/assets/" +
+                                    controller.doctor.value.avataId!,
+                                headers: {
+                                  "authorization": "Bearer " + globals.token
+                                },
+                                height: 80,
+                                width: 80,
+                              )
+                            : Image.asset(
+                                'assets/logo/small_logo.png',
+                                height: 80,
+                                width: 80,
+                              ),
                       ),
                       SizedBox(
-                        height: 5,
+                        width: 8,
                       ),
-                      Container(
-                        width: 250,
-                        child: Text(
-                          (controller.doctor.value.title ?? '') +
-                              ' - ' +
-                              controller.doctor.value.location,
-                          style: TextStyle(fontSize: 16),
-                        ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: (constraints.maxWidth - 100) * 0.9,
+                            child: Text(
+                              'Dr. ' +
+                                  controller.doctor.value.firstName +
+                                  ' ' +
+                                  controller.doctor.value.lastName,
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w900),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            (controller.doctor.value.title ?? ''),
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w400),
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Container(
+                            width: (constraints.maxWidth - 100) * 0.9,
+                            child: Text(
+                              (controller.doctor.value.location),
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
+                );
+              }),
+              SizedBox(
+                height: 25,
               ),
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            statistic(),
-            SizedBox(
-              height: 25,
-            ),
-            AppointmentList(context),
-            SizedBox(
-              height: 25,
-            ),
-            workingTimeWidget(context),
-            SizedBox(
-              height: 25,
-            ),
-            Container(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('About Doctor',
+              statistic(),
+              SizedBox(
+                height: 25,
+              ),
+              Container(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('About',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700)),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        controller.doctor.value.description!,
                         style: TextStyle(
-                            color: Colors.indigo.shade900,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold)),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      controller.doctor.value.description!,
-                      style: TextStyle(fontSize: 16),
-                    )
-                  ]),
-            ),
-          ]),
+                            fontSize: 14,
+                            color: Color(0xFF6A6A6A),
+                            fontWeight: FontWeight.w400),
+                      )
+                    ]),
+              ),
+              SizedBox(
+                height: 25,
+              ),
+              AppointmentList(context),
+              SizedBox(
+                height: 25,
+              ),
+              workingTimeWidget(context),
+            ]),
+          ),
         ),
         bottomNavigationBar: bottomBookAppointmentButton(context),
       ),
@@ -167,20 +182,9 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
   //get list of working-time
   Widget workingTimeWidget(BuildContext context) {
     return Container(
-      width: double.infinity,
-      height: 80,
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(
-          'Working time',
-          style: TextStyle(
-              color: Colors.indigo.shade900,
-              fontSize: 22,
-              fontWeight: FontWeight.bold),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Expanded(
+        width: double.infinity,
+        height: 40,
+        child: Expanded(
           child: ListView.builder(
               // shrinkWrap: true,
               scrollDirection: Axis.horizontal,
@@ -188,9 +192,7 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
               itemBuilder: (BuildContext context, int index) {
                 return workingTimeItem(context, index);
               }),
-        )
-      ]),
-    );
+        ));
   }
 
   Widget statistic() {
@@ -198,74 +200,44 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
         child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        Column(
+        Row(
           children: [
             Container(
                 padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: Colors.grey.shade300),
                 child: Center(
                   child: Icon(
                     // FontAwesomeIcons.userGroup,
                     Icons.group,
-                    size: 25,
-                    color: Colors.blue,
+                    size: 30,
+                    color: Color(0xFF00D186),
                   ),
                 )),
             Text(controller.numPatients.value,
                 style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.blue,
-                    fontWeight: FontWeight.bold)),
-            Text('Patients',
-                style: TextStyle(fontSize: 16, color: Colors.black))
+                    fontSize: 14,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w900)),
+            Text(' Patients',
+                style: TextStyle(fontSize: 12, color: Colors.black))
           ],
         ),
-        Column(
+        Row(
           children: [
             Container(
                 padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: Colors.grey.shade300),
                 child: Center(
                   child: Icon(
-                    // FontAwesomeIcons.userGroup,
                     Icons.star_rate_rounded,
-                    size: 25,
-                    color: Colors.blue,
+                    size: 30,
+                    color: Color(0xFFFFC700),
                   ),
                 )),
             Text(controller.star.value,
                 style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.blue,
-                    fontWeight: FontWeight.bold)),
-            Text('Rating', style: TextStyle(fontSize: 16, color: Colors.black))
-          ],
-        ),
-        Column(
-          children: [
-            Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: Colors.grey.shade300),
-                child: Center(
-                  child: Icon(
-                    // FontAwesomeIcons.userGroup,
-                    Icons.edit_note,
-                    size: 25,
-                    color: Colors.blue,
-                  ),
-                )),
-            Text(controller.numReviews.value,
-                style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.blue,
-                    fontWeight: FontWeight.bold)),
-            Text('Reviews', style: TextStyle(fontSize: 16, color: Colors.black))
+                    fontSize: 14,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w900)),
+            Text(' Review', style: TextStyle(fontSize: 12, color: Colors.black))
           ],
         ),
       ],
@@ -285,10 +257,10 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
       child: Row(
         children: [
           Container(
-            width: 100,
+            width: 80,
             padding: EdgeInsets.symmetric(vertical: 8),
             decoration: BoxDecoration(
-              color: selected ? Colors.pink : Colors.grey.shade200,
+              color: selected ? Color(0xFF2563EB) : Colors.grey.shade200,
               borderRadius: BorderRadius.circular(15),
               // border: Border.all(color: selected ? Colors.blue : Colors.transparent)
             ),
@@ -318,13 +290,11 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Schedule',
-              style: TextStyle(
-                  color: Colors.indigo.shade900,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold),
-            ),
+            Text('Working Time',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700)),
             SizedBox(
               height: 10,
             ),
@@ -371,7 +341,7 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
             decoration: BoxDecoration(
-              color: selected ? Colors.blue : Colors.transparent,
+              color: selected ? Color(0xFF2563EB) : Colors.transparent,
               borderRadius: BorderRadius.circular(15),
               // border: Border.all(color: selected ? Colors.blue : Colors.transparent)
             ),
@@ -455,10 +425,14 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
                           ));
                     },
           style: ButtonStyle(
+              backgroundColor: selectedAppointment == null ||
+                      selectedTimeForAppointment == null
+                  ? null
+                  : MaterialStateProperty.all(Color(0xFF2563EB)),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-          ))),
+                borderRadius: BorderRadius.circular(30.0),
+              ))),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 15),
             child: Text('Book Appointment',

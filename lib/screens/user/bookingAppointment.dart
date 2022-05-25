@@ -2,6 +2,7 @@ import 'package:doctor_app/models/appointment.dart';
 import 'package:doctor_app/models/user.dart';
 import 'package:doctor_app/screens/user/detailAppointment.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 import 'package:doctor_app/globals.dart' as globals;
@@ -44,295 +45,221 @@ class _BookingAppointmentScreenState extends State<BookingAppointmentScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.blue),
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
           'Book Appointment',
           style: TextStyle(
-              fontSize: 25,
-              color: Colors.blue.shade900,
-              fontWeight: FontWeight.bold),
+              fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(
           child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                // border: Border.all(color: Colors.grey.shade300)
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: Container(
+          color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Date & time information',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
               ),
-              child: Row(
+              SizedBox(
+                height: 16,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    child: widget.doctor.avataId!.isNotEmpty
-                        ? Image.network(
-                            globals.url + "/assets/" + widget.doctor.avataId!,
-                            headers: {
-                              "authorization": "Bearer " + globals.token
-                            },
-                            height: 150,
-                            fit: BoxFit.fitWidth,
-                          )
-                        : Image.asset(
-                            'assets/logo/small_logo.png',
-                            height: 150,
-                            fit: BoxFit.fitWidth,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.calendarCheck,
+                            color: Color(0xFF2563EB),
                           ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            widget.time != null
+                                ? DateFormat('dd/MM/yyyy').format(widget.time!)
+                                : "ERROR",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Doctor: ',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                            Text(
-                              '${widget.doctor.firstName} ${widget.doctor.lastName}',
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.indigo.shade900,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Day: ',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                            Text(
-                              widget.time != null
-                                  ? DateFormat('EE dd-MM-yyyy')
-                                      .format(widget.time!)
-                                  : "ERROR",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.indigo.shade900,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Time: ',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                            Text(
-                              widget.time != null
-                                  ? DateFormat('HH:mm').format(widget.time!)
-                                  : "ERROR",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.indigo.shade900,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ])
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.clock,
+                        color: Color(0xFFFF003D),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        widget.time != null
+                            ? DateFormat('HH:mm').format(widget.time!)
+                            : "ERROR",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  )
                 ],
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      "Patient's full name",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey),
+              SizedBox(
+                height: 16,
+              ),
+              Text(
+                "Patient's information",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black),
+              ),
+              TextField(
+                controller: fullNameTextController,
+                decoration: const InputDecoration(
+                    fillColor: Color.fromARGB(255, 241, 240, 240),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                      borderSide: BorderSide(color: Colors.transparent),
                     ),
-                    Text(
-                      '*',
-                      style: TextStyle(fontSize: 16, color: Colors.red),
-                    )
-                  ],
-                ),
-                TextField(
-                  controller: fullNameTextController,
+                    filled: true,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(50))),
+                    hintText: 'Full name',
+                    hintStyle: TextStyle(
+                      fontSize: 14,
+                      color: Color.fromARGB(57, 50, 50, 50),
+                    )),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                onChanged: (String val) {
+                  checkFulfillInfo();
+                },
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              TextField(
+                  controller: ageTextController,
                   decoration: const InputDecoration(
+                      fillColor: Color.fromARGB(255, 241, 240, 240),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
+                        borderSide: BorderSide(color: Colors.transparent),
+                      ),
+                      filled: true,
                       border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(50))),
-                      hintText: 'Full name',
+                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                          borderSide: BorderSide(color: Colors.transparent)),
+                      hintText: 'Age',
                       hintStyle: TextStyle(
-                        fontSize: 16,
-                        color: Color(0xFFD6D6D6),
+                        fontSize: 14,
+                        color: Color.fromARGB(57, 50, 50, 50),
                       )),
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   onChanged: (String val) {
                     checkFulfillInfo();
-                  },
+                  }),
+              SizedBox(
+                height: 8,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Color.fromARGB(255, 241, 240, 240),
+                  border: Border.all(
+                      style: BorderStyle.solid,
+                      width: 0.80,
+                      color: Colors.transparent),
                 ),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      "Age",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey),
-                    ),
-                    Text(
-                      '*',
-                      style: TextStyle(fontSize: 16, color: Colors.red),
-                    )
-                  ],
-                ),
-                TextField(
-                    controller: ageTextController,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(50))),
-                        hintText: 'Age',
-                        hintStyle: TextStyle(
-                          fontSize: 16,
-                          color: Color(0xFFD6D6D6),
-                        )),
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    onChanged: (String val) {
-                      checkFulfillInfo();
-                    }),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      "Gender",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey),
-                    ),
-                    Text(
-                      '*',
-                      style: TextStyle(fontSize: 16, color: Colors.red),
-                    )
-                  ],
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    border: Border.all(style: BorderStyle.solid, width: 0.80),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      margin: EdgeInsets.only(left: 10.0, right: 10.0),
-                      child: DropdownButton<String>(
-                        isExpanded: true,
-                        value: (gender.isEmpty) ? null : gender,
-                        items: <String>['Male', 'Female'].map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value.toLowerCase(),
-                            child: Text(
-                              value,
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: (String? value) {
-                          // setState(() {
-                          gender = value!;
-                          checkFulfillInfo();
-                          // });
-                        },
-                        hint: Text(
-                          'Gender',
-                          style:
-                              TextStyle(fontSize: 16, color: Colors.grey[400]),
+                child: DropdownButtonHideUnderline(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 5),
+                    margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      value: (gender.isEmpty) ? null : gender,
+                      items: <String>['Male', 'Female'].map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value.toLowerCase(),
+                          child: Text(
+                            value,
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.bold),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (String? value) {
+                        // setState(() {
+                        gender = value!;
+                        checkFulfillInfo();
+                        // });
+                      },
+                      hint: Text(
+                        'Gender',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Color.fromARGB(57, 50, 50, 50),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      "Write your problem",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              Text(
+                "Problem detail",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              TextField(
+                controller: problemTextController,
+                decoration: const InputDecoration(
+                    fillColor: Color.fromARGB(255, 241, 240, 240),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: Colors.transparent),
                     ),
-                    Text(
-                      '*',
-                      style: TextStyle(fontSize: 16, color: Colors.red),
-                    )
-                  ],
-                ),
-                TextField(
-                  controller: problemTextController,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
-                      hintText: 'Write your problem',
-                      hintStyle: TextStyle(
-                        fontSize: 16,
-                        color: Color(0xFFD6D6D6),
-                      )),
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                  onChanged: (String val) {
-                    checkFulfillInfo();
-                  },
-                ),
-              ],
-            ),
-          ],
+                    filled: true,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    hintText: 'What problem do you have?',
+                    hintStyle: TextStyle(
+                      fontSize: 14,
+                      color: Color.fromARGB(57, 50, 50, 50),
+                    )),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                keyboardType: TextInputType.multiline,
+                minLines: 4,
+                maxLines: null,
+                onChanged: (String val) {
+                  checkFulfillInfo();
+                },
+              ),
+            ],
+          ),
         ),
       )),
       bottomNavigationBar: bottomBookAppointmentButton(context),
@@ -381,10 +308,13 @@ class _BookingAppointmentScreenState extends State<BookingAppointmentScreen> {
                   });
                 },
           style: ButtonStyle(
+              backgroundColor: disableButton
+                  ? null
+                  : MaterialStateProperty.all(Color(0xFf2563EB)),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-          ))),
+                borderRadius: BorderRadius.circular(30.0),
+              ))),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 15),
             child: Text('Confirm',
