@@ -10,7 +10,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(MyApp());
+  runApp(MaterialApp(theme: ThemeData(), home: MyApp()));
 }
 
 Map<int, Color> swatch = {
