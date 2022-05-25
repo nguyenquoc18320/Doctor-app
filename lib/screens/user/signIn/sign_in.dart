@@ -262,12 +262,34 @@ class _SignInWidgetState extends State<SignInWidget> {
 
               globals.user!.role = 'user';
 
-              //login successfully
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => DoctorAppointmentScreen()),
-              );
+              /* 
+                TODO - login firebase 
+              */
+              AuthMethod authMethod = new AuthMethod();
+              DatabaseMethod dbMethod = new DatabaseMethod();
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setString("email", email);
+
+              QuerySnapshot userByEmail = await dbMethod.getUserByEmail(email);
+
+              print('${userByEmail.docs[0]['name']}');
+              prefs.setString("id", userByEmail.docs[0].id);
+              prefs.setString("name", userByEmail.docs[0]['name']);
+
+              authMethod
+                  .signInWithEmailAndPassword(email, password)
+                  .then((value) {
+                if (value != null) {
+                  prefs.setBool("isLoggedIn", true);
+
+                  //login successfully
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DoctorAppointmentScreen()),
+                  );
+                }
+              });
             } else if (roleController
                         .toString()
                         .split('.')

@@ -4,6 +4,8 @@ import 'package:doctor_app/screens/doctor/workingTimeInfo.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../screens/user/chat_room.dart';
+
 class BottomNavigationBarCustom extends StatelessWidget {
   final int currentIndex;
   const BottomNavigationBarCustom({Key? key, required this.currentIndex})
@@ -44,6 +46,9 @@ class BottomNavigationBarCustom extends StatelessWidget {
         } else if (index == 2) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => DoctorAppointmentScreen()));
+        } else if (index == 3) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => ChatRoom()));
         } else if (index == 4) {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => SettingScreen()));

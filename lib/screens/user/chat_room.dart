@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_app/plugins/UserFirebaseSearch.dart';
 import '../../models/userFirebase.dart';
 import '../../widgets/user/bottomNavigationBar.dart';
+import '../../widgets/doctor/bottomNavigationBar.dart' as DoctorBottomBar;
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:skeleton_loader/skeleton_loader.dart';
@@ -22,13 +24,19 @@ class ChatRoom extends StatefulWidget {
 class _ChatRoomState extends State<ChatRoom> {
   final auth = FirebaseAuth.instance;
   AuthMethod authMethod = new AuthMethod();
+  DatabaseMethod _databaseMethod = DatabaseMethod();
 
   final storeMessage = FirebaseFirestore.instance;
+  UserFirebase currentUser = UserFirebase();
 
-  getCurrentUser() {
+  getCurrentUser() async {
     final user = auth.currentUser;
     if (user != null) {
       loginUser = user;
+      final res = await _databaseMethod.getUserById(loginUser!.uid);
+      setState(() {
+        currentUser = res;
+      });
     }
   }
 
@@ -52,8 +60,6 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   Future<UserFirebase?> fetchUserInChatRoom(QueryDocumentSnapshot x) async {
-    DatabaseMethod _databaseMethod = DatabaseMethod();
-
     String anotherId = x['users'][0];
     if (x['users'][0] == loginUser!.uid) {
       anotherId = x['users'][1];
@@ -93,7 +99,6 @@ class _ChatRoomState extends State<ChatRoom> {
             physics: ScrollPhysics(),
             itemBuilder: (context, index) {
               QueryDocumentSnapshot x = snapshot.data!.docs[index];
-
               return Container(
                 child: FutureBuilder<UserFirebase?>(
                   future: fetchUserInChatRoom(x),
@@ -135,11 +140,6 @@ class _ChatRoomState extends State<ChatRoom> {
                           highlightColor: Colors.lightBlue.shade300,
                           direction: SkeletonDirection.ltr,
                         );
-                      // return Container(
-                      //   child: Center(
-                      //     child: CircularProgressIndicator(),
-                      //   ),
-                      // );
                       default:
                         if (snapshot.hasError || !snapshot.hasData) {
                           return Container(
@@ -209,21 +209,22 @@ class _ChatRoomState extends State<ChatRoom> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Chats',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              final result =
-                  showSearch(context: context, delegate: UserFirebaseSearch());
-            },
-          )
-        ],
-      ),
+          title: Text(
+            'Chats',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
+          actions: currentUser?.role == 'User'
+              ? [
+                  IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      final result = showSearch(
+                          context: context, delegate: UserFirebaseSearch());
+                    },
+                  ),
+                ]
+              : null),
       body: Column(children: [
         Expanded(
           child: SingleChildScrollView(
@@ -232,7 +233,9 @@ class _ChatRoomState extends State<ChatRoom> {
           ),
         )
       ]),
-      bottomNavigationBar: BottomNavigationBarCustom(currentIndex: 3),
+      bottomNavigationBar: currentUser.role == 'User'
+          ? BottomNavigationBarCustom(currentIndex: 3)
+          : DoctorBottomBar.BottomNavigationBarCustom(currentIndex: 3),
     );
   }
 }

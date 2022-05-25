@@ -9,10 +9,10 @@ class UserFirebase {
 
   UserFirebase(
       {this.id,
-      required this.name,
-      required this.email,
-      required this.role,
-      required this.avatar_url});
+      this.name = '',
+      this.email = '',
+      this.role = '',
+      this.avatar_url = ''});
 
   Map<String, dynamic> toJson() {
     return {
