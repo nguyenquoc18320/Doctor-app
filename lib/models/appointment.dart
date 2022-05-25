@@ -43,7 +43,7 @@ class Appointment {
         time: DateTime.parse(json['time']),
         status: json['status'],
         medicalCondition: json['medical_condition'],
-        result: json['result'],
+        result: json['result'] ?? '',
         rating: json['rating'] ?? 0,
         userComment: json['user_comment'] ?? '');
   }

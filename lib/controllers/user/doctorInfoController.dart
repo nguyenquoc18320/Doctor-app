@@ -92,7 +92,8 @@ class DoctorInfoController extends GetxController {
       if (a.userComment!.isNotEmpty) countNumReviews++;
     }
 
-    star.value = (numstar / countNumStar).toStringAsFixed(1);
+    if (countNumStar != 0)
+      star.value = (numstar / countNumStar).toStringAsFixed(1);
     numReviews.value = showNumToString(countNumReviews);
   }
 

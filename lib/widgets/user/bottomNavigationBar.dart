@@ -13,46 +13,64 @@ class BottomNavigationBarCustom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(FontAwesomeIcons.heart),
-          label: 'Favorit',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(FontAwesomeIcons.calendarDay),
-          label: 'Appointments',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(FontAwesomeIcons.message),
-          label: 'Message',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(FontAwesomeIcons.user),
-          label: 'Profile',
-        ),
-      ],
-      currentIndex: currentIndex,
-      onTap: (index) {
-        if (index == 0) {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => HomeWidget()));
-        } else if (index == 2) {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => myAppointmentScreen()));
-        } else if (index == 3) {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => ChatRoom()));
-        } else if (index == 4) {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => SettingScreen()));
-        }
-      },
+    return Theme(
+      data: Theme.of(context).copyWith(
+        canvasColor: Color(0xFFEFF6FF),
+      ),
+      child: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(
+              FontAwesomeIcons.house,
+              size: 24,
+            ),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              FontAwesomeIcons.calendarDay,
+              size: 24,
+            ),
+            label: 'Appointments',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              FontAwesomeIcons.commentDots,
+              size: 24,
+            ),
+            label: 'Message',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              FontAwesomeIcons.user,
+              size: 24,
+            ),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: currentIndex,
+        selectedItemColor: Color(0xFF3B82F6),
+        unselectedItemColor: Color(0xFFBFDBFE),
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        onTap: (index) {
+          if (index == 0) {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => HomeWidget()));
+          } else if (index == 1) {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => myAppointmentScreen()));
+          } else if (index == 2) {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => ChatRoom()));
+          } else if (index == 3) {
+            print('call1');
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => SettingScreen()));
+          }
+        },
+      ),
     );
   }
 }

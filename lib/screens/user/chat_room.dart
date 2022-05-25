@@ -232,7 +232,7 @@ class _ChatRoomState extends State<ChatRoom> {
           ),
         )
       ]),
-      bottomNavigationBar: BottomNavigationBarCustom(currentIndex: 3),
+      bottomNavigationBar: BottomNavigationBarCustom(currentIndex: 2),
     );
   }
 }
