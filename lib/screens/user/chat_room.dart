@@ -214,7 +214,7 @@ class _ChatRoomState extends State<ChatRoom> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
-          actions: currentUser?.role == 'User'
+          actions: currentUser.role == 'User'
               ? [
                   IconButton(
                     icon: Icon(Icons.search),

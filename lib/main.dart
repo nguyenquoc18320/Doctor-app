@@ -36,17 +36,17 @@ class MyApp extends StatelessWidget {
       title: 'Task App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch(
-            primarySwatch: MaterialColor(0xFF3B82F6, blueSwatch)),
+            primarySwatch: MaterialColor(0xFF4702A2, blueSwatch)),
         scaffoldBackgroundColor: Color(0xFFF7F7F7),
-        fontFamily: 'Lato',
+        fontFamily: 'Quicksand',
         appBarTheme: AppBarTheme(elevation: 0),
         textTheme: const TextTheme(
             bodyText2: TextStyle(
-              color: Color(0xFF000000),
-              fontSize: 16,
-            ),
+                color: Color(0xFF000000),
+                fontSize: 16,
+                fontWeight: FontWeight.w500),
             button: TextStyle(
-              fontSize: 20,
+              fontSize: 16,
               fontWeight: FontWeight.bold,
             )),
       ),

@@ -243,7 +243,10 @@ class SettingScreen extends StatelessWidget {
               ),
             ),
             Text(
-              (DateTime.now().year - globals.user!.birthdate!.year).toString(),
+              globals.user.birthdate != null
+                  ? (DateTime.now().year - globals.user.birthdate.year)
+                      .toString()
+                  : '',
               style: TextStyle(
                   fontSize: 14,
                   color: Colors.black,

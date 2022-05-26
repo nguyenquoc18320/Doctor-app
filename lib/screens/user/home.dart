@@ -8,6 +8,7 @@ import 'package:doctor_app/screens/user/myAppointment.dart';
 import 'package:flutter/material.dart';
 import 'package:doctor_app/globals.dart' as globals;
 import 'package:doctor_app/api/doctor.dart' as Doctor_API;
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import '../../models/user.dart';
 import 'package:doctor_app/widgets/user/bottomNavigationBar.dart';
@@ -32,46 +33,75 @@ class _HomeWidgetState extends State<HomeWidget> {
         globals.user!.id!, 1, DateTime.now());
   }
 
+  Widget _welcomeWiget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+          child: CircleAvatar(
+            radius: 32.0,
+            backgroundImage:
+                NetworkImage(globals.url + "/assets/" + globals.user!.avataId!),
+          ),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Welcome back,',
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w300)),
+            Text(
+              globals.user!.firstName + ' ' + globals.user!.lastName,
+              style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70.0),
+        preferredSize: Size.fromHeight(96),
         child: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
+          backgroundColor: Color(0xffffffff),
           elevation: 0,
           titleSpacing: 0,
-          title: Row(
+          flexibleSpace: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: globals.user!.avataId != null
-                        ? Image.network(
-                            globals.url + "/assets/" + globals.user!.avataId!,
-                            headers: {
-                              "authorization": "Bearer " + globals.token
-                            },
-                            height: 40,
-                            width: 40,
-                          )
-                        : Image.asset(
-                            'assets/logo/new_logo.png',
-                            width: 40,
-                            height: 40,
-                          )),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                child: CircleAvatar(
+                  radius: 32.0,
+                  backgroundImage: NetworkImage(
+                      globals.url + "/assets/" + globals.user!.avataId!),
+                ),
               ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Welcom back,',
+                  Text('Welcome back,',
                       style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
-                      )),
+                          fontSize: 20,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400)),
+                  SizedBox(
+                    height: 4,
+                  ),
                   Text(
                     globals.user!.firstName + ' ' + globals.user!.lastName,
                     style: TextStyle(
@@ -91,11 +121,11 @@ class _HomeWidgetState extends State<HomeWidget> {
           child: Column(
             children: [
               _searchWidget(),
-              SizedBox(height: 16),
+              SizedBox(height: 8),
               upCommingAppointment(context),
-              SizedBox(height: 24),
+              SizedBox(height: 8),
               _specialistDoctorWidget(context),
-              SizedBox(height: 24),
+              SizedBox(height: 16),
               _DoctorListWiget(upcomming)
             ],
           ),
@@ -110,14 +140,15 @@ search
 */
   Widget _searchWidget() {
     return Padding(
-      padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: TextField(
         decoration: InputDecoration(
             fillColor: Color.fromRGBO(243, 243, 243, 1),
-            enabledBorder: new OutlineInputBorder(
-              borderRadius: new BorderRadius.circular(40.0),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(40.0),
               borderSide: BorderSide(color: Colors.transparent),
             ),
+            contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             filled: true,
             border: OutlineInputBorder(
               // borderSide: const BorderSide(color: Colors.white, width: 2.0),
@@ -132,7 +163,6 @@ search
               onPressed: () {},
               icon: Icon(Icons.search),
             )),
-        style: TextStyle(fontSize: 14),
       ),
     );
   }
@@ -350,7 +380,7 @@ search
   */
   Widget _specialistDoctorWidget(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16),
       child: Align(
         alignment: Alignment.topLeft,
         child: Column(
@@ -363,7 +393,7 @@ search
               ),
             ),
             Container(
-                margin: const EdgeInsets.symmetric(vertical: 20.0),
+                margin: EdgeInsets.only(top: 16),
                 height: 80,
                 child: Center(
                   child: ListView.builder(
@@ -396,20 +426,24 @@ search
         );
       },
       child: Padding(
-        padding: const EdgeInsets.only(right: 15),
+        padding: const EdgeInsets.only(right: 12),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 5),
+          padding: EdgeInsets.symmetric(horizontal: 4),
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
           child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
             Container(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.all(12),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
                   color: specialist.color),
               child: Icon(
                 specialist.icon,
                 color: Colors.white,
+                size: 28,
               ),
+            ),
+            SizedBox(
+              height: 6,
             ),
             Text(
               specialist.name.split(' ')[0],
@@ -417,7 +451,7 @@ search
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 12,
-                  fontWeight: FontWeight.w700),
+                  fontWeight: FontWeight.bold),
               overflow: TextOverflow.clip,
               maxLines: 2,
             ),

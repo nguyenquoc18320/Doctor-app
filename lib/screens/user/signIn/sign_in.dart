@@ -6,6 +6,8 @@ import 'package:doctor_app/screens/forgot_password.dart';
 import 'package:doctor_app/screens/sign_up.dart';
 import 'package:doctor_app/screens/user/home.dart';
 import 'package:doctor_app/screens/user/profile.dart';
+import 'package:doctor_app/widgets/base/BtnPrimary.dart';
+import 'package:doctor_app/widgets/base/TextFieldPrimary.dart';
 import 'package:doctor_app/widgets/loadingWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,7 +35,7 @@ class _SignInWidgetState extends State<SignInWidget> {
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
 
-  Role? roleController = Role.doctor;
+  Role? roleController = Role.user;
 
   //vars are used to check showing error
   bool emailError = false;
@@ -50,204 +52,176 @@ class _SignInWidgetState extends State<SignInWidget> {
         openLoading = false;
       });
     }
+
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          // decoration: BoxDecoration(color: Colors.white),
-          padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
-          child: Column(
-            children: [
-              Image.asset(
-                'assets/logo/new_logo.png',
-                height: 150,
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Welcom to ',
-                    style: TextStyle(fontSize: 24, color: Colors.black),
-                  ),
-                  Text(
-                    'DoctorCare',
-                    style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8),
-              Text(
-                'Meet doctors with a simple touch',
-                style: TextStyle(fontSize: 14, color: Colors.grey),
-              ),
-              const SizedBox(
-                height: 36,
-              ),
-              TextField(
-                controller: emailTextController,
-                decoration: InputDecoration(
-                    fillColor: Color(0xFFEAEAEA),
-                    enabledBorder: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(40.0),
-                      borderSide: BorderSide(color: Colors.transparent),
+      appBar: AppBar(backgroundColor: Colors.white),
+      backgroundColor: Colors.white,
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SingleChildScrollView(
+          child: Container(
+            // decoration: BoxDecoration(color: Colors.white),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            child: Column(
+              children: [
+                Image.asset(
+                  'assets/logo/new_logo.png',
+                  height: 150,
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Welcome to ',
+                      style: TextStyle(
+                          fontFamily: 'Quicksand',
+                          fontSize: 28,
+                          color: Colors.black),
                     ),
-                    filled: true,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(40))),
-                    hintText: 'Email',
-                    hintStyle: TextStyle(
-                      fontSize: 14,
-                      color: Color.fromRGBO(0, 0, 0, 0.5),
-                    )),
-                style: TextStyle(fontSize: 16),
-              ),
-              if (emailError) _ErrorWidget(context, 'Incorrect email'),
-              const SizedBox(
-                height: 16,
-              ),
-              TextField(
-                controller: passwordTextController,
-                obscureText: true,
-                decoration: InputDecoration(
-                    fillColor: Color(0xFFEAEAEA),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40.0),
-                      borderSide: BorderSide(color: Colors.transparent),
+                    Text(
+                      'DoctorCare',
+                      style: TextStyle(
+                          fontFamily: 'Quicksand',
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
                     ),
-                    filled: true,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(40))),
-                    hintText: 'Password',
-                    hintStyle: TextStyle(
-                      fontSize: 14,
-                      color: Color.fromRGBO(0, 0, 0, 0.5),
-                    )),
-                style: TextStyle(fontSize: 16),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              if (passwordError) _ErrorWidget(context, 'Incorrect password'),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: ListTile(
-                        contentPadding: EdgeInsets.all(0),
-                        title: Text(
-                          'Patient',
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
-                        ),
-                        dense: true,
-                        leading: Radio<Role>(
+                  ],
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'Meet doctors with a simple touch',
+                  style: TextStyle(
+                      fontFamily: 'Quicksand',
+                      fontSize: 18,
+                      color: Colors.black),
+                ),
+                const SizedBox(
+                  height: 36,
+                ),
+                TextFieldPrimary(
+                  title: 'Email',
+                  textController: emailTextController,
+                ),
+                if (emailError) _ErrorWidget(context, 'Incorrect email'),
+                const SizedBox(
+                  height: 16,
+                ),
+                TextFieldPrimary(
+                  title: 'Password',
+                  textController: passwordTextController,
+                  isPassword: true,
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                if (passwordError) _ErrorWidget(context, 'Incorrect password'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Row(children: [
+                        Radio<Role>(
                             value: Role.user,
                             groupValue: roleController,
                             onChanged: (Role? value) => {
                                   setState(() => {roleController = value})
-                                })),
-                  ),
-                  Expanded(
-                    child: ListTile(
-                        contentPadding: EdgeInsets.all(0),
-                        dense: true,
-                        title: Text(
-                          'Doctor',
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
-                        ),
-                        leading: Radio<Role>(
+                                }),
+                        Expanded(
+                          child: Text('Patient'),
+                        )
+                      ]),
+                    ),
+                    Expanded(
+                      child: Row(children: [
+                        Radio<Role>(
                             value: Role.doctor,
                             groupValue: roleController,
                             onChanged: (Role? value) => {
                                   setState(
                                     () => {roleController = value},
                                   )
-                                })),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xFF212121),
-                    minimumSize: Size.fromHeight(50),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      openLoading = true;
-                      loading(context);
+                                }),
+                        Expanded(
+                          child: Text('Doctor'),
+                        )
+                      ]),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                BtnPrimary(
+                    title: 'Log In',
+                    pressFn: () {
+                      // setState(() {
+                      //   openLoading = true;
+                      //   loading(ctx);
+                      // });
                       _SignIn(emailTextController.text,
                           passwordTextController.text);
-                    });
-                  },
-                  child: const Text(
-                    'Log In',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                    }),
+                // ElevatedButton(
+                //     style: ElevatedButton.styleFrom(
+                //       primary: Color(0xFF212121),
+                //       minimumSize: Size.fromHeight(50),
+                //     ),
+                //     onPressed: () {
+                //       setState(() {
+                //         openLoading = true;
+                //       });
+                //       loading(context);
+                //       _SignIn(emailTextController.text,
+                //           passwordTextController.text);
+                //     },
+                //     child: const Text(
+                //       'Log In',
+                //       style: TextStyle(
+                //         color: Colors.white,
+                //         fontWeight: FontWeight.bold,
+                //       ),
+                //     )),
+                SizedBox(
+                  height: 8,
+                ),
+                TextButton(
+                    onPressed: () => ({
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ForgotPassword()))
+                        }),
+                    child: const Text(
+                      'Forgot the password?',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.black),
+                    )),
+                SizedBox(
+                  height: 4,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Don't have an account?",
                     ),
-                  )),
-              SizedBox(
-                height: 24,
-              ),
-              TextButton(
-                  onPressed: () => ({
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ForgotPassword()))
-                      }),
-                  child: const Text(
-                    'Forgot the password?',
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w900,
-                        color: Color(0xFF000000)),
-                  )),
-              SizedBox(
-                height: 16,
-              ),
-              Container(
-                width: 200,
-                decoration: BoxDecoration(
-                    border: Border(
-                        top: BorderSide(
-                            color: Color.fromRGBO(33, 33, 33, 0.2)))),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Don't have an account?",
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  TextButton(
-                      onPressed: () => ({
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignUp()))
-                          }),
-                      child: Text(
-                        'Sign up now',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w900,
-                            color: Color(0xFF000000)),
-                      ))
-                ],
-              ),
-            ],
+                    TextButton(
+                        onPressed: () => ({
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignUp()))
+                            }),
+                        child: Text(
+                          'Sign up now',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ))
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

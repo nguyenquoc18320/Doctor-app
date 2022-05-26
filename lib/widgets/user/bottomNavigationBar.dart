@@ -65,7 +65,6 @@ class BottomNavigationBarCustom extends StatelessWidget {
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => ChatRoom()));
           } else if (index == 3) {
-            print('call1');
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => SettingScreen()));
           }
