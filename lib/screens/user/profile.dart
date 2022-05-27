@@ -112,7 +112,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                         imageQuality: 50,
                         preferredCameraDevice: CameraDevice.front);
 
-                    _avata_path = image!.path;
+                    if (image != null) _avata_path = image.path;
 
                     setState(() {});
                   },

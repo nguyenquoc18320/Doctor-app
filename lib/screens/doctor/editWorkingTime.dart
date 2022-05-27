@@ -34,29 +34,26 @@ class _EditWorkingTimeScreenState extends State<EditWorkingTimeScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.blue),
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          'Edit Working Time',
+          'Update Working Time',
           style: TextStyle(
-              fontSize: 25,
-              color: Colors.blue.shade900,
-              fontWeight: FontWeight.bold),
+              fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: GetX<EditWorkingTimeController>(
         builder: (_) {
           if (controller.doneProcessStatus.value && openLoading) {
-            Navigator.pop(context);
+            Navigator.of(context, rootNavigator: true).pop();
             openLoading = false;
           }
           if (controller.errorMessage.value.isNotEmpty) {
             Future.delayed(Duration.zero, () async {
               if (controller.doneProcessStatus.value && openLoading) {
-                Navigator.pop(context);
+                Navigator.of(context, rootNavigator: true).pop();
                 openLoading = false;
               }
             });
@@ -114,8 +111,9 @@ class _EditWorkingTimeScreenState extends State<EditWorkingTimeScreen> {
             activeText: wk.day.toUpperCase(),
             inactiveText: wk.day.toUpperCase(),
             showOnOff: true,
-            valueFontSize: 16,
+            valueFontSize: 14,
             width: 80,
+            activeColor: Color(0xFF2563EB),
             value: controller.statusDays.value[index],
             onToggle: (val) {
               controller.statusDays.value[index] = val;
@@ -135,7 +133,7 @@ class _EditWorkingTimeScreenState extends State<EditWorkingTimeScreen> {
                 child: Text(
                   DateFormat('HH:mm').format(wk.startTime),
                   style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: isOpen ? Colors.black : Colors.grey[300]),
                 )),
@@ -155,7 +153,7 @@ class _EditWorkingTimeScreenState extends State<EditWorkingTimeScreen> {
               child: Text(
                 DateFormat('HH:mm').format(wk.endTime),
                 style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: isOpen ? Colors.black : Colors.grey[300]),
               ),
@@ -245,14 +243,15 @@ class _EditWorkingTimeScreenState extends State<EditWorkingTimeScreen> {
                       ));
             },
             style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Color(0xFF2563EB)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-            ))),
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text('Confirm',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             ),
           )),
     );

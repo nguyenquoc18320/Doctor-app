@@ -17,34 +17,17 @@ class DoctorAppointmentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     controller.getUpcommingAppointments(globals.user!.id!, 1);
+    print('app');
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         automaticallyImplyLeading: false,
         title: Row(children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: globals.user!.avataId != null
-                    ? Image.network(
-                        globals.url + "/assets/" + globals.user!.avataId!,
-                        headers: {"authorization": "Bearer " + globals.token},
-                        height: 50,
-                      )
-                    : Image.asset(
-                        'assets/logo/small_logo.png',
-                        width: 50,
-                        height: 50,
-                      )),
-          ),
           Text(
-            'My Appointments',
+            'Appointments',
             style: TextStyle(
-                fontSize: 20,
-                color: Colors.indigo.shade900,
-                fontWeight: FontWeight.bold),
+                fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
           )
         ]),
       ),
@@ -54,7 +37,7 @@ class DoctorAppointmentScreen extends StatelessWidget {
           builder: (_) {
             Future.delayed(Duration.zero, () async {
               if (controller.doneProcessStatus.value && openLoading) {
-                Navigator.pop(context);
+                Navigator.of(context, rootNavigator: true).pop();
                 openLoading = false;
               }
             });
@@ -91,96 +74,112 @@ class DoctorAppointmentScreen extends StatelessWidget {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return Dialog(
-          child: new Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              new CircularProgressIndicator(),
-              new Text("Loading"),
-            ],
-          ),
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(
+              color: Colors.blue,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            DefaultTextStyle(
+              style: TextStyle(
+                fontSize: 16,
+              ),
+              child: Text(
+                "Loading...",
+              ),
+            ),
+          ],
         );
+        // );
       },
     );
   }
 
   //set buttons
   Widget setButton(BuildContext context) {
-    var selected = ButtonStyle(
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10.0),
-    )));
+    var selected = BoxDecoration(
+        color: Colors.white,
+        border: Border(bottom: BorderSide(color: Color(0xFF2563EB))));
 
-    var notSelected = ButtonStyle(
+    var notSelected = BoxDecoration(color: Color(0xFFF7F7F7));
+
+    var elevatedButtonLayout = ButtonStyle(
         elevation: MaterialStateProperty.all<double>(0),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            side: BorderSide(width: 2, color: Colors.blue),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-        ),
-        backgroundColor: MaterialStateProperty.all<Color>(Colors.white));
+        backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent));
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          width: 120,
-          child: ElevatedButton(
-              style: controller.isUpcomming.value ? selected : notSelected,
-              onPressed: () {
-                openLoading = true;
-                loading(context);
-                controller.getUpcommingAppointments(globals.user?.id ?? '', 1);
-              },
-              child: Text(
-                'Upcomming',
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: controller.isUpcomming.value
-                        ? Colors.white
-                        : Colors.blue),
-              )),
+    return LayoutBuilder(builder: (context, constraints) {
+      return Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              decoration: controller.isUpcomming.value ? selected : notSelected,
+              width: constraints.maxWidth * 0.32,
+              child: ElevatedButton(
+                  style: elevatedButtonLayout,
+                  onPressed: () {
+                    openLoading = true;
+                    loading(context);
+                    controller.getUpcommingAppointments(
+                        globals.user?.id ?? '', 1);
+                  },
+                  child: Text(
+                    'Upcoming',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: controller.isUpcomming.value
+                            ? Color(0xFF2563EB)
+                            : Color(0xFF8F8F8F)),
+                  )),
+            ),
+            Container(
+              decoration: controller.past.value ? selected : notSelected,
+              width: constraints.maxWidth * 0.32,
+              child: ElevatedButton(
+                  style: elevatedButtonLayout,
+                  onPressed: () {
+                    openLoading = true;
+                    loading(context);
+                    controller.getPastAppointments(globals.user?.id ?? '', 1);
+                  },
+                  child: Text(
+                    'History',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: controller.past.value
+                            ? Color(0xFF2563EB)
+                            : Color(0xFF8F8F8F)),
+                  )),
+            ),
+            Container(
+              decoration: controller.canceled.value ? selected : notSelected,
+              width: constraints.maxWidth * 0.32,
+              child: ElevatedButton(
+                  style: elevatedButtonLayout,
+                  onPressed: () {
+                    openLoading = true;
+                    loading(context);
+                    controller.getCancleAppointments(globals.user?.id ?? '', 1);
+                  },
+                  child: Text(
+                    'Canceled',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: controller.canceled.value
+                            ? Color(0xFF2563EB)
+                            : Color(0xFF8F8F8F)),
+                  )),
+            )
+          ],
         ),
-        Container(
-          width: 120,
-          child: ElevatedButton(
-              style: controller.past.value ? selected : notSelected,
-              onPressed: () {
-                openLoading = true;
-                loading(context);
-                controller.getPastAppointments(globals.user?.id ?? '', 1);
-              },
-              child: Text(
-                'Past',
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: controller.past.value ? Colors.white : Colors.blue),
-              )),
-        ),
-        Container(
-          width: 120,
-          child: ElevatedButton(
-              style: controller.canceled.value ? selected : notSelected,
-              onPressed: () {
-                openLoading = true;
-                loading(context);
-                controller.getCancleAppointments(globals.user?.id ?? '', 1);
-              },
-              child: Text(
-                'Canceled',
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color:
-                        controller.canceled.value ? Colors.white : Colors.blue),
-              )),
-        )
-      ],
-    );
+      );
+    });
   }
 
 /*
@@ -202,14 +201,14 @@ Day range in 7 days
     }
 
     return Container(
-      height: 100,
+      height: 90,
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               width: double.infinity,
-              height: 90,
+              height: 70,
               child: Flexible(
                 child: Center(
                   child: Container(
@@ -253,7 +252,7 @@ Day range in 7 days
           Container(
             padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
             decoration: BoxDecoration(
-              color: selected ? Colors.pink.shade300 : Colors.transparent,
+              color: selected ? Color(0xFF2563EB) : Colors.transparent,
               borderRadius: BorderRadius.circular(15),
               // border: Border.all(color: selected ? Colors.blue : Colors.transparent)
             ),
@@ -263,7 +262,7 @@ Day range in 7 days
                 children: [
                   Text(DateFormat('dd').format(day),
                       style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 16,
                           color:
                               selected ? Colors.white : Colors.indigo.shade900,
                           fontWeight: FontWeight.bold)),
@@ -273,7 +272,7 @@ Day range in 7 days
                   Text(
                     DateFormat('EEEE').format(day).toString().substring(0, 3),
                     style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         color: selected ? Colors.white : Colors.grey.shade600),
                   ),
                 ]),
@@ -310,101 +309,124 @@ Day range in 7 days
     }
 
     if (user == null) {
-      print('No');
       return SizedBox(
         height: 0,
       );
     }
 
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    AppointmentDetailScreen(appointment.id!)));
-      },
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.grey.shade300)),
-        child: Row(children: [
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), bottomLeft: Radius.circular(20)),
-            child: user.avataId!.isNotEmpty
-                ? Image.network(
-                    globals.url + "/assets/" + user.avataId!,
-                    headers: {"authorization": "Bearer " + globals.token},
-                    height: 100,
-                    fit: BoxFit.fitWidth,
-                  )
-                : Image.asset(
-                    'assets/logo/small_logo.png',
-                    height: 100,
-                    fit: BoxFit.fitWidth,
+      onTap: () {},
+      child: LayoutBuilder(builder: (context, constraints) {
+        return Row(
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              decoration: BoxDecoration(
+                  color: Color.fromARGB(246, 241, 239, 239),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Color(0xFFECECEC))),
+              width: constraints.maxWidth * 0.85,
+              child: Row(children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  child: user!.avataId!.isNotEmpty
+                      ? Image.network(
+                          globals.url + "/assets/" + user.avataId!,
+                          headers: {"authorization": "Bearer " + globals.token},
+                          height: 60,
+                          width: 60,
+                        )
+                      : Image.asset(
+                          'assets/logo/small_logo.png',
+                          height: 60,
+                          width: 60,
+                        ),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Container(
+                  width: constraints.maxWidth * 0.85 - 95,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        user.firstName + ' ' + user.lastName,
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 3,
+                      ),
+                      Text(
+                        appointment.status[0].toUpperCase() +
+                            appointment.status.substring(1).toLowerCase(),
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: appointment.status == 'accepted' ||
+                                    appointment.status == 'done'
+                                ? Colors.green
+                                : Colors.red),
+                      ),
+                      SizedBox(
+                        height: 3,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            dateString(appointment.time),
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(
+                                color: Color(0xFFFFC700),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20))),
+                            child: Text(
+                              DateFormat('HH:mm ').format(appointment.time),
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
                   ),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                user.firstName + ' ' + user.lastName,
-                style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                appointment.status[0].toUpperCase() +
-                    appointment.status.substring(1).toLowerCase(),
-                style: TextStyle(
-                    fontSize: 16,
-                    color: appointment.status == 'accepted' ||
-                            appointment.status == 'done'
-                        ? Colors.green
-                        : Colors.red),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  Text(
-                    DateFormat('HH:mm ').format(appointment.time),
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.indigo.shade900),
-                  ),
-                  Text(
-                    dateString(appointment.time),
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  )
-                ],
-              )
-            ],
-          ),
-        ]),
-      ),
+                ),
+              ]),
+            ),
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            AppointmentDetailScreen(appointment.id!)));
+              },
+              icon: Icon(Icons.arrow_forward_ios),
+              color: Color(0xFFB3B3B3),
+            ),
+          ],
+        );
+      }),
     );
   }
 
   //check whether being today
   String dateString(DateTime date) {
     if (controller.isUpcomming.value) {
-      return '';
+      return DateFormat('MMMM dd, yyyy').format(date);
     }
 
     final now = DateTime.now();
@@ -419,6 +441,6 @@ Day range in 7 days
       return 'Tomorrow';
     else if (yesterday == aDate) return 'Yesterday';
 
-    return DateFormat('dd-MM-yyyy').format(date);
+    return DateFormat('MMMM dd, yyyy').format(date);
   }
 }

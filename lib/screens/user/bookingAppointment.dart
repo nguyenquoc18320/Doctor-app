@@ -42,7 +42,6 @@ class _BookingAppointmentScreenState extends State<BookingAppointmentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: Colors.black),
@@ -58,7 +57,6 @@ class _BookingAppointmentScreenState extends State<BookingAppointmentScreen> {
           child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Container(
-          color: Colors.white,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
