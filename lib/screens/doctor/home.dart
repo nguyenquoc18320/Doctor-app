@@ -331,6 +331,7 @@ appointment wait for approving
   }
 
   Widget pendingAppointmentItem(BuildContext context, int index) {
+    print(controller.patientsForPending[0].firstName);
     return LayoutBuilder(
       builder: (context, constraints) {
         return Row(

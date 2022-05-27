@@ -49,7 +49,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   void _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: birthdate!,
+        initialDate: birthdate ?? DateTime.now(),
         firstDate: DateTime(1900),
         lastDate: DateTime.now());
 
