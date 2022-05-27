@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:doctor_app/controllers/user/doctorInfoController.dart';
 import 'package:doctor_app/screens/user/bookingAppointment.dart';
 import 'package:flutter/material.dart';

@@ -36,7 +36,6 @@ class _ProfileWidgetState extends State<ProfileWidget> {
       TextEditingController(text: globals.user!.firstName);
   var lastNameTextController =
       TextEditingController(text: globals.user!.lastName);
-  var emailTextController = TextEditingController(text: globals.user!.email);
   var addressTextController =
       TextEditingController(text: globals.user!.location);
 
@@ -64,7 +63,6 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     if (gender.isEmpty ||
         firstNameTextController.text.isEmpty ||
         lastNameTextController.text.isEmpty ||
-        emailTextController.text.isEmpty ||
         addressTextController.text.isEmpty) {
       disableButton = true;
     } else {
@@ -118,49 +116,77 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 SizedBox(
                   height: 16,
                 ),
-                TextFieldPrimary(
-                  textController: firstNameTextController,
-                  title: 'First name',
-                  cb_change: (val) {
+                // TextFieldPrimary(
+                //   textController: firstNameTextController,
+                //   title: 'First name',
+                //   cb_change: (val) {
+                //     checkFulfillInfo();
+                //   },
+                // ),
+                TextField(
+                  controller: firstNameTextController,
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    hintText: 'First name',
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  onChanged: (val) {
                     checkFulfillInfo();
                   },
                 ),
                 SizedBox(
                   height: 8,
                 ),
-                TextFieldPrimary(
-                  textController: lastNameTextController,
-                  title: 'Last name',
-                  cb_change: (val) {
+                // TextFieldPrimary(
+                //   textController: lastNameTextController,
+                //   title: 'Last name',
+                //   cb_change: (val) {
+                //     checkFulfillInfo();
+                //   },
+                // ),
+                TextField(
+                  controller: lastNameTextController,
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    hintText: 'Last name',
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  onChanged: (val) {
                     checkFulfillInfo();
                   },
                 ),
                 SizedBox(
                   height: partDistance,
                 ),
-                TextField(
-                  readOnly: true,
-                  enabled: false,
-                  controller: emailTextController,
-                  decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'Email',
-                  ),
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: partDistance,
-                ),
+
                 Row(children: [
-                  Text(
-                    'Gender',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  Container(
+                  Expanded(
                     child: DropdownButtonHideUnderline(
                       child: Container(
-                        margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(8))),
                         child: DropdownButton<String>(
+                          isExpanded: true,
                           value: (gender.isEmpty) ? null : gender,
                           items: <String>['Male', 'Female'].map((String value) {
                             return DropdownMenuItem<String>(
@@ -191,47 +217,58 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 SizedBox(
                   height: partDistance,
                 ),
-                Row(
-                  children: [
-                    Text(
-                      'Date of birth',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            birthdate == null
-                                ? ''
-                                : DateFormat('dd-MM-yyyy').format(birthdate!),
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                          GestureDetector(
-                            onTap: () => _selectDate(context),
-                            child: Icon(
-                              Icons.calendar_today,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        birthdate == null
+                            ? 'Birthday'
+                            : DateFormat('dd-MM-yyyy').format(birthdate!),
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: birthdate == null
+                                ? Colors.grey.shade300
+                                : Colors.black),
                       ),
-                    ),
-                  ],
+                      GestureDetector(
+                        onTap: () => _selectDate(context),
+                        child: Icon(
+                          Icons.calendar_today,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: partDistance,
                 ),
-                TextFieldPrimary(
-                  textController: addressTextController,
-                  title: 'Address',
+                // TextFieldPrimary(
+                //   textController: addressTextController,
+                //   title: 'Address',
+                // ),
+                TextField(
+                  controller: addressTextController,
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    hintText: 'Adress',
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: 32,
