@@ -4,21 +4,16 @@ class TextFieldPrimary extends StatelessWidget {
   String title;
   bool isPassword = false;
   final textController;
-  int? minLines;
-  int? maxLines;
-  final String? Function(String)? validator;
-  final Function(String)? cb_change;
 
-  TextFieldPrimary({
-    Key? key,
-    required this.title,
-    this.isPassword = false,
-    required this.textController,
-    this.validator,
-    this.cb_change,
-    this.minLines,
-    this.maxLines = 1,
-  }) : super(key: key);
+  final String? Function(String)? validator; //
+
+  TextFieldPrimary(
+      {Key? key,
+      required this.title,
+      this.isPassword = false,
+      required this.textController,
+      this.validator})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +21,7 @@ class TextFieldPrimary extends StatelessWidget {
       controller: textController,
       obscureText: isPassword,
       validator: (value) => validator!(value!),
-      onChanged: (value) => cb_change!(value),
       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-      minLines: minLines,
-      maxLines: maxLines,
       decoration: InputDecoration(
         filled: true,
         fillColor: Color(0xFFFFFFFF),

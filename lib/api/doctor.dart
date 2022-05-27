@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:doctor_app/models/specialist.dart';
 import 'package:http/http.dart' as http;
 import 'package:doctor_app/api/api_helper.dart' as api_helper;

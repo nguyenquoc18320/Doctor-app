@@ -8,6 +8,7 @@ import 'package:doctor_app/screens/user/home.dart';
 import 'package:doctor_app/screens/user/profile.dart';
 import 'package:doctor_app/widgets/base/BtnPrimary.dart';
 import 'package:doctor_app/widgets/base/TextFieldPrimary.dart';
+import 'package:doctor_app/widgets/customTextField.dart';
 import 'package:doctor_app/widgets/loadingWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -88,12 +89,16 @@ class _SignInWidgetState extends State<SignInWidget> {
                     //     fontWeight: FontWeight.bold,
                     //   ),
                     // ),
-                    Text(
-                      'Welcome to DoctorCare',
-                      style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.primary),
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          'Welcome to DoctorCare',
+                          style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -103,19 +108,28 @@ class _SignInWidgetState extends State<SignInWidget> {
                     fontFamily: 'Quicksand',
                     fontSize: 18,
                   ),
+                  maxLines: 2,
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                TextFieldPrimary(
-                  title: 'Email',
-                  textController: emailTextController,
-                ),
+                // TextFieldPrimary(
+                //   title: 'Email',
+                //   textController: emailTextController,
+
+                // ),
+                MyTextFormField(
+                    title: 'Email', textController: emailTextController),
                 if (emailError) _ErrorWidget(context, 'Incorrect email'),
                 const SizedBox(
                   height: 8,
                 ),
-                TextFieldPrimary(
+                // TextFieldPrimary(
+                //   title: 'Password',
+                //   textController: passwordTextController,
+                //   isPassword: true,
+                // ),
+                MyTextFormField(
                   title: 'Password',
                   textController: passwordTextController,
                   isPassword: true,

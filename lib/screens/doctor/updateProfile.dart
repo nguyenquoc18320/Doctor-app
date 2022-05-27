@@ -152,20 +152,60 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 SizedBox(
                   height: 16,
                 ),
-                TextFieldPrimary(
-                  title: 'First name',
-                  textController: firstNameTextController,
-                  cb_change: (val) {
+                // TextFieldPrimary(
+                //   title: 'First name',
+                //   textController: firstNameTextController,
+                //   cb_change: (val) {
+                //     checkFulfillInfo();
+                //   },
+                // ),
+                TextField(
+                  controller: firstNameTextController,
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    hintText: 'First name',
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  onChanged: (val) {
                     checkFulfillInfo();
                   },
                 ),
                 SizedBox(
                   height: 8,
                 ),
-                TextFieldPrimary(
-                  title: 'Last name',
-                  textController: lastNameTextController,
-                  cb_change: (val) {
+                // TextFieldPrimary(
+                //   title: 'Last name',
+                //   textController: lastNameTextController,
+                //   cb_change: (val) {
+                //     checkFulfillInfo();
+                //   },
+                // ),
+                TextField(
+                  controller: lastNameTextController,
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    hintText: 'Last name',
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  onChanged: (val) {
                     checkFulfillInfo();
                   },
                 ),
@@ -173,17 +213,13 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   height: partDistance,
                 ),
                 Row(children: [
-                  Text(
-                    'Gender',
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[600],
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Container(
+                  Expanded(
                     child: DropdownButtonHideUnderline(
                       child: Container(
-                        margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(8))),
                         child: DropdownButton<String>(
                           value: (gender.isEmpty) ? null : gender,
                           items: <String>['Male', 'Female'].map((String value) {
@@ -215,66 +251,72 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 SizedBox(
                   height: partDistance,
                 ),
-                Row(
-                  children: [
-                    Text(
-                      'Date of birth',
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey[600],
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            birthdate == null
-                                ? ''
-                                : DateFormat('dd-MM-yyyy').format(birthdate!),
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                          GestureDetector(
-                            onTap: () => _selectDate(context),
-                            child: Icon(
-                              Icons.calendar_today,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        birthdate == null
+                            ? 'Birthday'
+                            : DateFormat('dd-MM-yyyy').format(birthdate!),
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: birthdate == null
+                                ? Colors.grey.shade300
+                                : Colors.black),
                       ),
-                    ),
-                  ],
+                      GestureDetector(
+                        onTap: () => _selectDate(context),
+                        child: Icon(
+                          Icons.calendar_today,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: partDistance,
                 ),
-                TextFieldPrimary(
-                  title: 'Address',
-                  textController: addressTextController,
+                // TextFieldPrimary(
+                //   title: 'Address',
+                //   textController: addressTextController,
+                // ),
+                TextField(
+                  controller: addressTextController,
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    hintText: 'Address',
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: partDistance,
                 ),
                 Row(children: [
-                  Text(
-                    'Specialist',
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[600],
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Container(
+                  Expanded(
                     child: DropdownButtonHideUnderline(
                       child: Container(
-                        margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(8))),
                         child: DropdownButton<Specialist>(
+                          isExpanded: true,
                           value: selectedSpecialist,
                           items: specialistList.map((Specialist value) {
                             return DropdownMenuItem<Specialist>(
@@ -305,11 +347,30 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 SizedBox(
                   height: partDistance,
                 ),
-                TextFieldPrimary(
-                  title: 'About',
-                  textController: descriptionTextController,
+                // TextFieldPrimary(
+                //   title: 'About',
+                //   textController: descriptionTextController,
+                //   minLines: 3,
+                //   maxLines: null,
+                // ),
+                TextField(
+                  controller: descriptionTextController,
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    hintText: 'About',
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
                   minLines: 3,
                   maxLines: null,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: 32,

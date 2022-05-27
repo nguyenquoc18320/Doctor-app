@@ -76,22 +76,41 @@ class _HomeWidgetState extends State<HomeWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(96),
+        preferredSize: Size.fromHeight(100),
         child: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Color(0xffEEEAFB),
           elevation: 0,
           titleSpacing: 0,
           flexibleSpace: Container(
-            padding: EdgeInsets.only(top: 80, bottom: 16, left: 16, right: 16),
+            padding: EdgeInsets.only(top: 20, bottom: 16, left: 16, right: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  radius: 32.0,
-                  backgroundImage: NetworkImage(
-                      globals.url + "/assets/" + globals.user!.avataId!),
+                // CircleAvatar(
+                //   radius: 32.0,
+                //   backgroundImage: NetworkImage(
+                //       globals.url + "/assets/" + globals.user!.avataId!),
+                // ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: globals.user!.avataId != null
+                          ? Image.network(
+                              globals.url + "/assets/" + globals.user!.avataId!,
+                              headers: {
+                                "authorization": "Bearer " + globals.token
+                              },
+                              height: 40,
+                              width: 40,
+                            )
+                          : Image.asset(
+                              'assets/logo/new_logo.png',
+                              width: 40,
+                              height: 40,
+                            )),
                 ),
                 SizedBox(width: 16),
                 Column(

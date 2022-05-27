@@ -211,43 +211,42 @@ class _ResultUserState extends State<ResultUser> {
                       child: Container(
                           padding:
                               EdgeInsets.symmetric(horizontal: 2, vertical: 8),
-                          child: TextFieldPrimary(
-                            title: 'Messages',
-                            textController: message,
-                          )
-                          // child: TextFormField(
-                          //   controller: message,
-                          //   decoration: InputDecoration(
-                          //     filled: true,
-                          //     fillColor: Color(0xFFFFFFFF),
-                          //     hintText: "Messages",
-                          //     hintStyle: TextStyle(color: Colors.black38),
-                          //     border: OutlineInputBorder(
-                          //         borderSide: BorderSide(
-                          //             width: 1.0,
-                          //             color:
-                          //                 Color(0xFF3A3C30).withOpacity(0.2)),
-                          //         borderRadius:
-                          //             BorderRadius.all(Radius.circular(24.0))),
-                          //     focusedBorder: OutlineInputBorder(
-                          //         borderSide: BorderSide(
-                          //             width: 1.0,
-                          //             color:
-                          //                 Color(0xFF3A3C30).withOpacity(0.2)),
-                          //         borderRadius:
-                          //             BorderRadius.all(Radius.circular(24.0))),
-                          //     enabledBorder: OutlineInputBorder(
-                          //         borderSide: BorderSide(
-                          //             width: 1.0,
-                          //             color:
-                          //                 Color(0xFF3A3C30).withOpacity(0.2)),
-                          //         borderRadius:
-                          //             BorderRadius.all(Radius.circular(24.0))),
-                          //     contentPadding: EdgeInsets.symmetric(
-                          //         horizontal: 16, vertical: 16),
-                          //   ),
+                          // child: TextFieldPrimary(
+                          //   title: 'Messages',
+                          //   textController: message,
                           // )
-                          )),
+                          child: TextFormField(
+                            controller: message,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Color(0xFFFFFFFF),
+                              hintText: "Messages",
+                              hintStyle: TextStyle(color: Colors.black38),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1.0,
+                                      color:
+                                          Color(0xFF3A3C30).withOpacity(0.2)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(24.0))),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1.0,
+                                      color:
+                                          Color(0xFF3A3C30).withOpacity(0.2)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(24.0))),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1.0,
+                                      color:
+                                          Color(0xFF3A3C30).withOpacity(0.2)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(24.0))),
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 16),
+                            ),
+                          ))),
                   IconButton(
                       onPressed: () async {
                         if (message.text == '') {
