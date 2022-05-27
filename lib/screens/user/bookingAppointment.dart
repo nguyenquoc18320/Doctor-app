@@ -43,19 +43,13 @@ class _BookingAppointmentScreenState extends State<BookingAppointmentScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
         title: Text(
           'Book Appointment',
-          style: TextStyle(
-              fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(
           child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
         child: Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,61 +59,54 @@ class _BookingAppointmentScreenState extends State<BookingAppointmentScreen> {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
               ),
               SizedBox(
-                height: 16,
+                height: 24,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            FontAwesomeIcons.calendarCheck,
-                            color: Color(0xFF2563EB),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            widget.time != null
-                                ? DateFormat('dd/MM/yyyy').format(widget.time!)
-                                : "ERROR",
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                    ],
+                  Expanded(
+                    flex: 1,
+                    child: Row(
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.calendarCheck,
+                          color: Color(0xFF4702A2),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          widget.time != null
+                              ? DateFormat('dd/MM/yyyy').format(widget.time!)
+                              : "ERROR",
+                        ),
+                      ],
+                    ),
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        FontAwesomeIcons.clock,
-                        color: Color(0xFFFF003D),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        widget.time != null
-                            ? DateFormat('HH:mm').format(widget.time!)
-                            : "ERROR",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ],
+                  Expanded(
+                    flex: 1,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.clock,
+                          color: Color(0xFFFF003D),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          widget.time != null
+                              ? DateFormat('HH:mm').format(widget.time!)
+                              : "ERROR",
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),
               SizedBox(
-                height: 16,
+                height: 32,
               ),
               Text(
                 "Patient's information",
@@ -128,23 +115,28 @@ class _BookingAppointmentScreenState extends State<BookingAppointmentScreen> {
                     fontWeight: FontWeight.w700,
                     color: Colors.black),
               ),
+              SizedBox(
+                height: 16,
+              ),
               TextField(
                 controller: fullNameTextController,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 decoration: const InputDecoration(
-                    fillColor: Color.fromARGB(255, 241, 240, 240),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                      borderSide: BorderSide(color: Colors.transparent),
-                    ),
-                    filled: true,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(50))),
-                    hintText: 'Full name',
-                    hintStyle: TextStyle(
-                      fontSize: 14,
-                      color: Color.fromARGB(57, 50, 50, 50),
-                    )),
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  filled: true,
+                  fillColor: Color(0xFFFFFFFF),
+                  hintText: 'Fullname',
+                  hintStyle: TextStyle(color: Colors.black38),
+                  border: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(width: 2.0, color: Colors.transparent),
+                      borderRadius: BorderRadius.all(Radius.circular(40))),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(width: 2.0, color: Colors.transparent),
+                      borderRadius: BorderRadius.all(Radius.circular(40))),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                ),
                 onChanged: (String val) {
                   checkFulfillInfo();
                 },
@@ -154,22 +146,23 @@ class _BookingAppointmentScreenState extends State<BookingAppointmentScreen> {
               ),
               TextField(
                   controller: ageTextController,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   decoration: const InputDecoration(
-                      fillColor: Color.fromARGB(255, 241, 240, 240),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(50)),
-                        borderSide: BorderSide(color: Colors.transparent),
-                      ),
-                      filled: true,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
-                          borderSide: BorderSide(color: Colors.transparent)),
-                      hintText: 'Age',
-                      hintStyle: TextStyle(
-                        fontSize: 14,
-                        color: Color.fromARGB(57, 50, 50, 50),
-                      )),
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    filled: true,
+                    fillColor: Color(0xFFFFFFFF),
+                    hintText: 'Age',
+                    hintStyle: TextStyle(color: Colors.black38),
+                    border: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(width: 2.0, color: Colors.transparent),
+                        borderRadius: BorderRadius.all(Radius.circular(40))),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(width: 2.0, color: Colors.transparent),
+                        borderRadius: BorderRadius.all(Radius.circular(40))),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  ),
                   onChanged: (String val) {
                     checkFulfillInfo();
                   }),
@@ -179,7 +172,7 @@ class _BookingAppointmentScreenState extends State<BookingAppointmentScreen> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
-                  color: Color.fromARGB(255, 241, 240, 240),
+                  color: Colors.white,
                   border: Border.all(
                       style: BorderStyle.solid,
                       width: 0.80,
@@ -198,7 +191,7 @@ class _BookingAppointmentScreenState extends State<BookingAppointmentScreen> {
                           child: Text(
                             value,
                             style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.bold),
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                         );
                       }).toList(),
@@ -210,17 +203,13 @@ class _BookingAppointmentScreenState extends State<BookingAppointmentScreen> {
                       },
                       hint: Text(
                         'Gender',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color.fromARGB(57, 50, 50, 50),
-                        ),
                       ),
                     ),
                   ),
                 ),
               ),
               SizedBox(
-                height: 16,
+                height: 24,
               ),
               Text(
                 "Problem detail",
@@ -230,25 +219,27 @@ class _BookingAppointmentScreenState extends State<BookingAppointmentScreen> {
                     color: Colors.black),
               ),
               SizedBox(
-                height: 8,
+                height: 16,
               ),
               TextField(
                 controller: problemTextController,
                 decoration: const InputDecoration(
-                    fillColor: Color.fromARGB(255, 241, 240, 240),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide: BorderSide(color: Colors.transparent),
-                    ),
-                    filled: true,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    hintText: 'What problem do you have?',
-                    hintStyle: TextStyle(
-                      fontSize: 14,
-                      color: Color.fromARGB(57, 50, 50, 50),
-                    )),
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  filled: true,
+                  fillColor: Color(0xFFFFFFFF),
+                  hintText: 'What problem do you have?',
+                  hintStyle: TextStyle(color: Colors.black38),
+                  border: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(width: 2.0, color: Colors.transparent),
+                      borderRadius: BorderRadius.all(Radius.circular(16))),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(width: 2.0, color: Colors.transparent),
+                      borderRadius: BorderRadius.all(Radius.circular(16))),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                ),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 keyboardType: TextInputType.multiline,
                 minLines: 4,
                 maxLines: null,
@@ -281,7 +272,7 @@ class _BookingAppointmentScreenState extends State<BookingAppointmentScreen> {
     return BottomAppBar(
       elevation: 0,
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         child: ElevatedButton(
           onPressed: disableButton
               ? null
@@ -308,7 +299,7 @@ class _BookingAppointmentScreenState extends State<BookingAppointmentScreen> {
           style: ButtonStyle(
               backgroundColor: disableButton
                   ? null
-                  : MaterialStateProperty.all(Color(0xFf2563EB)),
+                  : MaterialStateProperty.all(Color(0xFF4702A2)),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0),

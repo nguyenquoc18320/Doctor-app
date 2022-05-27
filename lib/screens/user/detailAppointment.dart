@@ -43,6 +43,7 @@ class DetailAppointmentScreen extends StatelessWidget {
               controller.doctor.value == null)
           ? Scaffold()
           : Scaffold(
+              backgroundColor: Colors.white,
               appBar: AppBar(
                   backgroundColor: Colors.white,
                   elevation: 0,
@@ -109,7 +110,7 @@ class DetailAppointmentScreen extends StatelessWidget {
                                             controller.doctor.value!.lastName,
                                         style: TextStyle(
                                             fontSize: 16,
-                                            color: Color(0xFF2563EB),
+                                            color: Color(0xFF4702A2),
                                             fontWeight: FontWeight.w900),
                                       ),
                                     ),
@@ -137,8 +138,8 @@ class DetailAppointmentScreen extends StatelessWidget {
                                   child: IconButton(
                                       onPressed: () {},
                                       icon: Icon(
-                                        Icons.message,
-                                        color: Colors.blue,
+                                        FontAwesomeIcons.solidCommentDots,
+                                        color: Color(0xFF4702A2),
                                         size: 30,
                                       )),
                                 ),
@@ -180,7 +181,7 @@ class DetailAppointmentScreen extends StatelessWidget {
           Text(
             'Date & time information',
             style: TextStyle(
-                color: Color(0xFF2563EB),
+                color: Color(0xFF4702A2),
                 fontSize: 16,
                 fontWeight: FontWeight.w700),
           ),
@@ -190,53 +191,50 @@ class DetailAppointmentScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        FontAwesomeIcons.calendarCheck,
-                        color: Color(0xFF2563EB),
-                        size: 25,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        DateFormat('dd/MM/yyyy')
-                            .format(controller.appointment.value!.time),
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
-                ],
+              Expanded(
+                flex: 1,
+                child: Row(
+                  children: [
+                    Icon(
+                      FontAwesomeIcons.calendarCheck,
+                      color: Color(0xFF4702A2),
+                      size: 25,
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      DateFormat('dd/MM/yyyy')
+                          .format(controller.appointment.value!.time),
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(
-                    FontAwesomeIcons.clock,
-                    color: Color(0xFFFF003D),
-                    size: 25,
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    controller.appointment.value!.time != null
-                        ? DateFormat('HH:mm')
-                            .format(controller.appointment.value!.time)
-                        : "ERROR",
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ],
+              Expanded(
+                flex: 1,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      FontAwesomeIcons.clock,
+                      color: Color(0xFFF59591),
+                      size: 25,
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      controller.appointment.value!.time != null
+                          ? DateFormat('HH:mm')
+                              .format(controller.appointment.value!.time)
+                          : "ERROR",
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
               )
             ],
           ),
@@ -255,7 +253,7 @@ class DetailAppointmentScreen extends StatelessWidget {
           Text(
             'Patient information',
             style: TextStyle(
-                color: Color(0xFF2563EB),
+                color: Color(0xFF4702A2),
                 fontSize: 16,
                 fontWeight: FontWeight.w700),
           ),
@@ -265,16 +263,14 @@ class DetailAppointmentScreen extends StatelessWidget {
           Row(
             children: [
               SizedBox(
-                width: 64,
+                width: 80,
                 child: Text(
-                  'Full name',
-                  style: TextStyle(fontSize: 14, color: Color(0xFF6A6A6A)),
+                  'Fullname',
                 ),
               ),
               SizedBox(width: 24),
               Text(
                 ': ${controller.appointment.value!.name}',
-                style: TextStyle(fontSize: 14),
               )
             ],
           ),
@@ -284,16 +280,14 @@ class DetailAppointmentScreen extends StatelessWidget {
           Row(
             children: [
               SizedBox(
-                width: 64,
+                width: 80,
                 child: Text(
                   'Age',
-                  style: TextStyle(fontSize: 14, color: Color(0xFF6A6A6A)),
                 ),
               ),
               SizedBox(width: 24),
               Text(
                 ': ${controller.appointment.value!.age}',
-                style: TextStyle(fontSize: 14),
               )
             ],
           ),
@@ -303,16 +297,14 @@ class DetailAppointmentScreen extends StatelessWidget {
           Row(
             children: [
               SizedBox(
-                width: 64,
+                width: 80,
                 child: Text(
                   'Gender',
-                  style: TextStyle(fontSize: 14, color: Color(0xFF6A6A6A)),
                 ),
               ),
               SizedBox(width: 24),
               Text(
                 ': ${controller.appointment.value!.gender}',
-                style: TextStyle(fontSize: 14),
               )
             ],
           ),
@@ -334,7 +326,7 @@ class DetailAppointmentScreen extends StatelessWidget {
           Text(
             'Problem detail',
             style: TextStyle(
-                color: Color(0xFF2563EB),
+                color: Color(0xFF4702A2),
                 fontSize: 16,
                 fontWeight: FontWeight.w700),
           ),
@@ -343,7 +335,6 @@ class DetailAppointmentScreen extends StatelessWidget {
           ),
           Text(
             controller.appointment.value!.medicalCondition,
-            style: TextStyle(fontSize: 14, color: Color(0xFF6A6A6A)),
           )
         ],
       ),
@@ -363,7 +354,7 @@ class DetailAppointmentScreen extends StatelessWidget {
               Text(
                 "Doctor's Diagnosis",
                 style: TextStyle(
-                    color: Color(0xFF2563EB),
+                    color: Color(0xFF4702A2),
                     fontSize: 16,
                     fontWeight: FontWeight.w700),
               ),
@@ -385,7 +376,6 @@ class DetailAppointmentScreen extends StatelessWidget {
             controller.appointment.value!.result!.isNotEmpty
                 ? controller.appointment.value!.result!
                 : 'No Diagnosis',
-            style: TextStyle(fontSize: 14, color: Color(0xFF6A6A6A)),
           )
         ],
       ),
@@ -408,7 +398,7 @@ class DetailAppointmentScreen extends StatelessWidget {
                     ));
               },
               style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Color(0xFF00D186)),
+                  backgroundColor: MaterialStateProperty.all(Color(0xFF8856EB)),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),

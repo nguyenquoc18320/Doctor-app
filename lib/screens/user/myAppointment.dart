@@ -20,13 +20,13 @@ class myAppointmentScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xffEEEAFB),
         automaticallyImplyLeading: false,
         title: Row(children: [
           Text(
-            'Appointments',
+            'My Appointments',
             style: TextStyle(
-                fontSize: 20, color: Colors.black, fontWeight: FontWeight.w700),
+                color: Color(0xff4702A2), fontWeight: FontWeight.w700),
           )
         ]),
       ),
@@ -43,7 +43,7 @@ class myAppointmentScreen extends StatelessWidget {
             return Column(children: [
               setButton(context),
               SizedBox(
-                height: 10,
+                height: 16,
               ),
               dayRange(),
               Expanded(
@@ -101,9 +101,9 @@ class myAppointmentScreen extends StatelessWidget {
   Widget setButton(BuildContext context) {
     var selected = BoxDecoration(
         color: Colors.transparent,
-        border: Border(bottom: BorderSide(color: Color(0xFF2563EB))));
+        border: Border(bottom: BorderSide(color: Color(0xFF4702A2))));
 
-    var notSelected = BoxDecoration(color: Color(0xFFF7F7F7));
+    var notSelected = BoxDecoration(color: Color(0xFFEEEAFB));
 
     var elevatedButtonLayout = ButtonStyle(
         elevation: MaterialStateProperty.all<double>(0),
@@ -128,11 +128,10 @@ class myAppointmentScreen extends StatelessWidget {
                   child: Text(
                     'Upcoming',
                     style: TextStyle(
-                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: controller.isUpcomming.value
-                            ? Color(0xFF2563EB)
-                            : Color(0xFF8F8F8F)),
+                            ? Color(0xFF4702A2)
+                            : Color(0xFF52525B)),
                   )),
             ),
             Container(
@@ -148,11 +147,10 @@ class myAppointmentScreen extends StatelessWidget {
                   child: Text(
                     'Past',
                     style: TextStyle(
-                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: controller.past.value
-                            ? Color(0xFF2563EB)
-                            : Color(0xFF8F8F8F)),
+                            ? Color(0xFF4702A2)
+                            : Color(0xFF52525B)),
                   )),
             ),
             Container(
@@ -168,11 +166,10 @@ class myAppointmentScreen extends StatelessWidget {
                   child: Text(
                     'Canceled',
                     style: TextStyle(
-                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: controller.canceled.value
-                            ? Color(0xFF2563EB)
-                            : Color(0xFF8F8F8F)),
+                            ? Color(0xFF4702A2)
+                            : Color(0xFF52525B)),
                   )),
             )
           ],
@@ -212,8 +209,8 @@ Day range in 7 days
                 child: Center(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(0),
                       // border: Border.all(color: selected ? Colors.blue : Colors.transparent)
                     ),
                     child: ListView.builder(
@@ -251,8 +248,8 @@ Day range in 7 days
           Container(
             padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
             decoration: BoxDecoration(
-              color: selected ? Color(0xFF2563EB) : Colors.transparent,
-              borderRadius: BorderRadius.circular(15),
+              color: selected ? Color(0xFF8856EB) : Colors.transparent,
+              borderRadius: BorderRadius.circular(0),
               // border: Border.all(color: selected ? Colors.blue : Colors.transparent)
             ),
             width: 50,
@@ -262,8 +259,7 @@ Day range in 7 days
                   Text(DateFormat('dd').format(day),
                       style: TextStyle(
                           fontSize: 16,
-                          color:
-                              selected ? Colors.white : Colors.indigo.shade900,
+                          color: selected ? Colors.white : Color(0xff4702A2),
                           fontWeight: FontWeight.bold)),
                   // SizedBox(
                   //   height: 5,
@@ -271,7 +267,6 @@ Day range in 7 days
                   Text(
                     DateFormat('EEEE').format(day).toString().substring(0, 3),
                     style: TextStyle(
-                        fontSize: 14,
                         color: selected ? Colors.white : Colors.grey.shade600),
                   ),
                 ]),
@@ -323,7 +318,7 @@ Day range in 7 days
               width: constraints.maxWidth * 0.85,
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               decoration: BoxDecoration(
-                  color: Color.fromARGB(246, 241, 239, 239),
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: Color(0xFFECECEC))),
               child: Row(children: [
@@ -333,22 +328,22 @@ Day range in 7 days
                       ? Image.network(
                           globals.url + "/assets/" + doctor.avataId!,
                           headers: {"authorization": "Bearer " + globals.token},
-                          height: 60,
-                          width: 60,
+                          height: 72,
+                          width: 72,
                           // fit: BoxFit.fitWidth,
                         )
                       : Image.asset(
                           'assets/logo/small_logo.png',
-                          height: 60,
-                          width: 60,
+                          height: 72,
+                          width: 72,
                           // fit: BoxFit.fitWidth,
                         ),
                 ),
                 SizedBox(
-                  width: 10,
+                  width: 8,
                 ),
                 Container(
-                  width: constraints.maxWidth * 0.85 - 95,
+                  width: constraints.maxWidth * 0.85 - 108,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
