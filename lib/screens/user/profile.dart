@@ -77,33 +77,25 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   Widget build(BuildContext context) {
     checkFulfillInfo();
     return Scaffold(
-      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text('Update profile'),
+      ),
       body: SingleChildScrollView(
         child: Container(
             margin: EdgeInsets.only(top: 20),
             padding: EdgeInsets.only(top: 0, bottom: 50, right: 20, left: 20),
             child: Column(
               children: [
-                Row(children: [
-                  Image.asset('assets/logo/small_logo.jpg'),
-                  Text(
-                    'Profile',
-                    style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                  )
-                ]),
                 GestureDetector(
                   child: _avata_path.isEmpty != true
                       ? Image.file(
                           File(_avata_path),
-                          height: 100,
+                          height: 124,
                         )
                       : Image.network(
                           globals.url + "/assets/" + globals.user!.avataId!,
                           headers: {"authorization": "Bearer " + globals.token},
-                          height: 100,
+                          height: 124,
                         ),
                   onTap: () async {
                     var source = ImageSource.gallery;
@@ -257,7 +249,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 ),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.lightBlue,
+                      primary: Color(0xFF8856EB),
                       minimumSize: Size.fromHeight(50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
@@ -265,7 +257,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                     ),
                     onPressed: disableButton ? null : () => confirm(),
                     child: Text(
-                      'Confirm',
+                      'Update',
                       style: TextStyle(
                           fontSize: 16,
                           color: Colors.white,
