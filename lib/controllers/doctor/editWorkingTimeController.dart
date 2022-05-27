@@ -125,7 +125,7 @@ class EditWorkingTimeController extends GetxController {
       DateTime endday = DateTime(sevenNextDays[i].year, sevenNextDays[i].month,
           sevenNextDays[i].day, 23, 59, 0);
 
-      //check day is removed (status =fasle and wk.id = -1)
+      //check day is removed (status =fasle and wk.id != -1)
       if (statusDays.value[i] == false && wk.id != -1) {
         //get all appointments in day, if existing -> return error messs
         List<Appointment> apps = await appointment_API
@@ -143,9 +143,11 @@ class EditWorkingTimeController extends GetxController {
                 globals.user!.id ?? '',
                 startday,
                 DateTime(startday.year, startday.month, startday.day,
-                    wk.startTime.hour, wk.startTime.minute));
+                    wk.startTime.hour, wk.startTime.minute - 1));
 
         if (apps.isNotEmpty) {
+          print('start');
+          print(wk.day);
           errDays.add(startday);
         }
 
@@ -158,6 +160,7 @@ class EditWorkingTimeController extends GetxController {
                 endday);
 
         if (apps.isNotEmpty) {
+          print('end');
           errDays.add(startday);
         }
       }

@@ -44,10 +44,10 @@ class User {
         description: json['description'] ?? '');
   }
 
-  List<String> specialist = [
-    'Dental Specialist',
-    'Eye Specialist',
-    'Cardio Specialist',
-    'Pediatric'
-  ];
+  // List<String> specialist = [
+  //   'Dental Specialist',
+  //   'Eye Specialist',
+  //   'Cardio Specialist',
+  //   'Pediatric'
+  // ];
 }

@@ -35,7 +35,7 @@ class _DoctorListWidgetState extends State<DoctorListWidget> {
         _searchWidget(context),
         SizedBox(height: 10),
         _typesOfSpecialist(context),
-        SizedBox(height: 10),
+        // SizedBox(height: 10),
         _doctorListWidget(context)
       ]),
     );
@@ -45,40 +45,44 @@ class _DoctorListWidgetState extends State<DoctorListWidget> {
   Widget _searchWidget(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.blue,
+      child: LayoutBuilder(builder: (context, constraints) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.black,
+                  size: 14,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
+            Container(
+              width: constraints.maxWidth * 0.8,
+              child: TextField(
+                controller: searchTextController,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      // borderSide: const BorderSide(color: Colors.white, width: 2.0),
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    hintText: 'Search by first name or last name',
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        searchText = searchTextController.text;
+                        doctorList =
+                            getDoctorList(widget.specialist, searchText);
+                        setState(() {});
+                      },
+                      icon: Icon(Icons.search),
+                    )),
+                style: TextStyle(fontSize: 14),
               ),
-              onPressed: () {
-                Navigator.pop(context);
-              }),
-          Container(
-            width: 320,
-            child: TextField(
-              controller: searchTextController,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    // borderSide: const BorderSide(color: Colors.white, width: 2.0),
-                    borderRadius: BorderRadius.circular(25.0),
-                  ),
-                  hintText: 'Search by first name or last name',
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      searchText = searchTextController.text;
-                      doctorList = getDoctorList(widget.specialist, searchText);
-                      setState(() {});
-                    },
-                    icon: Icon(Icons.search),
-                  )),
-              style: TextStyle(fontSize: 16),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+      }),
     );
   }
 
@@ -159,7 +163,7 @@ class _DoctorListWidgetState extends State<DoctorListWidget> {
         child: Text(
           specialist.name.split(' Specialist')[0],
           style: TextStyle(
-              fontSize: 16,
+              fontSize: 14,
               color:
                   selected ? Colors.white : Color.fromARGB(255, 10, 119, 244),
               fontWeight: FontWeight.bold),
@@ -175,7 +179,7 @@ class _DoctorListWidgetState extends State<DoctorListWidget> {
           future: doctorList,
           builder: (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return Wrap(children: [CircularProgressIndicator()]);
             } else if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasData) {
                 print('Length: ' + snapshot.data!.length.toString());
@@ -234,26 +238,30 @@ class _DoctorListWidgetState extends State<DoctorListWidget> {
               SizedBox(
                 width: 10,
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    user.firstName + ' ' + user.lastName,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    user.title ?? '',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  Text(
-                    user.location,
-                    style: TextStyle(fontSize: 16),
-                  )
-                ],
+              Flexible(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      user.firstName + ' ' + user.lastName,
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      user.title ?? '',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    Text(
+                      user.location,
+                      style: TextStyle(fontSize: 16),
+                      maxLines: 2,
+                    )
+                  ],
+                ),
               )
             ]),
           ),

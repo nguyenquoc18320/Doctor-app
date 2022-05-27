@@ -1,4 +1,5 @@
 import 'package:doctor_app/screens/doctor/appointments.dart';
+import 'package:doctor_app/screens/doctor/home.dart';
 import 'package:doctor_app/screens/doctor/settings.dart';
 import 'package:doctor_app/screens/doctor/workingTimeInfo.dart';
 import 'package:flutter/material.dart';
@@ -17,29 +18,50 @@ class BottomNavigationBarCustom extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
+          icon: Icon(
+            FontAwesomeIcons.house,
+            size: 24,
+          ),
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(FontAwesomeIcons.businessTime),
+          icon: Icon(
+            FontAwesomeIcons.businessTime,
+            size: 24,
+          ),
           label: 'WorkingTime',
         ),
         BottomNavigationBarItem(
-          icon: Icon(FontAwesomeIcons.calendarDay),
+          icon: Icon(
+            FontAwesomeIcons.calendarDay,
+            size: 24,
+          ),
           label: 'Appointments',
         ),
         BottomNavigationBarItem(
-          icon: Icon(FontAwesomeIcons.message),
+          icon: Icon(
+            FontAwesomeIcons.message,
+            size: 24,
+          ),
           label: 'Message',
         ),
         BottomNavigationBarItem(
-          icon: Icon(FontAwesomeIcons.user),
+          icon: Icon(
+            FontAwesomeIcons.user,
+            size: 24,
+          ),
           label: 'Profile',
         ),
       ],
       currentIndex: currentIndex,
+      selectedItemColor: Color(0xFF3B82F6),
+      unselectedItemColor: Color(0xFFBFDBFE),
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
       onTap: (index) {
         if (index == 0) {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => HomeDoctorScreen()));
         } else if (index == 1) {
           Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => WorkingTimeScreen()));
