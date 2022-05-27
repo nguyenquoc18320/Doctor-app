@@ -24,6 +24,17 @@ class UserFirebaseSearch extends SearchDelegate<UserFirebase?> {
   }
 
   @override
+  ThemeData appBarTheme(BuildContext context) {
+    // TODO: implement appBarTheme
+    return super.appBarTheme(context).copyWith(
+          appBarTheme: AppBarTheme(
+              elevation: 0.5,
+              backgroundColor: Color(0xffffffff),
+              foregroundColor: Colors.black),
+        );
+  }
+
+  @override
   Widget? buildLeading(BuildContext context) {
     // TODO: implement buildLeading
 
@@ -88,7 +99,7 @@ class UserFirebaseSearch extends SearchDelegate<UserFirebase?> {
                       builder: (BuildContext context) =>
                           ResultUser(receiver: suggestion)));
             },
-            contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             leading: CircleAvatar(
               radius: 24.0,
               backgroundImage: NetworkImage(suggestion.avatar_url),

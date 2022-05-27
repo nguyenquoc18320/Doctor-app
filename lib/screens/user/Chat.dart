@@ -5,8 +5,8 @@ import 'package:doctor_app/models/chat_message.dart';
 import 'package:doctor_app/models/chat_room.dart';
 import 'package:doctor_app/models/userFirebase.dart';
 import 'package:doctor_app/services/database.dart';
+import 'package:doctor_app/widgets/base/TextFieldPrimary.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 var loginUser = FirebaseAuth.instance.currentUser;
@@ -122,31 +122,37 @@ class _ResultUserState extends State<ResultUser> {
             itemBuilder: (context, index) {
               QueryDocumentSnapshot x = snapshot.data!.docs[index];
               return ListTile(
-                title: Column(
-                  crossAxisAlignment: loginUser!.uid == x['sender']
-                      ? CrossAxisAlignment.end
-                      : CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: Color(0xFF3A3C30).withOpacity(0.2),
-                            width: 1,
-                          ),
-                          color: loginUser!.uid == x['sender']
-                              ? Colors.white
-                              : Color(0xFFFDDBE0).withOpacity(0.5),
-                        ),
-                        child: Text(x['message'])),
-                  ],
-                ),
-                // subtitle: Text(x['user']),
+                dense: true,
+                title: _messageWidget(
+                    loginUser!.uid == x['sender'], x['message'], x['time']),
               );
             });
       },
+    );
+  }
+
+  Widget _messageWidget(isSender, content, time) {
+    return Column(
+      crossAxisAlignment:
+          isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      children: [
+        Container(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: Color(0xFF3A3C30).withOpacity(0.2),
+                width: 1,
+              ),
+              color: isSender ? Color(0xFF8856EB) : Color(0xFFF59591),
+            ),
+            child: Text(
+              content,
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: isSender ? Colors.white : Colors.black),
+            )),
+      ],
     );
   }
 
@@ -198,51 +204,55 @@ class _ResultUserState extends State<ResultUser> {
               physics: ScrollPhysics(),
             )),
             Container(
-              padding: EdgeInsets.only(top: 6, left: 16, right: 4, bottom: 6),
+              padding: EdgeInsets.only(top: 8, left: 16, right: 4, bottom: 8),
               child: Row(
                 children: [
                   Expanded(
                       child: Container(
                           padding:
                               EdgeInsets.symmetric(horizontal: 2, vertical: 8),
-                          child: TextFormField(
-                            controller: message,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Color(0xFFFFFFFF),
-                              hintText: "Messages",
-                              hintStyle: TextStyle(color: Colors.black38),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 1.0,
-                                      color:
-                                          Color(0xFF3A3C30).withOpacity(0.2)),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(24.0))),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 1.0,
-                                      color:
-                                          Color(0xFF3A3C30).withOpacity(0.2)),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(24.0))),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 1.0,
-                                      color:
-                                          Color(0xFF3A3C30).withOpacity(0.2)),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(24.0))),
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 16),
-                            ),
-                          ))),
+                          child: TextFieldPrimary(
+                            title: 'Messages',
+                            textController: message,
+                          )
+                          // child: TextFormField(
+                          //   controller: message,
+                          //   decoration: InputDecoration(
+                          //     filled: true,
+                          //     fillColor: Color(0xFFFFFFFF),
+                          //     hintText: "Messages",
+                          //     hintStyle: TextStyle(color: Colors.black38),
+                          //     border: OutlineInputBorder(
+                          //         borderSide: BorderSide(
+                          //             width: 1.0,
+                          //             color:
+                          //                 Color(0xFF3A3C30).withOpacity(0.2)),
+                          //         borderRadius:
+                          //             BorderRadius.all(Radius.circular(24.0))),
+                          //     focusedBorder: OutlineInputBorder(
+                          //         borderSide: BorderSide(
+                          //             width: 1.0,
+                          //             color:
+                          //                 Color(0xFF3A3C30).withOpacity(0.2)),
+                          //         borderRadius:
+                          //             BorderRadius.all(Radius.circular(24.0))),
+                          //     enabledBorder: OutlineInputBorder(
+                          //         borderSide: BorderSide(
+                          //             width: 1.0,
+                          //             color:
+                          //                 Color(0xFF3A3C30).withOpacity(0.2)),
+                          //         borderRadius:
+                          //             BorderRadius.all(Radius.circular(24.0))),
+                          //     contentPadding: EdgeInsets.symmetric(
+                          //         horizontal: 16, vertical: 16),
+                          //   ),
+                          // )
+                          )),
                   IconButton(
                       onPressed: () async {
                         if (message.text == '') {
                           return;
                         }
-
                         await sendMessage();
                       },
                       icon: Icon(Icons.send,

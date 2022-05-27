@@ -3,16 +3,20 @@ import 'package:flutter/material.dart';
 class InputSearch extends StatelessWidget {
   String title;
   final textController;
-
+  VoidCallback cb_tap;
   InputSearch({
     Key? key,
     required this.title,
     required this.textController,
+    required this.cb_tap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onTap: () {
+        cb_tap();
+      },
       controller: textController,
       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
       decoration: InputDecoration(

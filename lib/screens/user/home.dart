@@ -126,7 +126,10 @@ class _HomeWidgetState extends State<HomeWidget> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: InputSearch(
-                  title: 'Search doctor', textController: searchController),
+                title: 'Search doctor',
+                textController: searchController,
+                cb_tap: () {},
+              ),
             ),
             upCommingAppointment(context),
             _specialistDoctorWidget(context),
