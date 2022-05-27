@@ -1,5 +1,6 @@
 import 'package:doctor_app/screens/doctor/updateProfile.dart';
 import 'package:doctor_app/screens/user/signIn/sign_in.dart';
+import 'package:doctor_app/widgets/base/BtnPrimary.dart';
 import 'package:doctor_app/widgets/doctor/bottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:doctor_app/globals.dart' as globals;
@@ -16,7 +17,7 @@ class SettingScreen extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: 16,
+                height: 96,
               ),
               ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(100)),
@@ -33,74 +34,59 @@ class SettingScreen extends StatelessWidget {
                           height: 124,
                         )),
               SizedBox(
-                height: 16,
-              ),
-              Text(
-                globals.user!.email,
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-              ),
-              SizedBox(
-                height: 15,
+                height: 8,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Container(
-                    width: 150,
-                    child: GestureDetector(
-                      child: Center(
-                        child: Text(
-                          'Reset Password',
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Color(0xFf2563EB),
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UpdateProfileScreen(),
+                          ));
+                    },
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.create_rounded, color: Color(0xFf4702A2)),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            'Update info',
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Color(0xFf4702A2),
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ]),
                   ),
-                  Container(
-                    child: Text(
-                      '|',
-                      style: TextStyle(color: Color(0xFF8F8F8F)),
-                    ),
-                  ),
-                  Container(
-                    width: 150,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => UpdateProfileScreen(),
-                            ));
-                      },
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.create_rounded,
-                                color: Color(0xFF2563EB)),
-                            Text(
-                              'Update info',
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xFf2563EB),
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ]),
-                    ),
-                  )
                 ],
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              Center(
+                child: Text(
+                  globals.user!.email,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
               ),
               SizedBox(
                 height: 32,
               ),
-              GestureDetector(
-                onTap: () {
+              BtnPrimary(
+                title: 'Logout',
+                cb_press: () {
                   showDialog(
                       context: context,
                       builder: (BuildContext context) => AlertDialog(
-                            title: Text('Confirmation'),
+                            title: Text(
+                              'Confirmation',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                             content: Text('Are you sure you want to logout?'),
                             actions: <Widget>[
                               TextButton(
@@ -125,34 +111,12 @@ class SettingScreen extends StatelessWidget {
                                 },
                                 child: const Text('Cancel',
                                     style: TextStyle(
-                                        fontSize: 14, color: Colors.blue)),
+                                        fontSize: 14,
+                                        color: Color(0xff82CABE))),
                               ),
                             ],
                           ));
                 },
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        FontAwesomeIcons.arrowRightFromBracket,
-                        color: Colors.red,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        'Logout',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                ),
               ),
               SizedBox(
                 height: 32,
@@ -177,9 +141,23 @@ class SettingScreen extends StatelessWidget {
         Text(
           'My Information',
           style: TextStyle(
-              color: Color(0xFF2563EB),
+              color: Color(0xFF4702A2),
               fontWeight: FontWeight.bold,
               fontSize: 18),
+        ),
+        SizedBox(
+          height: 24,
+        ),
+        Row(
+          children: [
+            Container(
+              width: 96,
+              child: Text(
+                'Fullname:',
+              ),
+            ),
+            Text(globals.user!.firstName + ' ' + globals.user!.lastName),
+          ],
         ),
         SizedBox(
           height: 16,
@@ -189,42 +167,16 @@ class SettingScreen extends StatelessWidget {
             Container(
               width: 96,
               child: Text(
-                'Fullname:',
-                style: TextStyle(fontSize: 14, color: Color(0xFF6A6A6A)),
-              ),
-            ),
-            Text(
-              globals.user!.firstName + ' ' + globals.user!.lastName,
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 8,
-        ),
-        Row(
-          children: [
-            Container(
-              width: 96,
-              child: Text(
                 'Specialist:',
-                style: TextStyle(fontSize: 14, color: Color(0xFF6A6A6A)),
               ),
             ),
             Text(
               globals.user!.title ?? '',
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400),
             ),
           ],
         ),
         SizedBox(
-          height: 8,
+          height: 16,
         ),
         Row(
           children: [
@@ -232,7 +184,6 @@ class SettingScreen extends StatelessWidget {
               width: 96,
               child: Text(
                 'Age:',
-                style: TextStyle(fontSize: 14, color: Color(0xFF6A6A6A)),
               ),
             ),
             Text(
@@ -240,15 +191,11 @@ class SettingScreen extends StatelessWidget {
                   ? (DateTime.now().year - globals.user!.birthdate!.year)
                       .toString()
                   : '',
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400),
             ),
           ],
         ),
         SizedBox(
-          height: 8,
+          height: 16,
         ),
         Row(
           children: [
@@ -256,20 +203,15 @@ class SettingScreen extends StatelessWidget {
               width: 96,
               child: Text(
                 'Gender:',
-                style: TextStyle(fontSize: 14, color: Color(0xFF6A6A6A)),
               ),
             ),
             Text(
               globals.user!.gender,
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400),
             ),
           ],
         ),
         SizedBox(
-          height: 8,
+          height: 16,
         ),
         Row(
           children: [
@@ -277,15 +219,10 @@ class SettingScreen extends StatelessWidget {
               width: 96,
               child: Text(
                 'Address:',
-                style: TextStyle(fontSize: 14, color: Color(0xFF6A6A6A)),
               ),
             ),
             Text(
               globals.user!.location,
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400),
             ),
           ],
         ),
@@ -294,17 +231,19 @@ class SettingScreen extends StatelessWidget {
   }
 
   Widget about() {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Text(
         'About',
         style: TextStyle(
-            color: Color(0xFF2563EB),
+            color: Color(0xFF4702A2),
             fontWeight: FontWeight.bold,
             fontSize: 18),
       ),
+      SizedBox(
+        height: 16,
+      ),
       Text(
         globals.user!.description ?? '',
-        style: TextStyle(fontSize: 14, color: Color(0xFF6A6A6A)),
       )
     ]);
   }

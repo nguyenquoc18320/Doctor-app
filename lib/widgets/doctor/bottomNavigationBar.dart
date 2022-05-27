@@ -54,8 +54,8 @@ class BottomNavigationBarCustom extends StatelessWidget {
         ),
       ],
       currentIndex: currentIndex,
-      selectedItemColor: Color(0xFF3B82F6),
-      unselectedItemColor: Color(0xFFBFDBFE),
+      selectedItemColor: Color(0xFF4702A2),
+      unselectedItemColor: Color(0xFF82CABE),
       showSelectedLabels: false,
       showUnselectedLabels: false,
       onTap: (index) {
