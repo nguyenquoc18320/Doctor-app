@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:doctor_app/screens/doctor/appointments.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_app/screens/doctor/home.dart';
 import 'package:doctor_app/screens/forgot_password.dart';
 import 'package:doctor_app/screens/sign_up.dart';
 import 'package:doctor_app/screens/user/home.dart';
@@ -45,13 +46,13 @@ class _SignInWidgetState extends State<SignInWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
-    if (emailError == true && openLoading == true) {
-      Future.delayed(Duration.zero, () async {
-        Navigator.pop(context);
+    Future.delayed(Duration.zero, () async {
+      if (emailError == true && openLoading == true) {
+        print('close jjj');
+        Navigator.of(context, rootNavigator: true).pop();
         openLoading = false;
-      });
-    }
+      }
+    });
 
     return Scaffold(
       appBar: AppBar(backgroundColor: Colors.white),
@@ -156,12 +157,18 @@ class _SignInWidgetState extends State<SignInWidget> {
                 BtnPrimary(
                     title: 'Log In',
                     pressFn: () {
-                      // setState(() {
-                      //   openLoading = true;
-                      //   loading(ctx);
-                      // });
-                      _SignIn(emailTextController.text,
-                          passwordTextController.text);
+                      setState(() {
+                        Future.delayed(Duration.zero, () async {
+                          if (openLoading == false) {
+                            print('open');
+                            openLoading = true;
+                            loading(context);
+                          }
+                        });
+
+                        _SignIn(emailTextController.text,
+                            passwordTextController.text, context);
+                      });
                     }),
                 // ElevatedButton(
                 //     style: ElevatedButton.styleFrom(
@@ -231,7 +238,7 @@ class _SignInWidgetState extends State<SignInWidget> {
   /*
   SignIn function
   */
-  void _SignIn(String email, String password) async {
+  void _SignIn(String email, String password, BuildContext context) async {
     //check empty field
     emailError = (email.isEmpty == true);
     passwordError = (password.isEmpty == true);
@@ -268,11 +275,6 @@ class _SignInWidgetState extends State<SignInWidget> {
             var roleJson = jsonDecode(response.body)['data'];
             String roleName = roleJson['name'];
 
-            if (openLoading == true) {
-              Navigator.pop(context);
-              openLoading = false;
-            }
-
             //check role
             if (roleController.toString().split('.').last.toLowerCase() ==
                     'doctor' &&
@@ -281,7 +283,7 @@ class _SignInWidgetState extends State<SignInWidget> {
               //as doctor
               globals.user = User.fromJson(userJson);
 
-              globals.user!.role = 'user';
+              globals.user!.role = 'doctor';
 
               /* 
                 TODO - login firebase 
@@ -303,6 +305,11 @@ class _SignInWidgetState extends State<SignInWidget> {
                 if (value != null) {
                   prefs.setBool("isLoggedIn", true);
 
+                  if (openLoading == true) {
+                    openLoading = false;
+                    print('close');
+                    Navigator.of(context, rootNavigator: true).pop();
+                  }
                   //login successfully
                   Navigator.push(
                     context,
@@ -344,6 +351,12 @@ class _SignInWidgetState extends State<SignInWidget> {
                 if (value != null) {
                   prefs.setBool("isLoggedIn", true);
 
+                  if (openLoading == true) {
+                    openLoading = false;
+                    print('close');
+                    Navigator.of(context, rootNavigator: true).pop();
+                  }
+
                   //login successfully
                   Navigator.push(
                     context,
@@ -370,6 +383,7 @@ class _SignInWidgetState extends State<SignInWidget> {
         passwordError = true;
       }
     }
+    // print('continue');
     setState(() {});
   }
 

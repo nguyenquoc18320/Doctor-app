@@ -1,6 +1,7 @@
 import 'package:doctor_app/controllers/doctor/appointmentDetailController.dart';
 import 'package:doctor_app/widgets/loadingWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:doctor_app/globals.dart' as globals;
 import 'package:intl/intl.dart';
@@ -43,7 +44,7 @@ class AppointmentDetailScreen extends StatelessWidget {
       }
 
       if (controller.doneProcess.value && openLoading) {
-        Navigator.pop(context);
+        Navigator.of(context, rootNavigator: true).pop();
         openLoading = false;
       }
 
@@ -52,123 +53,131 @@ class AppointmentDetailScreen extends StatelessWidget {
           ? Scaffold()
           : Scaffold(
               appBar: AppBar(
-                  centerTitle: true,
                   backgroundColor: Colors.white,
                   elevation: 0,
                   leading: IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.blue),
+                    icon: Icon(Icons.arrow_back_ios, color: Colors.black),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
-                  title: Text('Appointment Details',
+                  title: Text('Appointment Detail',
                       style: TextStyle(
-                          color: Colors.indigo.shade900,
-                          fontSize: 23,
+                          color: Colors.black,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold))),
               body: SingleChildScrollView(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: Colors.blue)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20),
-                                        bottomLeft: Radius.circular(20)),
-                                    child: controller
-                                            .user.value!.avataId!.isNotEmpty
-                                        ? Image.network(
-                                            globals.url +
-                                                "/assets/" +
-                                                controller.user.value!.avataId!,
-                                            headers: {
-                                              "authorization":
-                                                  "Bearer " + globals.token
-                                            },
-                                            height: 100,
-                                            fit: BoxFit.fitWidth,
-                                          )
-                                        : Image.asset(
-                                            'assets/logo/small_logo.png',
-                                            height: 100,
-                                            fit: BoxFit.fitWidth,
-                                          ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        controller.user.value!.firstName +
-                                            ' ' +
-                                            controller.user.value!.lastName,
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Container(
-                                        // width: 250,
-                                        child: Text(
-                                          controller.appointment.value!.status
-                                              .toUpperCase(),
+                        LayoutBuilder(builder: (context, constraints) {
+                          return Container(
+                            width: constraints.maxWidth,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(20),
+                                          bottomLeft: Radius.circular(20)),
+                                      child: controller
+                                              .user.value!.avataId!.isNotEmpty
+                                          ? Image.network(
+                                              globals.url +
+                                                  "/assets/" +
+                                                  controller
+                                                      .user.value!.avataId!,
+                                              headers: {
+                                                "authorization":
+                                                    "Bearer " + globals.token
+                                              },
+                                              height: 80,
+                                              width: 80,
+                                            )
+                                          : Image.asset(
+                                              'assets/logo/small_logo.png',
+                                              height: 80,
+                                              width: 80,
+                                            ),
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          controller.user.value!.firstName +
+                                              ' ' +
+                                              controller.user.value!.lastName,
                                           style: TextStyle(
                                               fontSize: 16,
-                                              color: controller.appointment
-                                                              .value!.status ==
-                                                          'pending' ||
-                                                      controller.appointment
-                                                              .value!.status ==
-                                                          'cancel'
-                                                  ? Colors.red
-                                                  : Colors.green),
+                                              color: Color(0xFF2563EB),
+                                              fontWeight: FontWeight.bold),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                width: 50,
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.message,
-                                      color: Colors.blue,
-                                      size: 30,
-                                    )),
-                              )
-                            ],
-                          ),
-                        ),
+                                        SizedBox(
+                                          height: 8,
+                                        ),
+                                        Container(
+                                          // width: 250,
+                                          child: Text(
+                                            controller.appointment.value!.status
+                                                .toUpperCase(),
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: controller
+                                                                .appointment
+                                                                .value!
+                                                                .status ==
+                                                            'pending' ||
+                                                        controller
+                                                                .appointment
+                                                                .value!
+                                                                .status ==
+                                                            'cancel'
+                                                    ? Colors.red
+                                                    : Colors.green),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  width: 50,
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.message,
+                                        color: Colors.blue,
+                                        size: 30,
+                                      )),
+                                )
+                              ],
+                            ),
+                          );
+                        }),
                         SizedBox(
-                          height: 20,
+                          height: 16,
                         ),
                         visitTimeWidget(),
                         SizedBox(
-                          height: 20,
+                          height: 16,
                         ),
                         patientInfoWidget(),
                         SizedBox(
-                          height: 20,
+                          height: 16,
+                        ),
+                        problemtWidget(),
+                        SizedBox(
+                          height: 16,
                         ),
                         resultWidget()
                       ])),
@@ -182,33 +191,74 @@ class AppointmentDetailScreen extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
       decoration: BoxDecoration(
-          border: Border.symmetric(
-              horizontal: BorderSide(width: 1.0, color: Colors.grey.shade300))),
+          border:
+              Border(top: BorderSide(width: 1.0, color: Colors.grey.shade300))),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Visit time',
+            'Date & time information',
             style: TextStyle(
-                color: Colors.indigo.shade900,
-                fontSize: 22,
-                fontWeight: FontWeight.bold),
+                color: Color(0xFF2563EB),
+                fontSize: 16,
+                fontWeight: FontWeight.w700),
           ),
           SizedBox(
-            height: 10,
+            height: 16,
           ),
-          Text(
-            DateFormat('EEEE, dd MMMM yyyy')
-                .format(controller.appointment.value!.time),
-            style: TextStyle(fontSize: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.calendarCheck,
+                        color: Color(0xFF2563EB),
+                        size: 25,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        DateFormat('dd/MM/yyyy')
+                            .format(controller.appointment.value!.time),
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    FontAwesomeIcons.clock,
+                    color: Color(0xFFFF003D),
+                    size: 25,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    controller.appointment.value!.time != null
+                        ? DateFormat('HH:mm')
+                            .format(controller.appointment.value!.time)
+                        : "ERROR",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ],
+              )
+            ],
           ),
-          SizedBox(
-            height: 10,
-          ),
-          Text(
-            DateFormat('HH:mm').format(controller.appointment.value!.time),
-            style: TextStyle(fontSize: 16),
-          )
         ],
       ),
     );
@@ -218,52 +268,51 @@ class AppointmentDetailScreen extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
-      decoration: BoxDecoration(
-          border: Border.symmetric(
-              horizontal: BorderSide(width: 1.0, color: Colors.grey.shade300))),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Patient information',
             style: TextStyle(
-                color: Colors.indigo.shade900,
-                fontSize: 22,
-                fontWeight: FontWeight.bold),
+                color: Color(0xFF2563EB),
+                fontSize: 16,
+                fontWeight: FontWeight.w700),
           ),
           SizedBox(
-            height: 10,
+            height: 16,
           ),
           Row(
             children: [
               SizedBox(
-                width: 100,
+                width: 64,
                 child: Text(
                   'Full name',
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 14, color: Color(0xFF6A6A6A)),
                 ),
               ),
+              SizedBox(width: 24),
               Text(
                 ': ${controller.appointment.value!.name}',
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 14),
               )
             ],
           ),
           SizedBox(
-            height: 10,
+            height: 8,
           ),
           Row(
             children: [
               SizedBox(
-                width: 100,
+                width: 64,
                 child: Text(
                   'Age',
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 14, color: Color(0xFF6A6A6A)),
                 ),
               ),
+              SizedBox(width: 24),
               Text(
                 ': ${controller.appointment.value!.age}',
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 14),
               )
             ],
           ),
@@ -273,41 +322,48 @@ class AppointmentDetailScreen extends StatelessWidget {
           Row(
             children: [
               SizedBox(
-                width: 100,
+                width: 64,
                 child: Text(
                   'Gender',
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 14, color: Color(0xFF6A6A6A)),
                 ),
               ),
+              SizedBox(width: 24),
               Text(
                 ': ${controller.appointment.value!.gender}',
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 14),
               )
             ],
           ),
           SizedBox(
             height: 10,
           ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 100,
-                child: Text(
-                  'Problem',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-              Text(': '),
-              Flexible(
-                child: Text(
-                  '${controller.appointment.value!.medicalCondition}',
-                  style: TextStyle(fontSize: 16),
-                  overflow: TextOverflow.visible,
-                ),
-              )
-            ],
+        ],
+      ),
+    );
+  }
+
+  Widget problemtWidget() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10),
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Problem detail',
+            style: TextStyle(
+                color: Color(0xFF2563EB),
+                fontSize: 16,
+                fontWeight: FontWeight.w700),
           ),
+          SizedBox(
+            height: 8,
+          ),
+          Text(
+            controller.appointment.value!.medicalCondition,
+            style: TextStyle(fontSize: 14, color: Color(0xFF6A6A6A)),
+          )
         ],
       ),
     );
@@ -318,22 +374,18 @@ class AppointmentDetailScreen extends StatelessWidget {
       return Container(
         padding: EdgeInsets.symmetric(vertical: 10),
         width: double.infinity,
-        decoration: BoxDecoration(
-            border: Border.symmetric(
-                horizontal:
-                    BorderSide(width: 1.0, color: Colors.grey.shade300))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Result',
+              'Diagnosis',
               style: TextStyle(
-                  color: Colors.indigo.shade900,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold),
+                  color: Color(0xFF2563EB),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700),
             ),
             SizedBox(
-              height: 10,
+              height: 8,
             ),
             Text(
               controller.appointment.value!.result ?? 'No result',
@@ -346,22 +398,18 @@ class AppointmentDetailScreen extends StatelessWidget {
       return Container(
         padding: EdgeInsets.symmetric(vertical: 10),
         width: double.infinity,
-        decoration: BoxDecoration(
-            border: Border.symmetric(
-                horizontal:
-                    BorderSide(width: 1.0, color: Colors.grey.shade300))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Result',
+              'Diagnosis',
               style: TextStyle(
-                  color: Colors.indigo.shade900,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold),
+                  color: Color(0xFF2563EB),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700),
             ),
             SizedBox(
-              height: 10,
+              height: 8,
             ),
             TextField(
               controller: resultTextController,
@@ -376,7 +424,7 @@ class AppointmentDetailScreen extends StatelessWidget {
 
   Widget bottombar(BuildContext context) {
     Widget cancelWidget = SizedBox(
-        width: 150,
+        width: 160,
         height: 50,
         child: ElevatedButton(
             onPressed: () {
@@ -472,10 +520,10 @@ class AppointmentDetailScreen extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       shape: StadiumBorder(),
-                      primary: Colors.blue,
+                      primary: Color(0xFF2563EB),
                     ),
                     child: Text(
-                      'Accept',
+                      'Approve',
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ))),
@@ -494,7 +542,7 @@ class AppointmentDetailScreen extends StatelessWidget {
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             cancelWidget,
             SizedBox(
-                width: 150,
+                width: 160,
                 height: 50,
                 child: ElevatedButton(
                     onPressed: () {
@@ -536,10 +584,10 @@ class AppointmentDetailScreen extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       shape: StadiumBorder(),
-                      primary: Colors.blue,
+                      primary: Color(0xFFFFC700),
                     ),
                     child: Text(
-                      'Done',
+                      'Write diagnosis',
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ))),

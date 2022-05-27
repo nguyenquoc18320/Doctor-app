@@ -36,7 +36,6 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
     return GetX<DoctorInfoController>(
       builder: (_) => Scaffold(
         appBar: AppBar(
-          // centerTitle: true,
           backgroundColor: Colors.white,
           elevation: 0,
           leading: IconButton(
@@ -67,7 +66,6 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
               LayoutBuilder(builder: (context, BoxConstraints constraints) {
                 return Container(
                   width: constraints.maxWidth,
-                  color: Colors.white,
                   child: Row(
                     children: [
                       ClipRRect(

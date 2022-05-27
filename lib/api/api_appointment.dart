@@ -346,6 +346,60 @@ Future<List<Appointment>> getDoctorUpcommingAppointments(
   }
 }
 
+//* get  upcomming appointments which accepted  to show for doctor
+Future<List<Appointment>> getDoctorAcceptedUpcommingAppointmentsForDay(
+    String doctorid, DateTime day) async {
+  DateFormat formatter = DateFormat('yyyy-MM-dd');
+
+  String url = '/items/Appointments?filter={"doctor" : { "_eq" : "' +
+      doctorid +
+      '"}, "status": { "_in" : [  "accepted"]}, "time" : {"_between": ["' +
+      formatter.format(day) +
+      '", "' +
+      formatter.format(day.add(Duration(days: 1))) +
+      '"]}}&sort=time';
+
+  http.Response response = await API_helper.get(url);
+
+  if (response.statusCode == 200) {
+    Map<String, dynamic> json = jsonDecode(response.body);
+
+    //convert into list
+    List<Appointment> appointments = List<Appointment>.from(
+        json['data'].map((data) => Appointment.fromJson(data)).toList());
+    return appointments;
+  } else {
+    return [];
+  }
+}
+
+//* get  pending appointments which accepted  to show for doctor
+Future<List<Appointment>> getpendinggAppointmentsFromday(
+    String doctorid, DateTime day) async {
+  DateFormat formatter = DateFormat('yyyy-MM-dd');
+
+  String url = '/items/Appointments?filter={"doctor" : { "_eq" : "' +
+      doctorid +
+      '"}, "status": { "_in" : [  "pending"]}, "time" : {"_between": ["' +
+      formatter.format(day) +
+      '", "' +
+      formatter.format(day.add(Duration(days: 7))) +
+      '"]}}&sort=time';
+
+  http.Response response = await API_helper.get(url);
+
+  if (response.statusCode == 200) {
+    Map<String, dynamic> json = jsonDecode(response.body);
+
+    //convert into list
+    List<Appointment> appointments = List<Appointment>.from(
+        json['data'].map((data) => Appointment.fromJson(data)).toList());
+    return appointments;
+  } else {
+    return [];
+  }
+}
+
 Future<List<Appointment>> getDoctorPastAppointments(
     String doctorid, int pageNumber) async {
   String url = '/items/Appointments?filter={"doctor" : { "_eq" : "' +

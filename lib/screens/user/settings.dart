@@ -10,146 +10,156 @@ class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 16,
-            ),
-            ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(100)),
-                child: globals.user!.avataId != null
-                    ? Image.network(
-                        globals.url + "/assets/" + globals.user!.avataId!,
-                        headers: {"authorization": "Bearer " + globals.token},
-                        height: 124,
-                        width: 124,
-                      )
-                    : Image.asset(
-                        'assets/logo/small_logo.png',
-                        width: 124,
-                        height: 124,
-                      )),
-            Center(
-              child: Text(
-                globals.user!.email,
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 16,
               ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Container(
-                  width: 150,
-                  child: GestureDetector(
-                    child: Center(
-                      child: Text(
-                        'Reset Password',
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Color(0xFf2563EB),
-                            fontWeight: FontWeight.bold),
+              ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(100)),
+                  child: globals.user!.avataId != null
+                      ? Image.network(
+                          globals.url + "/assets/" + globals.user!.avataId!,
+                          headers: {"authorization": "Bearer " + globals.token},
+                          height: 124,
+                          width: 124,
+                        )
+                      : Image.asset(
+                          'assets/logo/small_logo.png',
+                          width: 124,
+                          height: 124,
+                        )),
+              Center(
+                child: Text(
+                  globals.user!.email,
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                    width: 150,
+                    child: GestureDetector(
+                      child: Center(
+                        child: Text(
+                          'Reset Password',
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFf2563EB),
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Container(
-                  child: Text(
-                    '|',
-                    style: TextStyle(color: Color(0xFF8F8F8F)),
+                  Container(
+                    child: Text(
+                      '|',
+                      style: TextStyle(color: Color(0xFF8F8F8F)),
+                    ),
                   ),
-                ),
-                Container(
-                  width: 150,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ProfileWidget()));
-                    },
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(Icons.create_rounded, color: Color(0xFF2563EB)),
-                          Text(
-                            'Update info',
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Color(0xFf2563EB),
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ]),
-                  ),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 32,
-            ),
-            GestureDetector(
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                          title: Text('Confirmation'),
-                          content: Text('Are you sure you want to logout?'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () {
-                                globals.token = '';
-                                globals.refresh_token = '';
-                                globals.user = null;
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                        builder: (context) => SignInWidget()),
-                                    (Route<dynamic> route) => false);
-                              },
-                              child: const Text(
-                                'Logout',
-                                style: TextStyle(color: Colors.red),
+                  Container(
+                    width: 150,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ProfileWidget()));
+                      },
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.create_rounded,
+                                color: Color(0xFF2563EB)),
+                            Text(
+                              'Update info',
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Color(0xFf2563EB),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ]),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 32,
+              ),
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                            title: Text('Confirmation'),
+                            content: Text('Are you sure you want to logout?'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  globals.token = '';
+                                  globals.refresh_token = '';
+                                  globals.user = null;
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SignInWidget()),
+                                          (Route<dynamic> route) => false);
+                                },
+                                child: const Text(
+                                  'Logout',
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 14),
+                                ),
                               ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context, false);
-                              },
-                              child: const Text('Cancel'),
-                            ),
-                          ],
-                        ));
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      FontAwesomeIcons.arrowRightFromBracket,
-                      color: Colors.red,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'Logout',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    )
-                  ],
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context, false);
+                                },
+                                child: const Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.blue),
+                                ),
+                              ),
+                            ],
+                          ));
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.arrowRightFromBracket,
+                        color: Colors.red,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Logout',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 32,
-            ),
-            info()
-          ],
+              SizedBox(
+                height: 32,
+              ),
+              info()
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBarCustom(currentIndex: 3),
@@ -243,8 +253,8 @@ class SettingScreen extends StatelessWidget {
               ),
             ),
             Text(
-              globals.user.birthdate != null
-                  ? (DateTime.now().year - globals.user.birthdate.year)
+              globals.user!.birthdate != null
+                  ? (DateTime.now().year - globals.user!.birthdate!.year)
                       .toString()
                   : '',
               style: TextStyle(

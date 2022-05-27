@@ -31,9 +31,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: [SystemUiOverlay.bottom]);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Task App',
+      title: 'Doctor App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch(
             primarySwatch: MaterialColor(0xFF4702A2, blueSwatch)),

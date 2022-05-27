@@ -84,6 +84,7 @@ class MyAppointmentController extends GetxController {
     isUpcomming.value = canceled.value = false;
 
     doneProcessStatus.value = true;
+    print('#' + appointmentList.length.toString());
   }
 
   getCancleAppointments(String userid, int page) async {

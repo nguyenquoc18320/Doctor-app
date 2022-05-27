@@ -8,7 +8,9 @@ Future<Widget?> loading(BuildContext context) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircularProgressIndicator(),
+          CircularProgressIndicator(
+            color: Colors.blue,
+          ),
           SizedBox(
             width: 10,
           ),

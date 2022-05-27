@@ -19,8 +19,8 @@ class myAppointmentScreen extends StatelessWidget {
     controller.getUpcommingAppointments(globals.user!.id!, 1);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         elevation: 0,
+        backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         title: Row(children: [
           Text(
@@ -30,16 +30,15 @@ class myAppointmentScreen extends StatelessWidget {
           )
         ]),
       ),
-      body: Padding(
+      body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: GetX<MyAppointmentController>(
           builder: (_) {
             Future.delayed(Duration.zero, () async {
               if (controller.doneProcessStatus.value && openLoading) {
-                Navigator.pop(context);
+                Navigator.of(context, rootNavigator: true).pop();
                 openLoading = false;
               }
-              ;
             });
             return Column(children: [
               setButton(context),
@@ -74,15 +73,26 @@ class myAppointmentScreen extends StatelessWidget {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return Dialog(
-          child: new Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              new CircularProgressIndicator(),
-              new Text("Loading"),
-            ],
-          ),
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(
+              color: Colors.blue,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            DefaultTextStyle(
+              style: TextStyle(
+                fontSize: 16,
+              ),
+              child: Text(
+                "Loading...",
+              ),
+            ),
+          ],
         );
+        // );
       },
     );
   }
@@ -90,7 +100,7 @@ class myAppointmentScreen extends StatelessWidget {
   //set buttons
   Widget setButton(BuildContext context) {
     var selected = BoxDecoration(
-        color: Colors.white,
+        color: Colors.transparent,
         border: Border(bottom: BorderSide(color: Color(0xFF2563EB))));
 
     var notSelected = BoxDecoration(color: Color(0xFFF7F7F7));
@@ -138,7 +148,7 @@ class myAppointmentScreen extends StatelessWidget {
                   child: Text(
                     'Past',
                     style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: controller.past.value
                             ? Color(0xFF2563EB)
@@ -158,7 +168,7 @@ class myAppointmentScreen extends StatelessWidget {
                   child: Text(
                     'Canceled',
                     style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: controller.canceled.value
                             ? Color(0xFF2563EB)
