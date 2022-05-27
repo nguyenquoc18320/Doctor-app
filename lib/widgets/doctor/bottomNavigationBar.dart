@@ -40,14 +40,14 @@ class BottomNavigationBarCustom extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            FontAwesomeIcons.message,
+            FontAwesomeIcons.solidCommentDots,
             size: 24,
           ),
           label: 'Message',
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            FontAwesomeIcons.user,
+            FontAwesomeIcons.solidUser,
             size: 24,
           ),
           label: 'Profile',
@@ -55,7 +55,7 @@ class BottomNavigationBarCustom extends StatelessWidget {
       ],
       currentIndex: currentIndex,
       selectedItemColor: Color(0xFF4702A2),
-      unselectedItemColor: Color(0xFF82CABE),
+      unselectedItemColor: Color(0xFFc4abf5),
       showSelectedLabels: false,
       showUnselectedLabels: false,
       onTap: (index) {

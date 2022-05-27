@@ -13,63 +13,58 @@ class BottomNavigationBarCustom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context).copyWith(
-        canvasColor: Color(0xFFEFF6FF),
-      ),
-      child: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              FontAwesomeIcons.house,
-              size: 24,
-            ),
-            label: 'Home',
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(
+            FontAwesomeIcons.house,
+            size: 24,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              FontAwesomeIcons.calendarDay,
-              size: 24,
-            ),
-            label: 'Appointments',
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(
+            FontAwesomeIcons.calendarDay,
+            size: 24,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              FontAwesomeIcons.commentDots,
-              size: 24,
-            ),
-            label: 'Message',
+          label: 'Appointments',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(
+            FontAwesomeIcons.solidCommentDots,
+            size: 24,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              FontAwesomeIcons.user,
-              size: 24,
-            ),
-            label: 'Profile',
+          label: 'Message',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(
+            FontAwesomeIcons.solidUser,
+            size: 24,
           ),
-        ],
-        currentIndex: currentIndex,
-        selectedItemColor: Color(0xFF4702A2),
-        unselectedItemColor: Color(0xFF82CABE),
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => HomeWidget()));
-          } else if (index == 1) {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => myAppointmentScreen()));
-          } else if (index == 2) {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => ChatRoom()));
-          } else if (index == 3) {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => SettingScreen()));
-          }
-        },
-      ),
+          label: 'Profile',
+        ),
+      ],
+      currentIndex: currentIndex,
+      selectedItemColor: Color(0xFF4702A2),
+      unselectedItemColor: Color(0xFFc4abf5),
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      onTap: (index) {
+        if (index == 0) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => HomeWidget()));
+        } else if (index == 1) {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => myAppointmentScreen()));
+        } else if (index == 2) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => ChatRoom()));
+        } else if (index == 3) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => SettingScreen()));
+        }
+      },
     );
   }
 }
