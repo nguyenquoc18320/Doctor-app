@@ -313,8 +313,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                   //login successfully
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => DoctorAppointmentScreen()),
+                    MaterialPageRoute(builder: (context) => HomeDoctorScreen()),
                   );
                 }
               });
