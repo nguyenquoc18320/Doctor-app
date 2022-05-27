@@ -116,7 +116,7 @@ class myAppointmentScreen extends StatelessWidget {
           children: [
             Container(
               decoration: controller.isUpcomming.value ? selected : notSelected,
-              width: constraints.maxWidth * 0.32,
+              width: constraints.maxWidth * 0.33,
               child: ElevatedButton(
                   style: elevatedButtonLayout,
                   onPressed: () {

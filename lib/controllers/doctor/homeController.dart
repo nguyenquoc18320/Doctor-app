@@ -21,6 +21,7 @@ class HomeController extends GetxController {
             globals.user!.id ?? '', DateTime.now());
 
     //get user corresponding appointments
+    List<User> temPatientForUpcoming = [];
     int i = 0;
     while (i < appointments.length) {
       User? user = await user_API.getUserById(appointments[i].userCreated);
@@ -29,17 +30,21 @@ class HomeController extends GetxController {
         //no get user -> remove appointment
         appointments.removeAt(i);
       } else {
-        patientsForUpcoming.value.add(user);
+        temPatientForUpcoming.add(user);
         i += 1;
       }
     }
 
+    patientsForUpcoming.value = temPatientForUpcoming;
+
     //get pending appointmetn from today
+
     List<Appointment> tempPendingappointments = await appointment_API
         .getpendinggAppointmentsFromday(globals.user!.id ?? '', DateTime.now());
 
     print('##' + tempPendingappointments.length.toString());
     //get user corresponding appointments
+    List<User> temPatientForPending = [];
     i = 0;
     while (i < tempPendingappointments.length) {
       User? user =
@@ -49,10 +54,11 @@ class HomeController extends GetxController {
         //no get user -> remove appointment
         tempPendingappointments.removeAt(i);
       } else {
-        patientsForPending.value.add(user);
+        temPatientForPending.add(user);
         i += 1;
       }
     }
+    patientsForPending.value = temPatientForPending;
 
     upcommingAppointments.value = appointments;
     pendingAppointments.value = tempPendingappointments;
