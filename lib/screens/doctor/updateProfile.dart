@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:doctor_app/models/specialist.dart';
 import 'package:doctor_app/models/user.dart';
 import 'package:doctor_app/screens/doctor/settings.dart';
+import 'package:doctor_app/widgets/base/TextFieldPrimary.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:doctor_app/globals.dart' as globals;
@@ -101,18 +102,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   Widget build(BuildContext context) {
     checkFulfillInfo();
     return Scaffold(
-      backgroundColor: Color(0xFFEEEAFB),
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Text(
-          'Update profile',
-          style: TextStyle(
-              fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
-        ),
+        title: Text('Update profile'),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -126,8 +117,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     child: _avata_path.isEmpty != true
                         ? Image.file(
                             File(_avata_path),
-                            height: 80,
-                            width: 80,
+                            height: 124,
+                            width: 124,
                           )
                         : (globals.user!.avataId != null
                             ? Image.network(
@@ -137,8 +128,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 headers: {
                                   "authorization": "Bearer " + globals.token
                                 },
-                                height: 80,
-                                width: 80,
+                                height: 124,
+                                width: 124,
                               )
                             : Image.asset(
                                 'assets/logo/small_logo.png',
@@ -159,48 +150,22 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   },
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 16,
                 ),
-                TextField(
-                  controller: firstNameTextController,
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    filled: true,
-                    hintText: 'First name',
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  onChanged: (val) {
+                TextFieldPrimary(
+                  title: 'First name',
+                  textController: firstNameTextController,
+                  cb_change: (val) {
                     checkFulfillInfo();
                   },
                 ),
                 SizedBox(
-                  height: partDistance,
+                  height: 8,
                 ),
-                TextField(
-                  controller: lastNameTextController,
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    filled: true,
-                    hintText: 'Last name',
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  onChanged: (val) {
+                TextFieldPrimary(
+                  title: 'Last name',
+                  textController: lastNameTextController,
+                  cb_change: (val) {
                     checkFulfillInfo();
                   },
                 ),
@@ -290,22 +255,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 SizedBox(
                   height: partDistance,
                 ),
-                TextField(
-                  controller: addressTextController,
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    filled: true,
-                    hintText: 'Address',
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                TextFieldPrimary(
+                  title: 'Address',
+                  textController: addressTextController,
                 ),
                 SizedBox(
                   height: partDistance,
@@ -353,52 +305,34 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 SizedBox(
                   height: partDistance,
                 ),
-                TextField(
-                  controller: descriptionTextController,
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    filled: true,
-                    hintText: 'About',
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
+                TextFieldPrimary(
+                  title: 'About',
+                  textController: descriptionTextController,
                   minLines: 3,
                   maxLines: null,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 32,
                 ),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFF8856EB),
+                      minimumSize: Size.fromHeight(50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
+                    onPressed: disableButton ? null : () => confirm(),
+                    child: Text(
+                      'Update',
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ))
               ],
             )),
       ),
-      bottomNavigationBar: BottomAppBar(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xFF8856EB),
-                  minimumSize: Size.fromHeight(50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                ),
-                onPressed: disableButton ? null : () => confirm(),
-                child: Text(
-                  'Confirm',
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                )),
-          )),
     );
   }
 

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:doctor_app/models/user.dart';
 import 'package:doctor_app/screens/user/settings.dart';
+import 'package:doctor_app/widgets/base/TextFieldPrimary.dart';
 import 'package:doctor_app/widgets/user/bottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -87,16 +88,21 @@ class _ProfileWidgetState extends State<ProfileWidget> {
             child: Column(
               children: [
                 GestureDetector(
-                  child: _avata_path.isEmpty != true
-                      ? Image.file(
-                          File(_avata_path),
-                          height: 124,
-                        )
-                      : Image.network(
-                          globals.url + "/assets/" + globals.user!.avataId!,
-                          headers: {"authorization": "Bearer " + globals.token},
-                          height: 124,
-                        ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(100)),
+                    child: _avata_path.isEmpty != true
+                        ? Image.file(
+                            File(_avata_path),
+                            height: 124,
+                          )
+                        : Image.network(
+                            globals.url + "/assets/" + globals.user!.avataId!,
+                            headers: {
+                              "authorization": "Bearer " + globals.token
+                            },
+                            height: 124,
+                          ),
+                  ),
                   onTap: () async {
                     var source = ImageSource.gallery;
                     XFile? image = await imagePicker.pickImage(
@@ -110,30 +116,22 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   },
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 16,
                 ),
-                TextField(
-                  controller: firstNameTextController,
-                  decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'First name',
-                  ),
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  onChanged: (val) {
+                TextFieldPrimary(
+                  textController: firstNameTextController,
+                  title: 'First name',
+                  cb_change: (val) {
                     checkFulfillInfo();
                   },
                 ),
                 SizedBox(
-                  height: partDistance,
+                  height: 8,
                 ),
-                TextField(
-                  controller: lastNameTextController,
-                  decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'Last name',
-                  ),
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  onChanged: (val) {
+                TextFieldPrimary(
+                  textController: lastNameTextController,
+                  title: 'Last name',
+                  cb_change: (val) {
                     checkFulfillInfo();
                   },
                 ),
@@ -156,10 +154,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 Row(children: [
                   Text(
                     'Gender',
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[600],
-                        fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   Container(
                     child: DropdownButtonHideUnderline(
@@ -186,7 +181,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                           hint: Text(
                             'Gender',
                             style: TextStyle(
-                                fontSize: 16, color: Colors.grey[400]),
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -200,10 +195,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   children: [
                     Text(
                       'Date of birth',
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey[600],
-                          fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                       width: 20,
@@ -236,16 +229,12 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 SizedBox(
                   height: partDistance,
                 ),
-                TextField(
-                  controller: addressTextController,
-                  decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'Address',
-                  ),
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                TextFieldPrimary(
+                  textController: addressTextController,
+                  title: 'Address',
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 32,
                 ),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -266,7 +255,6 @@ class _ProfileWidgetState extends State<ProfileWidget> {
               ],
             )),
       ),
-      bottomNavigationBar: BottomNavigationBarCustom(currentIndex: 3),
     );
   }
 
