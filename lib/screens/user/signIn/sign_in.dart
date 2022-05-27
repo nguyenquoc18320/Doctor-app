@@ -58,10 +58,7 @@ class _SignInWidgetState extends State<SignInWidget> {
         backgroundColor: Color(0xffEEEAFB),
         elevation: 0.0,
         foregroundColor: Color(0xFF4702A2),
-        leading: IconButton(
-          icon: FaIcon(FontAwesomeIcons.chevronLeft),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        automaticallyImplyLeading: false,
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 16),

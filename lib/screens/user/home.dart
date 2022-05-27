@@ -75,7 +75,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         preferredSize: Size.fromHeight(96),
         child: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: Color(0xffffffff),
+          backgroundColor: Color(0xffEEEAFB),
           elevation: 0,
           titleSpacing: 0,
           flexibleSpace: Row(

@@ -104,7 +104,21 @@ class SettingScreen extends StatelessWidget {
                                   globals.token = '';
                                   globals.refresh_token = '';
                                   globals.user = null;
-                                  Navigator.of(context, rootNavigator: true)
+
+                                  // Navigator.pushAndRemoveUntil(
+                                  //     context,
+                                  //     MaterialPageRoute(builder: (context) => SignInWidget()),
+                                  //         (route) => false
+                                  // );
+
+                                  // Navigator.of(context, rootNavigator: true)
+                                  //     .pushAndRemoveUntil(
+                                  //     MaterialPageRoute(
+                                  //         builder: (context) =>
+                                  //             SignInWidget()),
+                                  //         (Route<dynamic> route) => false);
+
+                                  Navigator.of(context)
                                       .pushAndRemoveUntil(
                                           MaterialPageRoute(
                                               builder: (context) =>
