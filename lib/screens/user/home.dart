@@ -5,11 +5,13 @@ import 'package:doctor_app/screens/user/doctor_info.dart';
 // import 'package:doctor_app/screens/doctor_list_custom.dart';
 import 'package:doctor_app/screens/user/doctor_list.dart';
 import 'package:doctor_app/screens/user/myAppointment.dart';
+import 'package:doctor_app/widgets/base/InputSearch.dart';
 import 'package:flutter/material.dart';
 import 'package:doctor_app/globals.dart' as globals;
 import 'package:doctor_app/api/doctor.dart' as Doctor_API;
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:skeleton_loader/skeleton_loader.dart';
 import '../../models/user.dart';
 import 'package:doctor_app/widgets/user/bottomNavigationBar.dart';
 import 'package:doctor_app/api/api_appointment.dart' as Appointment_API;
@@ -68,6 +70,8 @@ class _HomeWidgetState extends State<HomeWidget> {
     );
   }
 
+  TextEditingController searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,57 +82,57 @@ class _HomeWidgetState extends State<HomeWidget> {
           backgroundColor: Color(0xffEEEAFB),
           elevation: 0,
           titleSpacing: 0,
-          flexibleSpace: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                child: CircleAvatar(
+          flexibleSpace: Container(
+            padding: EdgeInsets.only(top: 80, bottom: 16, left: 16, right: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CircleAvatar(
                   radius: 32.0,
                   backgroundImage: NetworkImage(
                       globals.url + "/assets/" + globals.user!.avataId!),
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Welcome back,',
+                SizedBox(width: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Welcome back,',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400)),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Text(
+                      globals.user!.firstName + ' ' + globals.user!.lastName,
                       style: TextStyle(
                           fontSize: 20,
                           color: Colors.black,
-                          fontWeight: FontWeight.w400)),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Text(
-                    globals.user!.firstName + ' ' + globals.user!.lastName,
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ],
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
       body: SingleChildScrollView(
-        child: Container(
-          color: Colors.white,
-          child: Column(
-            children: [
-              _searchWidget(),
-              SizedBox(height: 8),
-              upCommingAppointment(context),
-              SizedBox(height: 8),
-              _specialistDoctorWidget(context),
-              SizedBox(height: 16),
-              _DoctorListWiget(upcomming)
-            ],
-          ),
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: InputSearch(
+                  title: 'Search doctor', textController: searchController),
+            ),
+            upCommingAppointment(context),
+            _specialistDoctorWidget(context),
+            SizedBox(height: 16),
+            _DoctorListWiget(upcomming)
+          ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBarCustom(currentIndex: 0),
@@ -379,34 +383,30 @@ search
   specialist doctor
   */
   Widget _specialistDoctorWidget(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16),
-      child: Align(
-        alignment: Alignment.topLeft,
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                "Doctor by Specialists",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-              ),
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              "Doctor by Specialists",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
             ),
-            Container(
-                margin: EdgeInsets.only(top: 16),
-                height: 80,
-                child: Center(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: Specialist.getSpecialist().length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return _specialistItem(
-                            Specialist.getSpecialist()[index]);
-                      }),
-                )),
-          ],
-        ),
+          ),
+          Container(
+              margin: EdgeInsets.only(top: 20),
+              height: 80,
+              child: Center(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: Specialist.getSpecialist().length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return _specialistItem(Specialist.getSpecialist()[index]);
+                    }),
+              )),
+        ],
       ),
     );
   }
@@ -493,85 +493,79 @@ class _DoctorListWigetState extends State<_DoctorListWiget> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 15, right: 15),
-      child: Align(
-        alignment: Alignment.topLeft,
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Popular Doctors",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                  ),
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  "Popular Doctors",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DoctorListWidget()),
-                    );
-                  },
-                  child: Row(
-                    children: [
-                      Text(
-                        'More',
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Color(0xFF60A5FA),
-                            fontWeight: FontWeight.w700),
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 15,
-                        color: Color(0xFF60A5FA),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-            Container(
-                margin: const EdgeInsets.symmetric(vertical: 20.0),
-                height: upcomming
-                    ? MediaQuery.of(context).size.height * 0.25
-                    : MediaQuery.of(context).size.height * 0.5,
-                child: FutureBuilder<List<User>>(
-                    future: _doctorList,
-                    builder: (
-                      BuildContext context,
-                      AsyncSnapshot<List<User>> snapshot,
-                    ) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Container(
-                            padding: EdgeInsets.symmetric(vertical: 32),
-                            child: Center(child: CircularProgressIndicator()));
-                      } else if (snapshot.connectionState ==
-                          ConnectionState.done) {
-                        if (snapshot.hasData) {
-                          return ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              itemCount: snapshot.data?.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return _doctorItem(
-                                    context, snapshot.data![index]);
-                              });
-                        } else {
-                          return Container();
-                        }
-                      } else {
-                        return Container();
-                      }
-                    })),
-          ],
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DoctorListWidget()),
+                  );
+                },
+                child: Row(
+                  children: [
+                    Text(
+                      'More',
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Color(0xFF4702A2),
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      width: 4,
+                    ),
+                    Icon(Icons.arrow_forward_ios,
+                        size: 16, color: Color(0xFF4702A2))
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
-      ),
+        Container(
+            margin: const EdgeInsets.only(top: 8, bottom: 20.0),
+            height: upcomming
+                ? MediaQuery.of(context).size.height * 0.25
+                : MediaQuery.of(context).size.height * 0.5,
+            child: FutureBuilder<List<User>>(
+                future: _doctorList,
+                builder: (
+                  BuildContext context,
+                  AsyncSnapshot<List<User>> snapshot,
+                ) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Container(
+                        padding: EdgeInsets.symmetric(vertical: 32),
+                        child: Center(child: CircularProgressIndicator()));
+                  } else if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          itemCount: snapshot.data?.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return _doctorItem(context, snapshot.data![index]);
+                          });
+                    } else {
+                      return Container();
+                    }
+                  } else {
+                    return Container();
+                  }
+                })),
+      ],
     );
   }
 
@@ -585,8 +579,20 @@ class _DoctorListWigetState extends State<_DoctorListWiget> {
       },
       child: LayoutBuilder(builder: (context, BoxConstraints constraints) {
         return Container(
-            padding: EdgeInsets.only(right: 10),
-            margin: EdgeInsets.only(bottom: 10),
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24),
+              color: Colors.white,
+              // boxShadow: [
+              //   BoxShadow(
+              //     color: Color(0xFF996eee).withOpacity(0.1),
+              //     spreadRadius: 4,
+              //     blurRadius: 4,
+              //     offset: Offset(0, 4),
+              //   )
+              // ]
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -595,26 +601,25 @@ class _DoctorListWigetState extends State<_DoctorListWiget> {
                         child: Image.network(
                           globals.url + "/assets/" + user.avataId!,
                           headers: {"authorization": "Bearer " + globals.token},
-                          height: 96,
-                          width: 96,
+                          height: 80,
+                          width: 80,
                           fit: BoxFit.fitWidth,
                         ),
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        borderRadius: BorderRadius.all(Radius.circular(16)),
                       )
                     : ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        borderRadius: BorderRadius.all(Radius.circular(16)),
                         child: Image.asset(
                           'assets/logo/small_logo.png',
-                          height: 96,
-                          width: 96,
+                          height: 80,
+                          width: 80,
                           fit: BoxFit.fitWidth,
                         ),
                       ),
                 SizedBox(
                   width: 16,
                 ),
-                Container(
-                  width: (constraints.maxWidth - 100) * 0.9,
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
