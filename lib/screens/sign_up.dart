@@ -116,7 +116,7 @@ class _SignUpState extends State<SignUp> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      'assets/images/illustration-1.png',
+                      'assets/images/illustration-2.png',
                       height: 200,
                     ),
                     Text(

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:doctor_app/screens/doctor/appointments.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_app/screens/doctor/home.dart';
-import 'package:doctor_app/screens/forgot_password.dart';
 import 'package:doctor_app/screens/sign_up.dart';
 import 'package:doctor_app/screens/user/home.dart';
 import 'package:doctor_app/screens/user/profile.dart';
@@ -55,53 +54,61 @@ class _SignInWidgetState extends State<SignInWidget> {
     });
 
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.white),
-      backgroundColor: Colors.white,
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: SingleChildScrollView(
-          child: Container(
-            // decoration: BoxDecoration(color: Colors.white),
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      appBar: AppBar(
+        backgroundColor: Color(0xffEEEAFB),
+        elevation: 0.0,
+        foregroundColor: Color(0xFF4702A2),
+        leading: IconButton(
+          icon: FaIcon(FontAwesomeIcons.chevronLeft),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        alignment: Alignment.topCenter,
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: SingleChildScrollView(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.asset(
-                  'assets/logo/new_logo.png',
-                  height: 150,
+                  'assets/images/illustration-1.png',
+                  height: 200,
                 ),
                 const SizedBox(
-                  height: 24,
+                  height: 20,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    // Text(
+                    //   'Welcome to ',
+                    //   style: TextStyle(
+                    //     fontSize: 28,
+                    //     color: Colors.black,
+                    //     fontWeight: FontWeight.bold,
+                    //   ),
+                    // ),
                     Text(
-                      'Welcome to ',
+                      'Welcome to DoctorCare',
                       style: TextStyle(
-                          fontFamily: 'Quicksand',
-                          fontSize: 28,
-                          color: Colors.black),
-                    ),
-                    Text(
-                      'DoctorCare',
-                      style: TextStyle(
-                          fontFamily: 'Quicksand',
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                          color: Theme.of(context).colorScheme.primary),
                     ),
                   ],
                 ),
-                SizedBox(height: 8),
                 Text(
                   'Meet doctors with a simple touch',
                   style: TextStyle(
-                      fontFamily: 'Quicksand',
-                      fontSize: 18,
-                      color: Colors.black),
+                    fontFamily: 'Quicksand',
+                    fontSize: 18,
+                  ),
                 ),
                 const SizedBox(
-                  height: 36,
+                  height: 20,
                 ),
                 TextFieldPrimary(
                   title: 'Email',
@@ -109,7 +116,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                 ),
                 if (emailError) _ErrorWidget(context, 'Incorrect email'),
                 const SizedBox(
-                  height: 16,
+                  height: 8,
                 ),
                 TextFieldPrimary(
                   title: 'Password',
@@ -117,7 +124,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                   isPassword: true,
                 ),
                 SizedBox(
-                  height: 16,
+                  height: 8,
                 ),
                 if (passwordError) _ErrorWidget(context, 'Incorrect password'),
                 Row(
@@ -153,7 +160,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 16),
                 BtnPrimary(
                     title: 'Log In',
                     cb_press: () {
@@ -170,61 +177,47 @@ class _SignInWidgetState extends State<SignInWidget> {
                             passwordTextController.text, context);
                       });
                     }),
-                // ElevatedButton(
-                //     style: ElevatedButton.styleFrom(
-                //       primary: Color(0xFF212121),
-                //       minimumSize: Size.fromHeight(50),
-                //     ),
-                //     onPressed: () {
-                //       setState(() {
-                //         openLoading = true;
-                //       });
-                //       loading(context);
-                //       _SignIn(emailTextController.text,
-                //           passwordTextController.text);
-                //     },
+                SizedBox(
+                  height: 10,
+                ),
+                // TextButton(
+                //     onPressed: () => ({
+                //           Navigator.push(
+                //               context,
+                //               MaterialPageRoute(
+                //                   builder: (context) => ForgotPassword()))
+                //         }),
                 //     child: const Text(
-                //       'Log In',
+                //       'Forgot the password?',
                 //       style: TextStyle(
-                //         color: Colors.white,
-                //         fontWeight: FontWeight.bold,
-                //       ),
+                //           fontWeight: FontWeight.bold, color: Colors.black),
                 //     )),
-                SizedBox(
-                  height: 8,
-                ),
-                TextButton(
-                    onPressed: () => ({
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ForgotPassword()))
-                        }),
-                    child: const Text(
-                      'Forgot the password?',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.black),
-                    )),
-                SizedBox(
-                  height: 4,
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      "Don't have an account?",
-                    ),
                     TextButton(
-                        onPressed: () => ({
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SignUp()))
-                            }),
-                        child: Text(
-                          'Sign up now',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ))
+                      onPressed: () => ({
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => SignUp()))
+                      }),
+                      child: RichText(
+                        text: TextSpan(
+                          text: "Don't have an account?  ",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 16),
+                          children: [
+                            TextSpan(
+                                text: 'Sign up now',
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ],
