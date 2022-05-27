@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_app/plugins/UserFirebaseSearch.dart';
+import 'package:doctor_app/widgets/base/InputSearch.dart';
 import '../../models/userFirebase.dart';
 import '../../widgets/user/bottomNavigationBar.dart';
 import '../../widgets/doctor/bottomNavigationBar.dart' as DoctorBottomBar;
@@ -204,6 +205,8 @@ class _ChatRoomState extends State<ChatRoom> {
       },
     );
   }
+
+  TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
