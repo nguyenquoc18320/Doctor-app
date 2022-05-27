@@ -24,7 +24,7 @@ class TextFieldPrimary extends StatelessWidget {
       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
       decoration: InputDecoration(
         filled: true,
-        fillColor: Color(0xFFEAEAEA),
+        fillColor: Color(0xFFFFFFFF),
         hintText: title,
         hintStyle: TextStyle(color: Colors.black38),
         border: OutlineInputBorder(

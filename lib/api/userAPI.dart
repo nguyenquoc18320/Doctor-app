@@ -14,7 +14,7 @@ const headers = {
 };
 
 Future<bool> signUp(String email, String password, String firstName,
-    String lastName, String role, String avatar_id) async {
+    String role, String avatar_id) async {
   const endPoint = '/users';
 
   final url = globals.url + endPoint;
@@ -48,7 +48,6 @@ Future<bool> signUp(String email, String password, String firstName,
     headers: headers,
     body: jsonEncode(<String, String>{
       'first_name': firstName,
-      'last_name': lastName,
       'email': email,
       'password': password,
       'role': roleId ?? '',
