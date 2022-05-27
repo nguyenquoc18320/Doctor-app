@@ -14,16 +14,16 @@ void main() async {
 }
 
 Map<int, Color> blueSwatch = {
-  50: Color(0xFFEFF6FF),
-  100: Color(0xFFDBEAFE),
-  200: Color(0xFFBFDBFE),
-  300: Color(0xFF93C5FD),
-  400: Color(0xFF60A5FA),
-  500: Color(0xFF3B82F6),
-  600: Color(0xFF2563EB),
-  700: Color(0xFF1D4ED8),
-  800: Color(0xFF1E40AF),
-  900: Color(0xFF1E3A8A),
+  50: Color(0xFFebe3fc),
+  100: Color(0xFFd7c7f8),
+  200: Color(0xFFc4abf5),
+  300: Color(0xFFb08ef2),
+  400: Color(0xFF9c72ee),
+  500: Color(0xFF8856eb),
+  600: Color(0xFF754ac9),
+  700: Color(0xFF613da8),
+  800: Color(0xFF4e3186),
+  900: Color(0xFF3a2565),
 };
 
 class MyApp extends StatelessWidget {
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch(
             primarySwatch: MaterialColor(0xFF4702A2, blueSwatch)),
-        scaffoldBackgroundColor: Color(0xFFF7F7F7),
+        scaffoldBackgroundColor: Color(0xFFEEEAFB),
         fontFamily: 'Quicksand',
         appBarTheme: AppBarTheme(elevation: 0),
         textTheme: const TextTheme(

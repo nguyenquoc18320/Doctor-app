@@ -156,7 +156,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                 const SizedBox(height: 20),
                 BtnPrimary(
                     title: 'Log In',
-                    pressFn: () {
+                    cb_press: () {
                       setState(() {
                         Future.delayed(Duration.zero, () async {
                           if (openLoading == false) {
