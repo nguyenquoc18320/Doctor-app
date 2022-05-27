@@ -31,8 +31,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.bottom]);
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+    //     overlays: [SystemUiOverlay.bottom]);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -42,7 +42,9 @@ class MyApp extends StatelessWidget {
             primarySwatch: MaterialColor(0xFF4702A2, blueSwatch)),
         scaffoldBackgroundColor: Color(0xFFEEEAFB),
         fontFamily: 'Quicksand',
-        appBarTheme: AppBarTheme(elevation: 0),
+        appBarTheme: AppBarTheme(
+          elevation: 0,
+        ),
         textTheme: const TextTheme(
             bodyText2: TextStyle(
                 color: Color(0xFF000000),
