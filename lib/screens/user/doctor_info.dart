@@ -36,31 +36,30 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
     return GetX<DoctorInfoController>(
       builder: (_) => Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
+          backgroundColor: Color(0xffEEEAFB),
+          elevation: 0.0,
+          foregroundColor: Color(0xFF4702A2),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+            icon: FaIcon(FontAwesomeIcons.chevronLeft),
             onPressed: () => Navigator.of(context).pop(),
           ),
           title: Text('Details Doctor',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold)),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           actions: [
             IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.message,
-                  color: Colors.blue.shade900,
-                  size: 30,
-                ))
+                onPressed: () {}, icon: FaIcon(FontAwesomeIcons.commentDots))
           ],
         ),
         body: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 26),
           child: Container(
-            color: Colors.white,
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            // decoration: BoxDecoration(
+            //   color: Colors.white,
+            //   borderRadius: BorderRadius.only(
+            //     topLeft: Radius.circular(32),
+            //     topRight: Radius.circular(32),
+            //   ),
+            // ),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               LayoutBuilder(builder: (context, BoxConstraints constraints) {
@@ -88,10 +87,10 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
                               ),
                       ),
                       SizedBox(
-                        width: 8,
+                        width: 16,
                       ),
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -103,28 +102,22 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
                                   ' ' +
                                   controller.doctor.value.lastName,
                               style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w900),
+                                  fontSize: 16, fontWeight: FontWeight.w900),
                             ),
                           ),
                           SizedBox(
-                            height: 8,
+                            height: 4,
                           ),
                           Text(
                             (controller.doctor.value.title ?? ''),
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w400),
                           ),
                           SizedBox(
-                            height: 8,
+                            height: 4,
                           ),
                           Container(
                             width: (constraints.maxWidth - 100) * 0.9,
                             child: Text(
                               (controller.doctor.value.location),
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w400),
                             ),
                           ),
                         ],
@@ -134,11 +127,11 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
                 );
               }),
               SizedBox(
-                height: 25,
+                height: 24,
               ),
               statistic(),
               SizedBox(
-                height: 25,
+                height: 36,
               ),
               Container(
                 child: Column(
@@ -146,27 +139,23 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
                     children: [
                       Text('About',
                           style: TextStyle(
-                              color: Colors.black,
+                              color: Color(0xff4702A2),
                               fontSize: 16,
-                              fontWeight: FontWeight.w700)),
+                              fontWeight: FontWeight.bold)),
                       SizedBox(
                         height: 8,
                       ),
                       Text(
                         controller.doctor.value.description!,
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Color(0xFF6A6A6A),
-                            fontWeight: FontWeight.w400),
                       )
                     ]),
               ),
               SizedBox(
-                height: 25,
+                height: 24,
               ),
               AppointmentList(context),
               SizedBox(
-                height: 25,
+                height: 4,
               ),
               workingTimeWidget(context),
             ]),
@@ -194,52 +183,52 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
   }
 
   Widget statistic() {
-    return Container(
-        child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return Row(
       children: [
-        Row(
-          children: [
-            Container(
-                padding: EdgeInsets.all(10),
-                child: Center(
-                  child: Icon(
-                    // FontAwesomeIcons.userGroup,
-                    Icons.group,
-                    size: 30,
-                    color: Color(0xFF00D186),
-                  ),
-                )),
-            Text(controller.numPatients.value,
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w900)),
-            Text(' Patients',
-                style: TextStyle(fontSize: 12, color: Colors.black))
-          ],
+        Expanded(
+          flex: 1,
+          child: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                child: Icon(
+                  FontAwesomeIcons.userGroup,
+                  size: 24,
+                  color: Color(0xFF00D186),
+                ),
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              Text(controller.numPatients.value,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              Text(' Patients', style: TextStyle(fontSize: 16))
+            ],
+          ),
         ),
-        Row(
-          children: [
-            Container(
-                padding: EdgeInsets.all(10),
-                child: Center(
-                  child: Icon(
-                    Icons.star_rate_rounded,
-                    size: 30,
-                    color: Color(0xFFFFC700),
-                  ),
-                )),
-            Text(controller.star.value,
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w900)),
-            Text(' Review', style: TextStyle(fontSize: 12, color: Colors.black))
-          ],
+        Expanded(
+          flex: 1,
+          child: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                child: Icon(
+                  FontAwesomeIcons.solidStar,
+                  size: 24,
+                  color: Color(0xFFFFC700),
+                ),
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              Text(controller.star.value,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              Text(' Review', style: TextStyle(fontSize: 16))
+            ],
+          ),
         ),
       ],
-    ));
+    );
   }
 
   //Working-time item
@@ -258,8 +247,8 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
             width: 80,
             padding: EdgeInsets.symmetric(vertical: 8),
             decoration: BoxDecoration(
-              color: selected ? Color(0xFF2563EB) : Colors.grey.shade200,
-              borderRadius: BorderRadius.circular(15),
+              color: selected ? Color(0xFF8856EB) : Colors.white,
+              borderRadius: BorderRadius.circular(24),
               // border: Border.all(color: selected ? Colors.blue : Colors.transparent)
             ),
             child: Center(
@@ -268,7 +257,7 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
                 // '${controller.workingTime.value[index].day.toUpperCase()}, ${formatter.format(controller.workingTime.value[index].startTime)} - ${formatter.format(controller.workingTime.value[index].endTime)}',
                 style: TextStyle(
                     fontSize: 16,
-                    color: selected ? Colors.white : Colors.grey.shade600),
+                    color: selected ? Colors.white : Colors.black),
               ),
             ),
           ),
@@ -283,39 +272,35 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
   // //Create list for appointments
   Widget AppointmentList(BuildContext context) {
     return Container(
-      height: 150,
+      height: 140,
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Working Time',
                 style: TextStyle(
-                    color: Colors.black,
+                    color: Color(0xff4702A2),
                     fontSize: 16,
-                    fontWeight: FontWeight.w700)),
+                    fontWeight: FontWeight.bold)),
             SizedBox(
-              height: 10,
+              height: 16,
             ),
             Container(
               width: double.infinity,
               height: 90,
               child: Flexible(
-                child: Center(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(15),
-                      // border: Border.all(color: selected ? Colors.blue : Colors.transparent)
-                    ),
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: controller.daysForAppointments.value.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return timeAppointmentItem(
-                              context, index, controller);
-                        }),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    // border: Border.all(color: selected ? Colors.blue : Colors.transparent)
                   ),
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: controller.daysForAppointments.value.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return timeAppointmentItem(context, index, controller);
+                      }),
                 ),
               ),
             ),
@@ -339,8 +324,8 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
             decoration: BoxDecoration(
-              color: selected ? Color(0xFF2563EB) : Colors.transparent,
-              borderRadius: BorderRadius.circular(15),
+              color: selected ? Color(0xFF8856EB) : Colors.white,
+              borderRadius: BorderRadius.circular(0),
               // border: Border.all(color: selected ? Colors.blue : Colors.transparent)
             ),
             width: 50,
@@ -356,7 +341,7 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
                               selected ? Colors.white : Colors.indigo.shade900,
                           fontWeight: FontWeight.bold)),
                   SizedBox(
-                    height: 10,
+                    height: 4,
                   ),
                   Text(
                     DateFormat('EEEE')
@@ -426,7 +411,7 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
               backgroundColor: selectedAppointment == null ||
                       selectedTimeForAppointment == null
                   ? null
-                  : MaterialStateProperty.all(Color(0xFF2563EB)),
+                  : MaterialStateProperty.all(Color(0xFF8856EB)),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0),
