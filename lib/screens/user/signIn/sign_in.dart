@@ -113,27 +113,26 @@ class _SignInWidgetState extends State<SignInWidget> {
                 const SizedBox(
                   height: 20,
                 ),
-                // TextFieldPrimary(
-                //   title: 'Email',
-                //   textController: emailTextController,
-
-                // ),
-                MyTextFormField(
-                    title: 'Email', textController: emailTextController),
+                TextFieldPrimary(
+                  title: 'Email',
+                  textController: emailTextController,
+                ),
+                // MyTextFormField(
+                //     title: 'Email', textController: emailTextController),
                 if (emailError) _ErrorWidget(context, 'Incorrect email'),
                 const SizedBox(
                   height: 8,
                 ),
-                // TextFieldPrimary(
-                //   title: 'Password',
-                //   textController: passwordTextController,
-                //   isPassword: true,
-                // ),
-                MyTextFormField(
+                TextFieldPrimary(
                   title: 'Password',
                   textController: passwordTextController,
                   isPassword: true,
                 ),
+                // MyTextFormField(
+                //   title: 'Password',
+                //   textController: passwordTextController,
+                //   isPassword: true,
+                // ),
                 SizedBox(
                   height: 8,
                 ),

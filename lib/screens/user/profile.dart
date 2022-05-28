@@ -46,7 +46,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   void _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: birthdate!,
+        initialDate: birthdate ?? DateTime.now(),
         firstDate: DateTime(1900),
         lastDate: DateTime.now());
 
@@ -116,29 +116,25 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 SizedBox(
                   height: 16,
                 ),
-                // TextFieldPrimary(
-                //   textController: firstNameTextController,
-                //   title: 'First name',
-                //   cb_change: (val) {
-                //     checkFulfillInfo();
-                //   },
-                // ),
                 TextField(
                   controller: firstNameTextController,
                   decoration: InputDecoration(
-                    fillColor: Colors.white,
                     filled: true,
+                    fillColor: Color(0xFFFFFFFF),
                     hintText: 'First name',
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                    hintStyle: TextStyle(color: Colors.black38),
+                    border: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(width: 2.0, color: Colors.transparent),
+                        borderRadius: BorderRadius.all(Radius.circular(40))),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(width: 2.0, color: Colors.transparent),
+                        borderRadius: BorderRadius.all(Radius.circular(40))),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                   ),
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   onChanged: (val) {
                     checkFulfillInfo();
                   },
@@ -146,45 +142,42 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 SizedBox(
                   height: 8,
                 ),
-                // TextFieldPrimary(
-                //   textController: lastNameTextController,
-                //   title: 'Last name',
-                //   cb_change: (val) {
-                //     checkFulfillInfo();
-                //   },
-                // ),
                 TextField(
                   controller: lastNameTextController,
                   decoration: InputDecoration(
-                    fillColor: Colors.white,
                     filled: true,
+                    fillColor: Color(0xFFFFFFFF),
                     hintText: 'Last name',
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                    hintStyle: TextStyle(color: Colors.black38),
+                    border: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(width: 2.0, color: Colors.transparent),
+                        borderRadius: BorderRadius.all(Radius.circular(40))),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(width: 2.0, color: Colors.transparent),
+                        borderRadius: BorderRadius.all(Radius.circular(40))),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                   ),
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   onChanged: (val) {
                     checkFulfillInfo();
                   },
                 ),
                 SizedBox(
-                  height: partDistance,
+                  height: 8,
                 ),
 
                 Row(children: [
                   Expanded(
                     child: DropdownButtonHideUnderline(
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        padding: EdgeInsets.symmetric(horizontal: 20),
                         decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(8))),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(40)),
+                        ),
                         child: DropdownButton<String>(
                           isExpanded: true,
                           value: (gender.isEmpty) ? null : gender,
@@ -194,7 +187,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                               child: Text(
                                 value,
                                 style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
+                                    fontSize: 16, fontWeight: FontWeight.w500),
                               ),
                             );
                           }).toList(),
@@ -207,7 +200,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                           hint: Text(
                             'Gender',
                             style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                                fontSize: 16, fontWeight: FontWeight.w500),
                           ),
                         ),
                       ),
@@ -215,13 +208,13 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   ),
                 ]),
                 SizedBox(
-                  height: partDistance,
+                  height: 8,
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                      borderRadius: BorderRadius.all(Radius.circular(40))),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -231,9 +224,9 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             : DateFormat('dd-MM-yyyy').format(birthdate!),
                         style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w500,
                             color: birthdate == null
-                                ? Colors.grey.shade300
+                                ? Colors.black38
                                 : Colors.black),
                       ),
                       GestureDetector(
@@ -247,7 +240,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   ),
                 ),
                 SizedBox(
-                  height: partDistance,
+                  height: 8,
                 ),
                 // TextFieldPrimary(
                 //   textController: addressTextController,
@@ -256,19 +249,22 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 TextField(
                   controller: addressTextController,
                   decoration: InputDecoration(
-                    fillColor: Colors.white,
                     filled: true,
-                    hintText: 'Adress',
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                    fillColor: Color(0xFFFFFFFF),
+                    hintText: 'Address',
+                    hintStyle: TextStyle(color: Colors.black38),
+                    border: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(width: 2.0, color: Colors.transparent),
+                        borderRadius: BorderRadius.all(Radius.circular(40))),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(width: 2.0, color: Colors.transparent),
+                        borderRadius: BorderRadius.all(Radius.circular(40))),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                   ),
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
                 SizedBox(
                   height: 32,
