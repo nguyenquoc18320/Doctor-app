@@ -59,9 +59,9 @@ class WorkingTimeScreen extends StatelessWidget {
                             ));
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF2563EB),
+                        primary: Color(0xFF8856EB),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(32),
                         ),
                         minimumSize: const Size.fromHeight(50), // NEW
                       ),

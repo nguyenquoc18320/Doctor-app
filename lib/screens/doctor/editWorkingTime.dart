@@ -243,10 +243,10 @@ class _EditWorkingTimeScreenState extends State<EditWorkingTimeScreen> {
                       ));
             },
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Color(0xFF2563EB)),
+                backgroundColor: MaterialStateProperty.all(Color(0xFF8856EB)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
+                  borderRadius: BorderRadius.circular(24.0),
                 ))),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
